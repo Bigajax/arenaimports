@@ -21,7 +21,7 @@ export default async function Home() {
   const [{ categorias, produtos, hero }, config] = await Promise.all([carregarCatalogo(), obterConfig()]);
 
   const whats = linkGeral(config.whatsapp);
-  const ativos = produtos.filter((p) => p.ativo);
+  const ativos = produtos.filter((p) => p.ativo).sort((a, b) => a.ordem - b.ordem);
   const ativas = categorias.filter((c) => c.ativo);
   const porSlug = new Map(ativas.map((c) => [c.slug, c]));
   const da = (slug: string) => ativos.filter((p) => p.categoria_slug === slug).sort((a, b) => a.ordem - b.ordem);
@@ -54,8 +54,8 @@ export default async function Home() {
 
       <Vitrines
         vitrines={[
-          { titulo: "Para o próximo pace", texto: "Adizero Adios Pro, Evo SL e FuelCell: leveza e propulsão para treino e prova.", href: "/catalogo/tenis-de-corrida", peca: peca("adidas-adizero-adios-pro-4") ?? estrelaDe("tenis-de-corrida"), acao: "Ver a corrida" },
-          { titulo: "Para entrar em campo", texto: "Mercurial, Phantom e F50, para campo e society, com a velocidade que se vê.", href: "/catalogo/chuteiras", peca: peca("nike-mercurial-vapor-society-branco-e-azul") ?? estrelaDe("chuteiras"), acao: "Ver as chuteiras" },
+          { titulo: "Para entrar em campo", texto: "Mercurial, Predator e F50, para campo e society, na temporada nova.", href: "/catalogo/chuteiras", peca: peca("nike-air-zoom-mercurial-vapor-17-elite-xxvi-fg-dourado") ?? estrelaDe("chuteiras"), acao: "Ver as chuteiras" },
+          { titulo: "Para torcer", texto: "As camisas 2026/27 dos times da Europa, do Brasil e da Argentina, do P ao 4G.", href: "/catalogo/camisas", peca: peca("camisa-roma-2026-27-titular") ?? estrelaDe("camisas"), acao: "Ver as camisas" },
         ].filter((v): v is typeof v & { peca: NonNullable<typeof v.peca> } => Boolean(v.peca))}
       />
 
