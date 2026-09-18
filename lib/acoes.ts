@@ -73,6 +73,7 @@ export type EntradaProduto = {
   tamanhos: string[];
   cores: string[];
   destaque: boolean;
+  pronta_entrega: boolean;
   ativo: boolean;
   imagens: Imagem[];
 };
@@ -118,6 +119,7 @@ export async function salvarProduto(
         tamanhos: entrada.tamanhos,
         cores: entrada.cores,
         destaque: entrada.destaque,
+        pronta_entrega: entrada.pronta_entrega,
         ativo: entrada.ativo,
         ordem: existente?.ordem ?? catalogo.produtos.length,
         imagens: entrada.imagens.map((img, i) => ({ ...img, ordem: i })),
@@ -153,6 +155,7 @@ export async function salvarProduto(
       tamanhos: entrada.tamanhos,
       cores: entrada.cores,
       destaque: entrada.destaque,
+      pronta_entrega: entrada.pronta_entrega,
       ativo: entrada.ativo,
     };
 
@@ -208,7 +211,7 @@ export async function excluirProduto(id: string): Promise<Resultado<null>> {
 
 export async function alternarCampo(
   id: string,
-  campo: "ativo" | "destaque",
+  campo: "ativo" | "destaque" | "pronta_entrega",
   valor: boolean,
 ): Promise<Resultado<null>> {
   try {

@@ -7,7 +7,7 @@ import type { Produto } from "./tipos";
  * aparecem se acham algo). Assim a aba nunca promete o que a vitrine
  * não tem.
  */
-export type NomeIconeMenu = "novidade" | "chuteira" | "corrida" | "sneaker" | "bolsa" | "camisa" | "aviao" | "loja" | "pacote" | "conversa" | "instagram" | "simbolo";
+export type NomeIconeMenu = "novidade" | "chuteira" | "corrida" | "sneaker" | "bolsa" | "camisa" | "aviao" | "loja" | "pacote" | "conversa" | "instagram" | "simbolo" | "relampago";
 
 export type ItemMenu = {
   nome: string;
@@ -50,7 +50,23 @@ export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
   const busca = (cat: string, termo: string) => `/catalogo/${cat}?busca=${encodeURIComponent(termo)}`;
   const existe = (cat: string, termo: string) => ativos.some((p) => p.categoria_slug === cat && `${p.nome} ${p.marca ?? ""}`.toLowerCase().includes(termo.toLowerCase()));
 
+  const emMaos = ativos.filter((p) => p.pronta_entrega).length;
+
   return [
+    /* a porta que a loja pediu: o que está em mãos, antes das categorias */
+    {
+      chave: "pronta-entrega",
+      nome: "Pronta entrega",
+      href: "/pronta-entrega",
+      icone: "relampago",
+      total: emMaos,
+      titulo: emMaos ? `${emMaos} ${emMaos === 1 ? "modelo em mãos" : "modelos em mãos"}: sai no mesmo dia` : "Nada em mãos agora: tudo sob encomenda",
+      colunas: 1,
+      itens: [
+        { nome: "Ver a pronta entrega", href: "/pronta-entrega", icone: "relampago" },
+        { nome: "Sob encomenda", href: "/catalogo", icone: "aviao", nota: "importado direto da fonte, com prazo" },
+      ],
+    },
     ...CATEGORIAS.map((f): Aba => {
       const total = conta(f.slug);
       return {
@@ -69,13 +85,13 @@ export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
     }),
     {
       chave: "loja",
-      nome: "A loja",
+      nome: "A Arena",
       href: "/#loja",
       icone: "simbolo",
-      nota: "São José, Grande Floripa",
+      nota: "Florianópolis, envio Brasil",
       colunas: 1,
       itens: [
-        { nome: "Onde fica", href: "/#loja", icone: "loja", nota: "R. Gerôncio Thives, 528, Barreiros" },
+        { nome: "Como funciona", href: "/#loja", icone: "aviao", nota: "pronta entrega e sob encomenda" },
         { nome: "Camisas de time", href: linkWhats, icone: "camisa", nota: "sob consulta no WhatsApp", externa: true },
         { nome: "Falar no WhatsApp", href: linkWhats, icone: "conversa", nota: "tamanho, disponibilidade e envio", externa: true },
         { nome: "Tudo que chegou", href: "/#destaques", icone: "novidade", nota: `os ${ativos.length} modelos` },

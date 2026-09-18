@@ -10,48 +10,38 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function LayoutPainel({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+/**
+ * A moldura do painel, feita para o celular: uma barra fina no topo com
+ * a marca, "Peças", "Loja" e "Sair", e o resto da tela para a lista ou
+ * para a peça. Nada de menu lateral: são duas telas, e as duas cabem
+ * num polegar.
+ */
+export default async function LayoutPainel({ children }: { children: React.ReactNode }) {
   const { autenticado } = await sessao();
 
   return (
     <div className="papel flex min-h-screen flex-col">
       {autenticado ? (
-        <header className="sticky top-0 z-40 border-b border-cimento-medio bg-cimento-claro/95">
-          <div className="mx-auto flex h-16 max-w-[76rem] items-center gap-4 px-4 sm:px-6">
-            <Link href="/painel" aria-label="Painel da Arena" className="placa text-[0.9375rem] text-tinta">
-              arena
+        <header className="pn-barra">
+          <Link href="/painel" aria-label="Painel da Arena" className="romana text-[1rem] uppercase text-tinta">
+            Arena <span className="text-raio-texto">painel</span>
+          </Link>
+          <nav className="ml-auto flex items-center gap-4">
+            <Link href="/painel" className="pn-nav">
+              Peças
             </Link>
-            <span className="mono-rotulo hidden text-marrom-fundo sm:inline">
-              Painel
-            </span>
-
-            <nav className="ml-auto flex items-center gap-5">
-              <Link href="/painel" className="mono-rotulo text-tinta hover:text-marrom-fundo">
-                Peças
-              </Link>
-              <Link
-                href="/painel/config"
-                className="mono-rotulo text-tinta hover:text-marrom-fundo"
-              >
-                Loja
-              </Link>
-              <Link
-                href="/"
-                className="mono-rotulo hidden text-tinta hover:text-marrom-fundo md:inline"
-              >
-                Ver site
-              </Link>
-              <form action={acaoSair}>
-                <button type="submit" className="mono-rotulo text-marrom-fundo">
-                  Sair
-                </button>
-              </form>
-            </nav>
-          </div>
+            <Link href="/painel/config" className="pn-nav">
+              Loja
+            </Link>
+            <Link href="/" className="pn-nav hidden sm:inline">
+              Ver site
+            </Link>
+            <form action={acaoSair}>
+              <button type="submit" className="pn-nav text-tinta-fraca">
+                Sair
+              </button>
+            </form>
+          </nav>
         </header>
       ) : null}
 

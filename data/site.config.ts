@@ -41,15 +41,16 @@ export const site = {
   nome: "Arena Imports Floripa",
   marca: "arena",
   posicionamento: "Importados premium direto da fonte: chuteiras, tênis de corrida, sneakers e bolsas de grife",
-  /* o Google acha a loja em São José, na Grande Florianópolis */
-  cidade: "São José, SC",
+  /* sem loja física: a Arena vende pelo WhatsApp e envia; a base é a
+     Grande Florianópolis */
+  cidade: "Florianópolis, SC",
   /* o WhatsApp das artes do feed: (48) 98422-0326. Na prévia ele não é
      usado: ver PREVIA. */
   whatsapp: "5548984220326",
   instagram: "arenaimportsfloripa",
   url: resolverUrl(),
-  endereco: "R. Gerôncio Thives, 528 · Barreiros, São José · SC",
-  maps: "https://www.google.com/maps/search/?api=1&query=Arena+Imports+Floripa+R.+Ger%C3%B4ncio+Thives+528+Barreiros+S%C3%A3o+Jos%C3%A9+SC",
+  endereco: "",
+  maps: "",
 } as const;
 
 /**
@@ -68,7 +69,7 @@ export const configPadrao: Record<string, string> = {
   instagram: site.instagram,
   cidade: site.cidade,
   /* frases separadas por "|": o cabeçalho reveza uma de cada vez */
-  aviso_topo: "Importados premium direto da fonte | Loja física em São José, Grande Florianópolis | Envio para todo o Brasil | Pedido pelo WhatsApp, sem cadastro",
+  aviso_topo: "Importados premium direto da fonte | Pronta entrega: sai no mesmo dia | Envio para todo o Brasil | Pedido pelo WhatsApp, sem cadastro",
   frase_hero: "Seu jogo começa pelo que você calça.",
   endereco: site.endereco,
   horario: "",

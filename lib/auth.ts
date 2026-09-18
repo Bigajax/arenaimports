@@ -2,10 +2,10 @@ import { createHash } from "node:crypto";
 import { cookies } from "next/headers";
 import { TEM_SUPABASE, clienteServidor } from "./supabase";
 
-export const COOKIE_SESSAO = "picorelli_painel";
+export const COOKIE_SESSAO = "arena_painel";
 
-const SENHA_LOCAL = process.env.PAINEL_SENHA_LOCAL ?? "picorelli";
-const SEGREDO = process.env.PAINEL_SEGREDO ?? "picorelli-desenvolvimento";
+const SENHA_LOCAL = process.env.PAINEL_SENHA_LOCAL ?? "arena";
+const SEGREDO = process.env.PAINEL_SEGREDO ?? "arena-desenvolvimento";
 
 function selo(senha: string) {
   return createHash("sha256").update(`${senha}::${SEGREDO}`).digest("hex");

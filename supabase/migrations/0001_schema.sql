@@ -24,6 +24,8 @@ create table if not exists produtos (
   tamanhos text[] default '{}',
   cores text[] default '{}',
   destaque boolean default false,
+  -- em mãos, sai no mesmo dia; falso é sob encomenda
+  pronta_entrega boolean default false,
   ativo boolean default true,
   ordem int default 0,
   created_at timestamptz default now()

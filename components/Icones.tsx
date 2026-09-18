@@ -14,6 +14,7 @@ export type NomeIcone =
   | "camisa"
   | "aviao"
   | "simbolo"
+  | "relampago"
   | "pacote"
   | "loja"
   | "lupa"
@@ -80,6 +81,8 @@ const TRACOS: Record<Exclude<NomeIcone, "whats">, React.ReactNode> = {
       <path d="M8.5 17.5 12 7l3.5 10.5M9.8 13.8h4.4" />
     </>
   ),
+  /* o relâmpago: pronta entrega, sai hoje */
+  relampago: <path d="M13.5 2.5 5 13.5h6l-1.5 8 9-11.5h-6z" />,
   /* o pacote: envio para todo o Brasil */
   pacote: (
     <>

@@ -47,7 +47,9 @@ export default async function Home() {
 
       <Portas portas={CATEGORIAS.map((f) => ({ nome: f.nome, href: `/catalogo/${f.slug}`, icone: f.icone, peca: estrelaDe(f.slug), total: da(f.slug).length, linha: f.pergunta }))} />
 
-      <Prateleira id="destaques" titulo="Chegou na Arena" subtitulo="O que está na loja agora, do campo à rua." href="/catalogo" verTudo="Ver o catálogo" produtos={inedito(ativos)} categorias={porSlug} prioridade limite={4} nomeDaPorta="modelos" />
+      <Prateleira id="pronta-entrega" titulo="Pronta entrega" subtitulo="Em mãos agora: sai no mesmo dia, sem esperar importação." href="/pronta-entrega" verTudo="Ver a pronta entrega" produtos={ativos.filter((p) => p.pronta_entrega)} categorias={porSlug} prioridade limite={4} nomeDaPorta="modelos" />
+
+      <Prateleira id="destaques" titulo="Chegou na Arena" subtitulo="O catálogo inteiro, do campo à rua: pronta entrega e sob encomenda." href="/catalogo" verTudo="Ver o catálogo" produtos={inedito(ativos)} categorias={porSlug} prioridade={!ativos.some((p) => p.pronta_entrega)} limite={4} nomeDaPorta="modelos" />
 
       <Vitrines
         vitrines={[
@@ -69,10 +71,10 @@ export default async function Home() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Store",
+            "@type": "OnlineStore",
             name: "Arena Imports Floripa",
             url: site.url,
-            address: { "@type": "PostalAddress", streetAddress: "R. Gerôncio Thives, 528", addressLocality: "São José", addressRegion: "SC", postalCode: "88117-290", addressCountry: "BR" },
+            areaServed: "BR",
             sameAs: [`https://instagram.com/${site.instagram}`],
           }),
         }}

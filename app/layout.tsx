@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     default: TITULO,
     template: "%s · Arena Imports Floripa",
   },
-  description: "Importados premium direto da fonte, em São José, na Grande Florianópolis: chuteiras Nike e Adidas, Adizero e Evo SL para correr, Jordan, Dunk e New Balance 9060, bolsas Gucci. Escolhe aqui, pede pelo WhatsApp.",
+  description: "Importados premium direto da fonte, de Florianópolis para todo o Brasil: chuteiras Nike e Adidas, Adizero e Evo SL para correr, Jordan, Dunk e New Balance 9060, bolsas Gucci. Pronta entrega e sob encomenda. Escolhe aqui, pede pelo WhatsApp.",
   openGraph: {
     type: "website",
     locale: "pt_BR",

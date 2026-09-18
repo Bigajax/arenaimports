@@ -1,0 +1,146 @@
+   ▲ Next.js 15.5.24
+   - Local:        http://localhost:3160
+   - Network:      http://192.168.18.86:3160
+
+ ✓ Starting...
+ ✓ Ready in 7.4s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1268ms (173 modules)
+ ○ Compiling /painel/login ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (107kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (259kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled /painel/login in 8.7s (754 modules)
+ GET /painel/login 200 in 9944ms
+ ○ Compiling /icon.png ...
+ ✓ Compiled /icon.png in 638ms (507 modules)
+ GET /icon.png?eccb301ba9bb87cd 200 in 911ms
+ GET /painel/login 200 in 80ms
+ POST /painel/login 303 in 278ms
+ GET /painel/login 200 in 49ms
+ GET /painel/login 200 in 48ms
+ GET /painel/login 200 in 38ms
+ GET /painel/login 200 in 41ms
+ GET /painel/login 200 in 39ms
+ GET /painel/login 200 in 41ms
+ GET /painel/login 200 in 42ms
+ GET /painel/login 200 in 42ms
+ GET /painel/login 200 in 40ms
+ GET /painel/login 200 in 41ms
+ GET /painel/login 200 in 35ms
+ GET /painel/login 200 in 43ms
+ GET /painel/login 200 in 36ms
+ GET /painel/login 200 in 39ms
+ GET /painel/login 200 in 36ms
+ GET /painel/login 200 in 43ms
+ GET /painel/login 200 in 35ms
+ GET /painel/login 200 in 43ms
+ GET /painel/login 200 in 36ms
+ GET /painel/login 200 in 39ms
+ GET /painel/login 200 in 37ms
+ GET /painel/login 200 in 38ms
+ GET /painel/login 200 in 52ms
+ GET /painel/login 200 in 40ms
+ GET /painel/login 200 in 35ms
+ GET /painel/login 200 in 40ms
+ GET /painel/login 200 in 37ms
+ GET /painel/login 200 in 42ms
+ GET /painel/login 200 in 37ms
+ GET /painel/login 200 in 47ms
+ GET /painel/login 200 in 39ms
+ GET /painel/login 200 in 47ms
+ GET /painel/login 200 in 38ms
+ GET /painel/login 200 in 45ms
+ GET /painel/login 200 in 42ms
+ GET /painel/login 200 in 49ms
+ GET /painel/login 200 in 46ms
+ GET /painel/login 200 in 45ms
+ GET /painel/login 200 in 47ms
+ GET /painel/login 200 in 56ms
+ GET /painel/login 200 in 53ms
+ GET /painel/login 200 in 18ms
+ GET /painel/login 200 in 284ms
+ GET /icon.png?eccb301ba9bb87cd 200 in 38ms
+ GET /painel/login 200 in 75ms
+ POST /painel/login 303 in 164ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 95ms
+ GET /painel/login 200 in 59ms
+ GET /painel/login 200 in 76ms
+ GET /painel/login 200 in 79ms
+ GET /painel/login 200 in 57ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 59ms
+ GET /painel/login 200 in 68ms
+ GET /painel/login 200 in 57ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 50ms
+ GET /painel/login 200 in 57ms
+ GET /painel/login 200 in 81ms
+ GET /painel/login 200 in 76ms
+ GET /painel/login 200 in 48ms
+ GET /painel/login 200 in 49ms
+ GET /painel/login 200 in 53ms
+ GET /painel/login 200 in 56ms
+ GET /painel/login 200 in 42ms
+ GET /painel/login 200 in 56ms
+ GET /painel/login 200 in 41ms
+ GET /painel/login 200 in 52ms
+ GET /painel/login 200 in 62ms
+ GET /painel/login 200 in 69ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 99ms
+ GET /painel/login 200 in 68ms
+ GET /painel/login 200 in 89ms
+ GET /painel/login 200 in 150ms
+ GET /painel/login 307 in 304ms
+ GET /painel/login 200 in 66ms
+ GET /painel/login 200 in 71ms
+ GET /painel/login 307 in 204ms
+ GET /painel/login 200 in 69ms
+ GET /painel/login 200 in 78ms
+ GET /painel/login 307 in 225ms
+ GET /painel/login 200 in 69ms
+ GET /painel/login 200 in 65ms
+ GET /painel/login 307 in 198ms
+ GET /painel/login 200 in 50ms
+ GET /painel/login 200 in 51ms
+ GET /painel/login 307 in 177ms
+ GET /painel/login 200 in 58ms
+ GET /painel/login 200 in 57ms
+ GET /painel/login 307 in 167ms
+ GET /painel/login 200 in 69ms
+ GET /painel/login 200 in 53ms
+ GET /painel/login 307 in 191ms
+ GET /painel/login 200 in 56ms
+ GET /painel/login 200 in 52ms
+ GET /painel/login 307 in 173ms
+ GET /painel/login 200 in 54ms
+ GET /painel/login 200 in 50ms
+ GET /painel/login 307 in 150ms
+ GET /painel/login 200 in 60ms
+ GET /painel/login 200 in 46ms
+ GET /painel/login 307 in 162ms
+ ✓ Compiled in 1011ms (926 modules)
+ GET /painel/login 200 in 840ms
+ GET /icon.png?eccb301ba9bb87cd 200 in 131ms
+ ○ Compiling /painel ...
+ ✓ Compiled /painel in 1263ms (784 modules)
+ GET /painel 200 in 1753ms
+ POST /painel/login 303 in 1858ms
+ ○ Compiling /painel/peca/[id] ...
+ ✓ Compiled /painel/peca/[id] in 641ms (796 modules)
+ GET /painel/peca/p-011 200 in 3130ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1224ms (837 modules)
+ GET / 200 in 2506ms
+ ○ Compiling /pronta-entrega ...
+ ✓ Compiled /pronta-entrega in 661ms (853 modules)
+ GET /pronta-entrega 200 in 1318ms
+ ○ Compiling /catalogo ...
+ ✓ Compiled /catalogo in 571ms (855 modules)
+ GET /catalogo 200 in 993ms
+ GET /painel/login 200 in 154ms
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (107kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (259kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+[?25h

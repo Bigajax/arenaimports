@@ -37,6 +37,7 @@ export function CardProduto({
   return (
     <article className="cartao group flex h-full flex-col">
       <Link href={href} className="foto block aspect-square rounded-b-none" aria-label={produto.nome}>
+        {produto.pronta_entrega ? <span className="pronta absolute right-3 top-3 z-[1]">Pronta entrega</span> : null}
         {vigente ? (
           <span className="placa-etiqueta absolute left-3 top-3 z-[1] !flex items-baseline gap-2">
             <span className="preco text-[0.9375rem]">{vigente}</span>
@@ -55,7 +56,7 @@ export function CardProduto({
             {produto.nome}
           </Link>
         </h3>
-        <p className="mt-1 min-h-[1.25rem] truncate text-[0.8125rem] text-tinta-fraca">{[produto.cores[0], produto.marca].filter(Boolean).join(" · ") || "importado"}</p>
+        <p className="mt-1 min-h-[1.25rem] truncate text-[0.8125rem] text-tinta-fraca">{[produto.cores[0], produto.pronta_entrega ? "em mãos, sai hoje" : "sob encomenda"].filter(Boolean).join(" · ")}</p>
 
         <div className="mt-auto pt-3">
           <a href={pedir} target="_blank" rel="noreferrer" className="btn btn--cta btn--pequeno w-full">

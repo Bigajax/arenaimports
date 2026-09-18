@@ -31,6 +31,9 @@ export type Produto = {
   tamanhos: string[];
   cores: string[];
   destaque: boolean;
+  /* Verdadeiro quando a peça está em mãos e sai no mesmo dia; falso é
+     importado sob encomenda, com prazo. É a aba que a loja pediu. */
+  pronta_entrega: boolean;
   ativo: boolean;
   ordem: number;
   imagens: Imagem[];
@@ -47,6 +50,7 @@ export type Filtros = {
   precoMin?: number;
   precoMax?: number;
   busca?: string;
+  prontaEntrega?: boolean;
   ordem?: Ordenacao;
   incluirInativos?: boolean;
 };

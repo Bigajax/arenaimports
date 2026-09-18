@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { ListaProdutos } from "@/components/painel/ListaProdutos";
+import { PainelPecas } from "@/components/painel/PainelPecas";
 import { sessao } from "@/lib/auth";
 import { carregarCatalogo } from "@/lib/dados";
 
@@ -11,10 +11,5 @@ export default async function PaginaPainel() {
 
   const { categorias, produtos } = await carregarCatalogo();
 
-  return (
-    <ListaProdutos
-      produtosIniciais={[...produtos].sort((a, b) => a.ordem - b.ordem)}
-      categorias={categorias}
-    />
-  );
+  return <PainelPecas produtosIniciais={[...produtos].sort((a, b) => a.ordem - b.ordem)} categorias={categorias.filter((c) => c.ativo)} />;
 }

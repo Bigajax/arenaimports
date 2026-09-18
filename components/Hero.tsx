@@ -27,11 +27,12 @@ export function Hero({ frase, estrelas, linkWhats, totais }: { frase: string; es
             {frase}
           </h1>
           <p className="falada mt-6 max-w-[44ch] text-[1.0625rem] text-white/80 lg:text-[1.125rem]">
-            Importados premium direto da fonte, em São José, na Grande Florianópolis: {totais.produtos} modelos entre chuteiras, tênis de corrida, sneakers e bolsas de grife. Você escolhe aqui, pede pelo WhatsApp e a Arena confere tamanho e disponibilidade.
+            Importados premium direto da fonte, de Florianópolis para todo o Brasil: {totais.produtos} modelos entre chuteiras, tênis de corrida, sneakers e bolsas de grife, em pronta entrega ou sob encomenda. Você escolhe aqui, pede pelo WhatsApp e a Arena confere tamanho e disponibilidade.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link href="/catalogo" className="btn btn--raio">
-              Ver os modelos
+            <Link href="/pronta-entrega" className="btn btn--raio">
+              <Icone nome="relampago" className="h-[1.125rem] w-[1.125rem]" />
+              Pronta entrega
             </Link>
             <a href={linkWhats} target="_blank" rel="noreferrer" className="btn btn--placa-fio">
               <Icone nome="whats" className="h-[1.125rem] w-[1.125rem]" />

@@ -36,7 +36,7 @@ export function Rodape({ linkWhats, instagram, categorias = [] }: { linkWhats: s
           <Link href="/" aria-label="Arena Imports Floripa, página inicial" className="inline-flex text-branco">
             <Logo altura={64} />
           </Link>
-          <p className="mt-4 max-w-[32ch] text-[0.9375rem] text-marfim-fraco">{site.posicionamento}. Loja física em São José, Grande Florianópolis.</p>
+          <p className="mt-4 max-w-[32ch] text-[0.9375rem] text-marfim-fraco">{site.posicionamento}. De Florianópolis para todo o Brasil, pronta entrega e sob encomenda.</p>
           <a href={linkWhats} target="_blank" rel="noreferrer" className="btn btn--raio btn--pequeno mt-5">
             <Icone nome="whats" className="h-[1.125rem] w-[1.125rem]" />
             Pedir no WhatsApp
@@ -73,13 +73,13 @@ export function Rodape({ linkWhats, instagram, categorias = [] }: { linkWhats: s
           </ul>
         </Bloco>
 
-        <Bloco titulo="A loja">
+        <Bloco titulo="A Arena">
           <ul className="flex flex-col gap-2 text-[0.9375rem]">
             <li>
-              <a href={site.maps} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-branco hover:text-raio">
-                <Icone nome="pino" className="h-4 w-4" />
-                {site.endereco}
-              </a>
+              <Link href="/pronta-entrega" className="inline-flex items-center gap-2 text-branco hover:text-raio">
+                <Icone nome="relampago" className="h-4 w-4" />
+                Pronta entrega
+              </Link>
             </li>
             {instagram ? (
               <li>

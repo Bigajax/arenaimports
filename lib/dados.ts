@@ -27,6 +27,7 @@ type LinhaProduto = {
   tamanhos: string[] | null;
   cores: string[] | null;
   destaque: boolean;
+  pronta_entrega: boolean | null;
   ativo: boolean;
   ordem: number;
   categorias: { slug: string } | null;
@@ -55,6 +56,7 @@ function daLinha(linha: LinhaProduto): Produto {
     tamanhos: linha.tamanhos ?? [],
     cores: linha.cores ?? [],
     destaque: linha.destaque,
+    pronta_entrega: Boolean(linha.pronta_entrega),
     ativo: linha.ativo,
     ordem: linha.ordem,
     imagens: (linha.produto_imagens ?? [])

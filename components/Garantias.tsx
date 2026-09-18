@@ -1,19 +1,17 @@
 import Link from "next/link";
 import { Icone, type NomeIcone } from "./Icones";
-import { site } from "@/data/site.config";
 
 /**
  * O que a loja cumpre de fato, numa faixa de cinza de quadra logo
- * abaixo do preto do hero: importado direto da fonte (as artes dizem
- * "importados diretamente da China, qualidade premium"), a loja física
- * em São José (o Google acha, com endereço), envio para todo o Brasil
- * (dito nas legendas) e o pedido pelo WhatsApp (é como a vitrine
- * funciona). Nada de prazo, frete grátis ou parcelamento: a loja não
- * disse.
+ * abaixo do preto do hero: pronta entrega (a aba que a loja pediu),
+ * importado direto da fonte (as artes dizem "importados diretamente da
+ * China, qualidade premium"), envio para todo o Brasil (dito nas
+ * legendas) e o pedido pelo WhatsApp (é como a vitrine funciona). Sem
+ * loja física: a Arena vende pelo WhatsApp e envia.
  */
 const ITENS: { icone: NomeIcone; titulo: string; texto: string; href: string; externa?: boolean }[] = [
-  { icone: "aviao", titulo: "Importado direto da fonte", texto: "qualidade premium, sem intermediário", href: "/catalogo" },
-  { icone: "loja", titulo: "Loja física em São José", texto: "Barreiros, Grande Florianópolis", href: site.maps, externa: true },
+  { icone: "relampago", titulo: "Pronta entrega", texto: "o que está em mãos sai no mesmo dia", href: "/pronta-entrega" },
+  { icone: "aviao", titulo: "Sob encomenda direto da fonte", texto: "qualidade premium, prazo combinado", href: "/catalogo" },
   { icone: "pacote", titulo: "Envio para todo o Brasil", texto: "você combina o envio no pedido", href: "", externa: true },
   { icone: "conversa", titulo: "Pedido pelo WhatsApp", texto: "sem cadastro, sem carrinho", href: "", externa: true },
 ];

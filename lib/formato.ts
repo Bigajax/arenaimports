@@ -43,7 +43,7 @@ export function slugar(texto: string): string {
 
 /** KTN-0142 a partir de um número sequencial. */
 export function codigoPeca(sequencia: number): string {
-  return `KTN-${String(sequencia).padStart(4, "0")}`;
+  return `AR-${String(sequencia).padStart(4, "0")}`;
 }
 
 export function listar(itens: string[]): string {

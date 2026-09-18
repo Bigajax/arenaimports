@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 const URL_SUPABASE = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const CHAVE_SUPABASE = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 const TEM_SUPABASE = Boolean(URL_SUPABASE && CHAVE_SUPABASE);
-const COOKIE_SESSAO = "kanton_painel";
+const COOKIE_SESSAO = "arena_painel";
 
 /**
  * Barra a entrada no painel sem sessão. A checagem definitiva acontece

@@ -64,7 +64,8 @@
           "alt": "Adidas Adizero Adios Pro Evo",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-002",
@@ -92,7 +93,8 @@
           "alt": "Adidas Adizero branco",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-003",
@@ -120,7 +122,8 @@
           "alt": "Nike Mercurial dourada",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-004",
@@ -148,7 +151,8 @@
           "alt": "New Balance 9060 na loja",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-005",
@@ -184,7 +188,8 @@
           "alt": "Nike Mercurial Vapor society branco e azul",
           "ordem": 1
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-006",
@@ -212,7 +217,8 @@
           "alt": "New Balance 9060 cinza",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-007",
@@ -248,7 +254,8 @@
           "alt": "New Balance 9060 creme",
           "ordem": 1
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-008",
@@ -276,7 +283,8 @@
           "alt": "Adidas Adizero",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-009",
@@ -304,7 +312,8 @@
           "alt": "Nike Mercurial Superfly society",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-010",
@@ -332,7 +341,8 @@
           "alt": "Nike Dunk Low azul",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-011",
@@ -360,7 +370,8 @@
           "alt": "Adidas Adizero Adios Pro 4",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-012",
@@ -388,7 +399,8 @@
           "alt": "Air Jordan 4 vermelho",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-013",
@@ -416,7 +428,8 @@
           "alt": "Bolsa Gucci Diana GG",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-014",
@@ -452,7 +465,8 @@
           "alt": "Air Jordan 1 High",
           "ordem": 1
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-015",
@@ -480,7 +494,8 @@
           "alt": "Adidas Evo SL",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     },
     {
       "id": "p-016",
@@ -508,7 +523,8 @@
           "alt": "Tênis Gucci branco",
           "ordem": 0
         }
-      ]
+      ],
+      "pronta_entrega": false
     }
   ],
   "hero": [

@@ -24,6 +24,7 @@ export function temDesconto(p: Produto): boolean {
  * mesmo resultado — o catálogo é pequeno e cabe na memória.
  */
 export function filtrar(produtos: Produto[], f: Filtros = {}): Produto[] {
+  const soPronta = Boolean(f.prontaEntrega);
   const busca = f.busca ? normalizar(f.busca).trim() : "";
   const marcas = f.marca?.length ? f.marca.map(normalizar) : null;
   const tamanhos = f.tamanho?.length ? f.tamanho.map(normalizar) : null;
@@ -31,6 +32,7 @@ export function filtrar(produtos: Produto[], f: Filtros = {}): Produto[] {
   const lista = produtos.filter((p) => {
     if (!f.incluirInativos && !p.ativo) return false;
     if (f.categoria && p.categoria_slug !== f.categoria) return false;
+    if (soPronta && !p.pronta_entrega) return false;
     if (marcas && !marcas.includes(normalizar(p.marca ?? ""))) return false;
     if (tamanhos && !p.tamanhos.some((t) => tamanhos.includes(normalizar(t))))
       return false;
