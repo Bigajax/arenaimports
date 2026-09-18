@@ -17,6 +17,9 @@
  *
  *   node scripts/importar-yupoo.mjs             # tudo da lista
  *   node scripts/importar-yupoo.mjs funny1 20   # só uma loja, 20 álbuns
+ *   node scripts/importar-yupoo.mjs --completar # as peças já importadas com
+ *                                                 menos de 4 fotos ganham as
+ *                                                 que faltam, do mesmo álbum
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -35,12 +38,14 @@ const FONTES = [
   { loja: "wanfing", senha: null, colecao: "3852491", categoria: "camisas", quantas: 30, minFotos: 2, paginaInicial: 1 },
 ];
 
-const FOTOS_POR_PECA = 3;
+/* a loja pediu quatro: frente, cima, lado e solado */
+const FOTOS_POR_PECA = 4;
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36";
 const CATALOGO = path.join(process.cwd(), "data", "catalogo.json");
 const PASTA = path.join(process.cwd(), "public", "produtos");
 
-const [soLoja, soQuantas] = process.argv.slice(2);
+const completar = process.argv.includes("--completar");
+const [soLoja, soQuantas] = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
 /* ---------- a marca pelo nome ---------- */
 const MARCAS = [
@@ -244,7 +249,82 @@ function lerAlbum(html) {
 const desHtml = (s) => s.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16))).replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d))).replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 const slugar = (t) => t.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+/* ---------- as fotos de uma peça ----------
+   As fotos de estúdio vêm em ordem fixa (sola, lado, cima, ...), mas a
+   ordem muda de fornecedor para fornecedor. A capa é a foto em que o
+   produto ocupa mais área depois de aparar o fundo: é a vista de lado,
+   quase sempre. Bolsa e camisa são o contrário: a foto que mais enche o
+   quadro é o close da etiqueta, e a peça inteira é a que sobra mais fundo
+   em volta. As outras seguem na ordem do álbum, até quatro. */
+async function escolherFotos(fotos, base, loja, albumId, categoria, nome, minFotos) {
+  const fundo = categoria === "bolsas" || categoria === "camisas";
+  const candidatas = [];
+  for (const [k, url] of fotos.slice(0, fundo ? 9 : FOTOS_POR_PECA + 2).entries()) {
+    try {
+      const original = await baixar(url, `${base}/`);
+      const processada = await sharp(original).rotate().resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
+      const meta = await sharp(processada).metadata();
+      let area = 0;
+      try {
+        const aparada = await sharp(processada).trim({ threshold: 70 }).toBuffer({ resolveWithObject: true });
+        const r = aparada.info.width / aparada.info.height;
+        /* proporção de vista de lado: fora dela (sola, vista de cima) não vira capa */
+        area = r >= 1.25 && r <= 2.3 ? aparada.info.width * aparada.info.height : 1;
+      } catch {
+        area = 0;
+      }
+      const cinza = await sharp(processada).resize(60, 60, { fit: "fill" }).greyscale().raw().toBuffer();
+      let claros = 0;
+      for (const v of cinza) if (v > 170) claros++;
+      candidatas.push({ k, processada, meta, area, claros: claros / cinza.length });
+    } catch (e) {
+      console.log(`  foto falhou (${albumId}/${k + 1}): ${e.message}`);
+    }
+  }
+  if (candidatas.length < Math.min(2, minFotos)) return null;
+  const capa = fundo ? candidatas.reduce((m, c) => (c.claros > m.claros ? c : m), candidatas[0]) : candidatas.reduce((m, c) => (c.area > m.area ? c : m), candidatas[0]);
+  const escolhidas = [capa, ...candidatas.filter((c) => c !== capa)].slice(0, FOTOS_POR_PECA);
+  const imagens = [];
+  for (const [k, c] of escolhidas.entries()) {
+    const mini = await sharp(c.processada).resize(12).blur(2).webp({ quality: 40 }).toBuffer();
+    const arquivo = `yp-${loja}-${albumId}-${k + 1}.webp`;
+    fs.writeFileSync(path.join(PASTA, arquivo), c.processada);
+    imagens.push({ url: `/produtos/${arquivo}`, largura: c.meta.width ?? null, altura: c.meta.height ?? null, blur: `data:image/webp;base64,${mini.toString("base64")}`, alt: nome, ordem: k });
+  }
+  return imagens;
+}
+
+/* ---------- completar: as peças com menos de 4 fotos ---------- */
+async function completarFotos() {
+  const catalogo = JSON.parse(fs.readFileSync(CATALOGO, "utf8"));
+  const senhaDe = new Map(FONTES.map((f) => [f.loja, f.senha]));
+  let feitas = 0;
+  for (const p of catalogo.produtos) {
+    if (!p.yupoo || p.imagens.length >= FOTOS_POR_PECA) continue;
+    const [loja, albumId] = p.yupoo.split("/");
+    const base = `https://${loja}.x.yupoo.com`;
+    const cookie = senhaDe.get(loja) ? `indexlockcode=${senhaDe.get(loja)}` : null;
+    let album;
+    try {
+      album = lerAlbum(await pegar(`${base}/albums/${albumId}?uid=1`, cookie));
+    } catch (e) {
+      console.log(`  ${p.slug}: álbum falhou (${e.message})`);
+      continue;
+    }
+    if (album.fotos.length <= p.imagens.length) continue;
+    const imagens = await escolherFotos(album.fotos, base, loja, albumId, p.categoria_slug?.startsWith("chuteiras") ? "chuteiras" : p.categoria_slug, p.nome, 2);
+    if (!imagens) continue;
+    p.imagens = imagens;
+    feitas++;
+    console.log(`  ${p.nome}: ${imagens.length} fotos`);
+    if (feitas % 10 === 0) fs.writeFileSync(CATALOGO, JSON.stringify(catalogo, null, 2) + "\n");
+  }
+  fs.writeFileSync(CATALOGO, JSON.stringify(catalogo, null, 2) + "\n");
+  console.log(`${feitas} peças completadas`);
+}
+
 async function principal() {
+  if (completar) return completarFotos();
   const catalogo = JSON.parse(fs.readFileSync(CATALOGO, "utf8"));
   fs.mkdirSync(PASTA, { recursive: true });
   const slugs = new Set(catalogo.produtos.map((p) => p.slug));
@@ -315,45 +395,8 @@ async function principal() {
         let n = 2;
         while (slugs.has(slug)) slug = `${slugar(nome)}-${n++}`;
 
-        /* As fotos de estúdio vêm em ordem fixa (sola, lado, cima, ...),
-           mas a ordem muda de fornecedor para fornecedor. A capa é a foto
-           em que o produto ocupa mais área depois de aparar o fundo: é a
-           vista de lado, quase sempre. As outras duas seguem na ordem. */
-        const candidatas = [];
-        for (const [k, url] of album.fotos.slice(0, f.categoria === "bolsas" || f.categoria === "camisas" ? 9 : FOTOS_POR_PECA + 2).entries()) {
-          try {
-            const original = await baixar(url, `${base}/`);
-            const processada = await sharp(original).rotate().resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
-            const meta = await sharp(processada).metadata();
-            let area = 0;
-            try {
-              const aparada = await sharp(processada).trim({ threshold: 28 }).toBuffer({ resolveWithObject: true });
-              area = aparada.info.width * aparada.info.height;
-            } catch {
-              area = 0;
-            }
-            /* para bolsa: a parte clara do quadro (parede, mesa). O close da
-               etiqueta é quase todo couro; a bolsa inteira tem fundo em volta */
-            const cinza = await sharp(processada).resize(60, 60, { fit: "fill" }).greyscale().raw().toBuffer();
-            let claros = 0;
-            for (const v of cinza) if (v > 170) claros++;
-            candidatas.push({ k, processada, meta, area, claros: claros / cinza.length });
-          } catch (e) {
-            console.log(`  foto falhou (${a.id}/${k + 1}): ${e.message}`);
-          }
-        }
-        if (candidatas.length < Math.min(2, minFotos)) continue;
-        /* bolsa é o contrário: a foto que mais enche o quadro é o close da
-           etiqueta; a bolsa inteira é a que sobra mais fundo em volta */
-        const capa = f.categoria === "bolsas" || f.categoria === "camisas" ? candidatas.reduce((m, c) => (c.claros > m.claros ? c : m), candidatas[0]) : candidatas.reduce((m, c) => (c.area > m.area ? c : m), candidatas[0]);
-        const escolhidas = [capa, ...candidatas.filter((c) => c !== capa)].slice(0, FOTOS_POR_PECA);
-        const imagens = [];
-        for (const [k, c] of escolhidas.entries()) {
-          const mini = await sharp(c.processada).resize(12).blur(2).webp({ quality: 40 }).toBuffer();
-          const arquivo = `yp-${f.loja}-${a.id}-${k + 1}.webp`;
-          fs.writeFileSync(path.join(PASTA, arquivo), c.processada);
-          imagens.push({ url: `/produtos/${arquivo}`, largura: c.meta.width ?? null, altura: c.meta.height ?? null, blur: `data:image/webp;base64,${mini.toString("base64")}`, alt: nome, ordem: k });
-        }
+        const imagens = await escolherFotos(album.fotos, base, f.loja, a.id, f.categoria, nome, minFotos);
+        if (!imagens) continue;
 
         maior++;
         catalogo.produtos.push({

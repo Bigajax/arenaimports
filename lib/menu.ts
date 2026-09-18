@@ -1,4 +1,5 @@
 import type { Produto } from "./tipos";
+import { categoriasDoGrupo } from "./grupos";
 
 /**
  * O menu das portas, montado do catálogo: cada porta do cabeçalho é
@@ -34,10 +35,12 @@ export type Aba = {
 
 /* As quatro portas, na ordem em que a loja se apresenta: o campo
    primeiro (é "Arena"), a corrida, a rua, e a grife. */
+/* "chuteiras" é um GRUPO (lib/grupos.ts): a porta abre campo, society e
+   futsal juntos, e a aba dela lista as três áreas */
 export const CATEGORIAS: { slug: string; nome: string; tudo: string; icone: NomeIconeMenu; linha: string; pergunta: string }[] = [
-  { slug: "chuteiras", nome: "Chuteiras", tudo: "Todas as chuteiras", icone: "chuteira", linha: "Mercurial, Phantom e F50 para campo e society", pergunta: "para entrar em campo" },
+  { slug: "chuteiras", nome: "Chuteiras", tudo: "Todas as chuteiras", icone: "chuteira", linha: "campo, society e futsal: Mercurial, Predator e F50", pergunta: "para entrar em campo" },
   { slug: "tenis-de-corrida", nome: "Corrida", tudo: "Todos os tênis de corrida", icone: "corrida", linha: "Adizero, Evo SL e FuelCell para treino e prova", pergunta: "para o próximo pace" },
-  { slug: "sneakers", nome: "Sneakers", tudo: "Todos os sneakers", icone: "sneaker", linha: "Jordan, Dunk, Samba e New Balance 9060", pergunta: "para a rua" },
+  { slug: "sneakers", nome: "Casual", tudo: "Todos os tênis casuais", icone: "sneaker", linha: "Jordan, Dunk, Air Force, Vans e New Balance", pergunta: "para a rua" },
   { slug: "bolsas", nome: "Bolsas", tudo: "Todas as bolsas", icone: "bolsa", linha: "Chanel, Louis Vuitton, Gucci e Saint Laurent", pergunta: "para o closet" },
   { slug: "camisas", nome: "Camisas", tudo: "Todas as camisas de time", icone: "camisa", linha: "os times da Europa e da seleção, temporada nova", pergunta: "para torcer" },
 ];
@@ -47,9 +50,17 @@ const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Vans", "Chan
 
 export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
   const ativos = produtos.filter((p) => p.ativo);
-  const conta = (slug: string) => ativos.filter((p) => p.categoria_slug === slug).length;
+  const slugsDe = (slug: string) => categoriasDoGrupo(slug) ?? [slug];
+  const conta = (slug: string) => ativos.filter((p) => slugsDe(slug).includes(p.categoria_slug ?? "")).length;
   const busca = (cat: string, termo: string) => `/catalogo/${cat}?busca=${encodeURIComponent(termo)}`;
-  const existe = (cat: string, termo: string) => ativos.some((p) => p.categoria_slug === cat && `${p.nome} ${p.marca ?? ""}`.toLowerCase().includes(termo.toLowerCase()));
+  const existe = (cat: string, termo: string) => ativos.some((p) => slugsDe(cat).includes(p.categoria_slug ?? "") && `${p.nome} ${p.marca ?? ""}`.toLowerCase().includes(termo.toLowerCase()));
+  const AREAS: Record<string, { nome: string; slug: string }[]> = {
+    chuteiras: [
+      { nome: "Campo", slug: "chuteiras-campo" },
+      { nome: "Society", slug: "chuteiras-society" },
+      { nome: "Futsal", slug: "chuteiras-futsal" },
+    ],
+  };
 
   const emMaos = ativos.filter((p) => p.pronta_entrega).length;
 
@@ -79,6 +90,7 @@ export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
         titulo: `${total} ${total === 1 ? "modelo" : "modelos"}: ${f.linha}`,
         colunas: 2,
         itens: [
+          ...(AREAS[f.slug] ?? []).filter((a) => conta(a.slug) > 0).map((a) => ({ nome: a.nome, href: `/catalogo/${a.slug}`, nota: String(conta(a.slug)) })),
           ...MARCAS.filter((m) => existe(f.slug, m)).map((m) => ({ nome: m, href: busca(f.slug, m) })),
           { nome: f.tudo, href: `/catalogo/${f.slug}`, icone: f.icone },
         ],

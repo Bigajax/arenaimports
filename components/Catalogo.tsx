@@ -12,7 +12,9 @@ import {
 import { paraNumero, precoBRL } from "@/lib/formato";
 import type { Categoria, Ordenacao, Produto } from "@/lib/tipos";
 
-const POR_PAGINA = 12;
+/* a loja pediu sem limite: tudo aparece de uma vez, o botão só existe
+   por segurança se um dia o catálogo passar de 400 */
+const POR_PAGINA = 400;
 
 const ORDENS: { valor: Ordenacao; rotulo: string }[] = [
   { valor: "recentes", rotulo: "Recentes" },

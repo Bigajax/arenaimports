@@ -71,7 +71,7 @@ export function PainelPecas({ produtosIniciais, categorias }: { produtosIniciais
     setTimeout(() => setRecado(null), 2600);
   }
 
-  async function alternar(p: Produto, campo: "ativo" | "pronta_entrega") {
+  async function alternar(p: Produto, campo: "ativo" | "pronta_entrega" | "destaque") {
     const valor = !p[campo];
     setOcupado(`${p.id}-${campo}`);
     setProdutos((atual) => atual.map((x) => (x.id === p.id ? { ...x, [campo]: valor } : x)));
@@ -81,7 +81,7 @@ export function PainelPecas({ produtosIniciais, categorias }: { produtosIniciais
       setProdutos((atual) => atual.map((x) => (x.id === p.id ? { ...x, [campo]: !valor } : x)));
       return avisar(r.erro);
     }
-    avisar(campo === "ativo" ? (valor ? "Peça no ar" : "Peça escondida") : valor ? "Marcada como pronta entrega" : "Marcada como sob encomenda");
+    avisar(campo === "ativo" ? (valor ? "Peça no ar" : "Peça escondida") : campo === "destaque" ? (valor ? "No destaque da página inicial" : "Fora do destaque") : valor ? "Marcada como pronta entrega" : "Marcada como sob encomenda");
   }
 
   const ABAS: { chave: Aba; nome: string }[] = [
@@ -108,6 +108,9 @@ export function PainelPecas({ produtosIniciais, categorias }: { produtosIniciais
           <span>escondidas</span>
         </button>
       </div>
+      <p className="pn-dica">
+        <span className="pn-estrela pn-estrela--on pn-estrela--mini" aria-hidden="true">★</span> A estrela coloca a peça no destaque da página inicial (as 12 primeiras estreladas).
+      </p>
 
       <div className="pn-topo">
         <label className="pn-busca">
@@ -136,7 +139,7 @@ export function PainelPecas({ produtosIniciais, categorias }: { produtosIniciais
             const capa = p.imagens[0];
             const preco = precoBRL(p.preco_promocional ?? p.preco);
             return (
-              <li key={p.id} className={`pn-linha ${p.ativo ? "" : "pn-linha--escondida"}`}>
+              <li key={p.id} className={`pn-linha ${p.ativo ? "" : "pn-linha--escondida"} ${p.destaque ? "pn-linha--estrela" : ""}`}>
                 <button type="button" onClick={() => setAberta(p.id)} className="pn-linha-abrir">
                   <span className="pn-foto">
                     {capa ? <Image src={capa.url} alt="" fill sizes="72px" placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} className="object-cover" /> : null}
@@ -152,6 +155,11 @@ export function PainelPecas({ produtosIniciais, categorias }: { produtosIniciais
                   </span>
                 </button>
                 <span className="pn-chaves">
+                  <button type="button" onClick={() => alternar(p, "destaque")} disabled={ocupado === `${p.id}-destaque`} aria-pressed={p.destaque} aria-label={p.destaque ? "Tirar do destaque" : "Colocar no destaque da página inicial"} title={p.destaque ? "No destaque da página inicial" : "Colocar no destaque"} className={`pn-estrela ${p.destaque ? "pn-estrela--on" : ""}`}>
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill={p.destaque ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.8} strokeLinejoin="round">
+                      <path d="M12 3.4l2.5 5.6 6.1.6-4.6 4.1 1.4 6L12 16.6l-5.4 3.1 1.4-6-4.6-4.1 6.1-.6z" />
+                    </svg>
+                  </button>
                   <button type="button" onClick={() => alternar(p, "pronta_entrega")} disabled={ocupado === `${p.id}-pronta_entrega`} aria-pressed={p.pronta_entrega} className={`pn-chave ${p.pronta_entrega ? "pn-chave--verde" : ""}`}>
                     <Icone nome="relampago" className="h-4 w-4" peso={2} />
                     {p.pronta_entrega ? "Em mãos" : "Encomenda"}

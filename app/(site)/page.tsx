@@ -6,6 +6,7 @@ import { Portas } from "@/components/Portas";
 import { Prateleira } from "@/components/Prateleira";
 import { Vitrines } from "@/components/Vitrines";
 import { carregarCatalogo, obterConfig } from "@/lib/dados";
+import { categoriasDoGrupo } from "@/lib/grupos";
 import { CATEGORIAS } from "@/lib/menu";
 import { linkGeral } from "@/lib/whatsapp";
 import { configPadrao, site } from "@/data/site.config";
@@ -24,13 +25,14 @@ export default async function Home() {
   const ativos = produtos.filter((p) => p.ativo).sort((a, b) => a.ordem - b.ordem);
   const ativas = categorias.filter((c) => c.ativo);
   const porSlug = new Map(ativas.map((c) => [c.slug, c]));
-  const da = (slug: string) => ativos.filter((p) => p.categoria_slug === slug).sort((a, b) => a.ordem - b.ordem);
+  const slugsDe = (slug: string) => categoriasDoGrupo(slug) ?? [slug];
+  const da = (slug: string) => ativos.filter((p) => slugsDe(slug).includes(p.categoria_slug ?? "")).sort((a, b) => a.ordem - b.ordem);
 
   const destaques = hero
     .map((h) => ativos.find((p) => p.slug === h.slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p))
     .slice(0, 12);
-  const estrelaDe = (slug: string) => destaques.find((p) => p.categoria_slug === slug) ?? da(slug)[0] ?? null;
+  const estrelaDe = (slug: string) => destaques.find((p) => slugsDe(slug).includes(p.categoria_slug ?? "")) ?? da(slug)[0] ?? null;
   const peca = (slug: string) => ativos.find((p) => p.slug === slug) ?? null;
 
   /* só as portas com pelo menos duas peças viram prateleira; e cada
@@ -56,6 +58,14 @@ export default async function Home() {
         vitrines={[
           { titulo: "Para entrar em campo", texto: "Mercurial, Predator e F50, para campo e society, na temporada nova.", href: "/catalogo/chuteiras", peca: peca("nike-air-zoom-mercurial-vapor-17-elite-xxvi-fg-dourado") ?? estrelaDe("chuteiras"), acao: "Ver as chuteiras" },
           { titulo: "Para torcer", texto: "As camisas 2026/27 dos times da Europa, do Brasil e da Argentina, do P ao 4G.", href: "/catalogo/camisas", peca: peca("camisa-roma-2026-27-titular") ?? estrelaDe("camisas"), acao: "Ver as camisas" },
+        ].filter((v): v is typeof v & { peca: NonNullable<typeof v.peca> } => Boolean(v.peca))}
+      />
+
+      {/* a área que a loja pediu na primeira tela: tênis casual e corrida, lado a lado */}
+      <Vitrines
+        vitrines={[
+          { titulo: "Tênis casual", texto: "Jordan, Dunk, Air Force, Vans e New Balance para a rua.", href: "/catalogo/sneakers", peca: peca("nike-air-jordan-1-low-iq5490-007") ?? estrelaDe("sneakers"), acao: "Ver os casuais" },
+          { titulo: "Tênis de corrida", texto: "Adizero, Evo SL e FuelCell para treino e prova.", href: "/catalogo/tenis-de-corrida", peca: estrelaDe("tenis-de-corrida"), acao: "Ver a corrida" },
         ].filter((v): v is typeof v & { peca: NonNullable<typeof v.peca> } => Boolean(v.peca))}
       />
 
