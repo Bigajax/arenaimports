@@ -7,12 +7,20 @@ import type { Categoria, Config, Produto } from "./tipos";
 
 export const MODO: "supabase" | "local" = TEM_SUPABASE ? "supabase" : "local";
 
+/* Com sessão (painel) o cliente leva os cookies e enxerga as peças
+   escondidas. Fora de uma requisição (o build, que pré-renderiza as
+   categorias) não existe cookie: vai o cliente público, que lê só o
+   que está ativo, e é exatamente o que a página pública precisa. */
 async function supabaseServidor() {
-  const loja = await cookies();
-  return clienteServidor({
-    getAll: () => loja.getAll(),
-    set: (name, value, options) => loja.set({ name, value, ...options }),
-  });
+  try {
+    const loja = await cookies();
+    return clienteServidor({
+      getAll: () => loja.getAll(),
+      set: (name, value, options) => loja.set({ name, value, ...options }),
+    });
+  } catch {
+    return clienteServidor({ getAll: () => [] });
+  }
 }
 
 type LinhaProduto = {
@@ -96,8 +104,8 @@ export const carregarCatalogo = cache(async (): Promise<Catalogo> => {
     produtos: lista,
     // o mosaico do hero acompanha as peças em destaque
     hero: lista
-      .filter((p) => p.destaque && p.imagens.length)
-      .slice(0, 3)
+      .filter((p) => p.destaque && p.ativo && p.imagens.length)
+      .slice(0, 12)
       .map((p) => ({ ...p.imagens[0], slug: p.slug })),
   };
 });
