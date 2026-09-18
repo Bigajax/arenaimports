@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Logo, Simbolo } from "./Marca";
+import { Letreiro, Logo, Simbolo } from "./Marca";
 import { Icone } from "./Icones";
 import type { Aba } from "@/lib/menu";
 import type { Categoria } from "@/lib/tipos";
@@ -81,9 +81,7 @@ export function Cabecalho({ linkWhats, aviso, menu }: { categorias?: Categoria[]
 
           <Link href="/" aria-label="Arena Imports Floripa, página inicial" className="flex shrink-0 items-center gap-2.5 text-branco">
             <Simbolo altura={34} prioridade className="lg:!h-[42px] lg:!w-[59px]" />
-            <span className="romana hidden text-[1.125rem] uppercase leading-none tracking-wide sm:block">
-              Arena <span className="text-raio">Imports</span>
-            </span>
+            <Letreiro altura={26} prioridade className="lg:!h-[32px] lg:!w-[140px]" />
           </Link>
 
           <form onSubmit={buscar} role="search" className="mx-auto hidden w-full max-w-[30rem] lg:block">

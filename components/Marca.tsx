@@ -12,6 +12,13 @@ export function Simbolo({ altura = 28, className = "", prioridade = false }: { a
   return <Image src="/marca/simbolo.png" alt="" aria-hidden="true" width={Math.round(altura * (600 / 428))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
 }
 
+/* o letreiro ARENA / IMPORTS sozinho, sem o símbolo (1200 x 275): é o que
+   entra ao lado do símbolo na barra do celular, onde o letreiro inteiro,
+   empilhado, ficaria pequeno demais para ler */
+export function Letreiro({ altura = 30, className = "", prioridade = false }: { altura?: number; className?: string; prioridade?: boolean }) {
+  return <Image src="/marca/letreiro.png" alt="Arena Imports" width={Math.round(altura * (1200 / 275))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
+}
+
 /* o letreiro completo (1200 x 749) */
 export function Logo({ altura = 40, className = "", prioridade = false }: { altura?: number; className?: string; prioridade?: boolean }) {
   return <Image src="/marca/logo.png" alt="Arena Imports Floripa" width={Math.round(altura * (1200 / 749))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
