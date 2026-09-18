@@ -38,11 +38,12 @@ export const CATEGORIAS: { slug: string; nome: string; tudo: string; icone: Nome
   { slug: "chuteiras", nome: "Chuteiras", tudo: "Todas as chuteiras", icone: "chuteira", linha: "Mercurial, Phantom e F50 para campo e society", pergunta: "para entrar em campo" },
   { slug: "tenis-de-corrida", nome: "Corrida", tudo: "Todos os tênis de corrida", icone: "corrida", linha: "Adizero, Evo SL e FuelCell para treino e prova", pergunta: "para o próximo pace" },
   { slug: "sneakers", nome: "Sneakers", tudo: "Todos os sneakers", icone: "sneaker", linha: "Jordan, Dunk, Samba e New Balance 9060", pergunta: "para a rua" },
-  { slug: "bolsas", nome: "Bolsas", tudo: "Todas as bolsas", icone: "bolsa", linha: "Gucci, Louis Vuitton e Saint Laurent", pergunta: "para o closet" },
+  { slug: "bolsas", nome: "Bolsas", tudo: "Todas as bolsas", icone: "bolsa", linha: "Chanel, Louis Vuitton, Gucci e Saint Laurent", pergunta: "para o closet" },
+  { slug: "camisas", nome: "Camisas", tudo: "Todas as camisas de time", icone: "camisa", linha: "os times da Europa e da seleção, temporada nova", pergunta: "para torcer" },
 ];
 
 /* as marcas que viram atalho dentro de cada porta */
-const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Gucci", "Louis Vuitton", "Saint Laurent"];
+const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Vans", "Chanel", "Gucci", "Louis Vuitton", "Saint Laurent"];
 
 export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
   const ativos = produtos.filter((p) => p.ativo);
@@ -92,7 +93,7 @@ export function montarMenu(produtos: Produto[], linkWhats: string): Aba[] {
       colunas: 1,
       itens: [
         { nome: "Como funciona", href: "/#loja", icone: "aviao", nota: "pronta entrega e sob encomenda" },
-        { nome: "Camisas de time", href: linkWhats, icone: "camisa", nota: "sob consulta no WhatsApp", externa: true },
+        { nome: "Camisas de time", href: "/catalogo/camisas", icone: "camisa", nota: "a temporada nova, sob encomenda" },
         { nome: "Falar no WhatsApp", href: linkWhats, icone: "conversa", nota: "tamanho, disponibilidade e envio", externa: true },
         { nome: "Tudo que chegou", href: "/#destaques", icone: "novidade", nota: `os ${ativos.length} modelos` },
       ],

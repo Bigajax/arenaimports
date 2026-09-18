@@ -30,7 +30,7 @@ export function Portas({ portas }: { portas: Porta[] }) {
           Ver todos
         </Link>
       </div>
-      <ul className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5">
+      <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4">
         {portas.map((p) => {
           const capa = p.peca?.imagens[0];
           return (

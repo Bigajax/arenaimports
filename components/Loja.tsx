@@ -12,7 +12,7 @@ import type { Produto } from "@/lib/tipos";
  * lista e não como logos. À direita, a foto de bastidor do feed. É o
  * único bloco de texto longo da página.
  */
-const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Asics", "Gucci", "Louis Vuitton", "Saint Laurent", "Dior", "Miu Miu"];
+const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Vans", "Asics", "Chanel", "Gucci", "Louis Vuitton", "Saint Laurent", "Dior", "Miu Miu"];
 
 export function Loja({ linkWhats, foto }: { linkWhats: string; foto: Produto | null }) {
   /* a segunda foto da Vapor é a de bastidor, com o logo ao fundo */

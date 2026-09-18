@@ -38,14 +38,15 @@ export default async function Home() {
   const noHero = destaques.slice(0, 6);
   const inedito = (lista: typeof ativos) => [...lista.filter((p) => !noHero.includes(p)), ...lista.filter((p) => noHero.includes(p))];
   const prateleiras = CATEGORIAS.map((f) => ({ ...f, produtos: inedito(da(f.slug)) })).filter((f) => f.produtos.length > 1);
+  const totalCategorias = CATEGORIAS.filter((f) => da(f.slug).length > 0).length;
 
   return (
     <>
-      <Hero frase={config.frase_hero || configPadrao.frase_hero} estrelas={destaques} linkWhats={whats} totais={{ produtos: ativos.length, categorias: ativas.length }} />
+      <Hero frase={config.frase_hero || configPadrao.frase_hero} estrelas={destaques} linkWhats={whats} totais={{ produtos: ativos.length, categorias: totalCategorias }} />
 
       <Garantias linkWhats={whats} />
 
-      <Portas portas={CATEGORIAS.map((f) => ({ nome: f.nome, href: `/catalogo/${f.slug}`, icone: f.icone, peca: estrelaDe(f.slug), total: da(f.slug).length, linha: f.pergunta }))} />
+      <Portas portas={CATEGORIAS.filter((f) => da(f.slug).length > 0).map((f) => ({ nome: f.nome, href: `/catalogo/${f.slug}`, icone: f.icone, peca: estrelaDe(f.slug), total: da(f.slug).length, linha: f.pergunta }))} />
 
       <Prateleira id="pronta-entrega" titulo="Pronta entrega" subtitulo="Em mãos agora: sai no mesmo dia, sem esperar importação." href="/pronta-entrega" verTudo="Ver a pronta entrega" produtos={ativos.filter((p) => p.pronta_entrega)} categorias={porSlug} prioridade limite={4} nomeDaPorta="modelos" />
 
