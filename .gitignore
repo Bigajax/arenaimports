@@ -45,3 +45,4 @@ _fonte/
 
 # o exemplo de ambiente vai para o repositório; o .env.local não
 !.env.example
+dev.log
