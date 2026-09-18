@@ -1,0 +1,1308 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   ARENA IMPORTS FLORIPA — tokens.
+
+   A loja física é preta com o logo aceso em verde neon: paredes
+   pretas, prateleiras iluminadas, o A dentro do arco. A página segue a
+   loja: o preto é a superfície da marca (cabeçalho, hero, a loja,
+   rodapé), o branco é o chão do catálogo, o cinza de quadra é a
+   segunda superfície clara, e o verde do arco só onde a loja "acende":
+   o marcador de raia sob os títulos, o preço sobre a foto, o hover, o
+   botão dentro do preto.
+
+   Os nomes herdados da base (raio, areia, veludo, ouro, marfim, fio,
+   papel, cimento, marrom, nude, piscina, agua, marinho, raia) seguem
+   como apelidos das cores novas, porque o painel e o catálogo são
+   escritos neles.
+   ───────────────────────────────────────────────────────────── */
+@theme static {
+  --color-branco: #ffffff;
+  --color-preto: #000000;
+  --color-preto-2: #161616;
+  --color-preto-3: #262626;
+  --color-areia: #e7e8e4;
+  --color-areia-clara: #f3f4f1;
+  --color-areia-escura: #c8cac3;
+  --color-raio: #cef745;
+  --color-raio-escuro: #a9d422;
+  --color-raio-texto: #4a6600;
+  --color-tinta: #0b0b0b;
+  --color-tinta-fraca: #5c5e5a;
+  --color-linha: #dcdedb;
+  --color-verde: #1a9e5a;
+  --color-verde-claro: #e3f6ea;
+
+  /* apelidos da base */
+  --color-piscina: #f3f4f1;
+  --color-piscina-2: #e7e8e4;
+  --color-agua: #0b0b0b;
+  --color-agua-escura: #262626;
+  --color-agua-clara: #5c5e5a;
+  --color-marinho: #000000;
+  --color-marinho-2: #161616;
+  --color-raia: #cef745;
+  --color-raia-escura: #a9d422;
+  --color-papel: #ffffff;
+  --color-papel-2: #f3f4f1;
+  --color-veludo: #000000;
+  --color-carvao: #161616;
+  --color-carvao-claro: #262626;
+  --color-ouro: #cef745;
+  --color-ouro-claro: #e0fb8a;
+  --color-ouro-texto: #4a6600;
+  --color-ouro-fundo: #0b0b0b;
+  --color-marfim: #ffffff;
+  --color-marfim-fraco: #a3a5a0;
+  --color-fio: #303030;
+  --color-off-white: #ffffff;
+  --color-cimento-claro: #f3f4f1;
+  --color-cimento: #e7e8e4;
+  --color-cimento-medio: #c8cac3;
+  --color-cimento-escuro: #5c5e5a;
+  --color-marrom: #0b0b0b;
+  --color-marrom-fundo: #000000;
+  --color-nude: #cef745;
+  --color-nude-claro: #f3fdd2;
+}
+
+:root {
+  --branco: #ffffff;
+  --preto: #000000;
+  --preto-2: #161616;
+  --preto-3: #262626;
+  --areia: #e7e8e4;
+  --areia-clara: #f3f4f1;
+  --areia-escura: #c8cac3;
+  --verde-raio: #cef745;
+  --raio-escuro: #a9d422;
+  --raio-texto: #4a6600;
+  --tinta: #0b0b0b;
+  --tinta-fraca: #5c5e5a;
+  --linha: #dcdedb;
+  --verde: #1a9e5a;
+
+  --piscina: #f3f4f1;
+  --piscina-2: #e7e8e4;
+  --agua: #0b0b0b;
+  --agua-escura: #262626;
+  --agua-clara: #5c5e5a;
+  --marinho: #000000;
+  --marinho-2: #161616;
+  --raia: #cef745;
+  --raia-escura: #a9d422;
+  --papel: #ffffff;
+  --papel-2: #f3f4f1;
+  --veludo: #000000;
+  --carvao: #161616;
+  --carvao-claro: #262626;
+  --ouro: #cef745;
+  --ouro-claro: #e0fb8a;
+  --ouro-texto: #4a6600;
+  --ouro-fundo: #0b0b0b;
+  --marfim: #ffffff;
+  --marfim-fraco: #a3a5a0;
+  --fio: #303030;
+  --off-white: #ffffff;
+  --cimento-claro: #f3f4f1;
+  --cimento: #e7e8e4;
+  --cimento-medio: #c8cac3;
+  --cimento-escuro: #5c5e5a;
+  --marrom: #0b0b0b;
+  --marrom-fundo: #000000;
+  --nude: #cef745;
+
+  /* cantos curtos: a prateleira é reta, a caixa de tênis também */
+  --raio: 6px;
+  --raio-mini: 4px;
+  --transicao: 180ms ease-out;
+
+  --largura: 96rem;
+  --sangria: clamp(1rem, 3.2vw, 3.5rem);
+  --linha-peso: 1px;
+
+  /* a superfície corrente: o branco. A .escuro troca por dentro. */
+  --sup: var(--branco);
+  --sup-2: var(--areia-clara);
+  --texto: var(--tinta);
+  --texto-fraco: var(--tinta-fraca);
+  --risco: var(--linha);
+  --acento-texto: var(--raio-texto);
+}
+
+html {
+  background-color: var(--branco);
+  color-scheme: light;
+}
+
+/* As famílias moram no body, não no :root: as variáveis --fonte-* do
+   next/font entram pela classe do body. */
+body {
+  --font-display: var(--fonte-display), "Chakra Petch", "Arial Narrow", sans-serif;
+  --font-corpo: var(--fonte-corpo), "Barlow", system-ui, sans-serif;
+  --font-mono: var(--font-corpo);
+  color: var(--tinta);
+  font-family: var(--font-corpo);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-color: var(--branco);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AS SUPERFÍCIES. .escuro é o preto da loja (cabeçalho, hero, a
+   loja, rodapé); .areia é o cinza de quadra, a segunda superfície
+   clara (garantias, faixa do WhatsApp). Tudo que é "cor corrente"
+   muda aqui.
+   ───────────────────────────────────────────────────────────── */
+.escuro,
+.agua {
+  --sup: var(--preto);
+  --sup-2: var(--preto-2);
+  --texto: var(--branco);
+  --texto-fraco: var(--marfim-fraco);
+  --risco: var(--fio);
+  --acento-texto: var(--verde-raio);
+  background-color: var(--preto);
+  color: var(--branco);
+  color-scheme: dark;
+}
+.areia {
+  --sup: var(--areia);
+  --sup-2: var(--areia-clara);
+  --texto: var(--tinta);
+  --texto-fraco: var(--tinta-fraca);
+  --risco: var(--areia-escura);
+  --acento-texto: var(--raio-texto);
+  background-color: var(--areia);
+  color: var(--tinta);
+  color-scheme: light;
+}
+
+/* O painel pinta o próprio chão: ver app/painel/layout.tsx */
+.papel {
+  background: var(--areia-clara);
+  background-image: none;
+  color: var(--tinta);
+  color-scheme: light;
+}
+
+::selection {
+  background: var(--verde-raio);
+  color: var(--preto);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+.escuro :where(a, button, input, select, textarea, [tabindex]):focus-visible,
+.agua :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: var(--verde-raio);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   O MARCADOR DE RAIA. É a assinatura da página: sob cada régua de
+   seção, a linha fina ganha um trecho curto em verde neon, como a
+   marca de largada pintada no chão da pista. Onde ele aparece, é a
+   Arena. O arco do logo é a outra assinatura, e mora no hero.
+   ───────────────────────────────────────────────────────────── */
+.raia-marca {
+  position: relative;
+}
+.raia-marca::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 4.5rem;
+  height: 3px;
+  background: var(--verde-raio);
+  transition: width 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.raia-marca:hover::after {
+  width: 7rem;
+}
+
+/* o arco do logo, desenhado em CSS: um anel aberto embaixo */
+.arco {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid var(--verde-raio);
+  border-bottom-color: transparent;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(180deg, #000 0 78%, transparent 78%);
+  mask: linear-gradient(180deg, #000 0 78%, transparent 78%);
+}
+
+/* ── tipografia ─────────────────────────────────────────────── */
+/* A Chakra Petch, quadrada e inclinada, faz a manchete e os títulos em
+   caixa alta: é a letra da placa da loja. O corpo é a Barlow. */
+.romana {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+.manchete {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+.secao {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  letter-spacing: -0.005em;
+  line-height: 1.05;
+  color: var(--texto);
+}
+.etiqueta {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento-texto);
+}
+.titulo-cartao {
+  font-family: var(--font-corpo);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.preco {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.falada {
+  font-family: var(--font-corpo);
+  font-weight: 400;
+  line-height: 1.55;
+}
+.miudo {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--texto-fraco);
+}
+.apagado {
+  color: var(--texto-fraco);
+}
+.acento {
+  color: var(--acento-texto);
+}
+/* nomes herdados pelo painel e pelas páginas de lista */
+.display-secao {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: 1.375rem;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+.display-peca {
+  font-family: var(--font-corpo);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.placa {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mono {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.mono-rotulo {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── controles ──────────────────────────────────────────────── */
+/* Botão reto de canto curto, em Manrope pesada: preto sobre o claro,
+   verde do raio dentro do preto. O contorno é o secundário. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--raio);
+  border: 1.5px solid transparent;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.9375rem 1.375rem;
+  transition: background-color var(--transicao), color var(--transicao),
+    border-color var(--transicao), transform 120ms ease-out;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn--cta,
+.btn--primario,
+.btn--latao,
+.btn--agua {
+  background: var(--tinta);
+  color: var(--branco);
+}
+.btn--cta:hover:not(:disabled),
+.btn--primario:hover:not(:disabled),
+.btn--agua:hover:not(:disabled) {
+  background: var(--preto-3);
+  color: var(--verde-raio);
+}
+.btn--cta:active:not(:disabled) {
+  transform: translateY(1px);
+}
+/* o verde: o botão que fecha dentro do preto */
+.btn--raia,
+.btn--raio {
+  background: var(--verde-raio);
+  color: var(--preto);
+}
+.btn--raia:hover:not(:disabled),
+.btn--raio:hover:not(:disabled) {
+  background: var(--raio-escuro);
+}
+.btn--raia:active:not(:disabled),
+.btn--raio:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn--linha {
+  border-color: var(--texto);
+  color: var(--texto);
+  background: transparent;
+}
+.btn--linha:hover:not(:disabled) {
+  background: var(--texto);
+  color: var(--sup);
+}
+.btn--texto {
+  padding: 0.5rem 0;
+  border-radius: 0;
+  color: var(--texto);
+  font-size: 0.9375rem;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--risco);
+}
+.btn--texto:hover:not(:disabled) {
+  text-decoration-color: var(--raio-escuro);
+}
+.btn--pequeno {
+  padding: 0.6875rem 1rem;
+  font-size: 0.875rem;
+}
+.papel .btn--primario,
+.papel .btn--cta {
+  background: var(--tinta);
+  color: var(--branco);
+}
+.papel .btn--linha {
+  border-color: var(--tinta);
+  color: var(--tinta);
+}
+.papel .btn--texto {
+  color: var(--tinta);
+}
+
+/* Os nomes da placa da base seguem valendo */
+.btn--placa {
+  padding: 0.9375rem 1.5rem;
+}
+.btn--placa-ouro {
+  background: var(--verde-raio);
+  color: var(--preto);
+}
+.btn--placa-ouro:hover:not(:disabled) {
+  background: var(--raio-escuro);
+}
+.btn--placa-fio {
+  border-color: var(--texto);
+  background: transparent;
+  color: var(--texto);
+}
+.btn--placa-fio:hover:not(:disabled) {
+  background: var(--texto);
+  color: var(--sup);
+}
+.escuro .btn--placa-fio,
+.agua .btn--placa-fio {
+  border-color: rgba(255, 255, 255, 0.55);
+  color: var(--branco);
+}
+.escuro .btn--placa-fio:hover:not(:disabled),
+.agua .btn--placa-fio:hover:not(:disabled) {
+  background: var(--branco);
+  color: var(--preto);
+}
+.btn--placa-tinta {
+  background: var(--preto);
+  color: var(--branco);
+}
+.btn--placa-tinta:hover:not(:disabled) {
+  background: var(--preto-3);
+  color: var(--verde-raio);
+}
+.placa-bloco {
+  border-radius: var(--raio);
+}
+
+/* a etiqueta sobre a foto: preta, com o texto no verde do raio */
+.placa-etiqueta {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  background: var(--preto);
+  color: var(--verde-raio);
+  font-family: var(--font-corpo);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+  line-height: 1;
+  border-radius: var(--raio-mini);
+}
+.escuro .placa-etiqueta,
+.agua .placa-etiqueta {
+  background: var(--verde-raio);
+  color: var(--preto);
+}
+.placa-etiqueta--agua {
+  background: var(--areia);
+  color: var(--preto);
+}
+
+.campo {
+  width: 100%;
+  border: 1px solid var(--cimento-medio);
+  border-radius: var(--raio-mini);
+  background: var(--off-white);
+  padding: 0.6875rem 0.875rem;
+  font-family: var(--font-corpo);
+  font-size: 0.9375rem;
+  color: var(--tinta);
+  transition: border-color var(--transicao);
+}
+.campo:hover {
+  border-color: var(--cimento-escuro);
+}
+.campo:focus {
+  outline: none;
+  border-color: var(--marrom-fundo);
+}
+.campo::placeholder {
+  color: var(--cimento-escuro);
+}
+.campo--auto {
+  width: auto;
+}
+.campo--mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* o campo com o rótulo sentado na borda */
+.campo-flutuante {
+  position: relative;
+  display: block;
+}
+.campo-flutuante > span {
+  position: absolute;
+  top: -0.5rem;
+  left: 0.75rem;
+  padding: 0 0.375rem;
+  background: var(--sup);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--texto-fraco);
+  line-height: 1;
+  pointer-events: none;
+}
+.campo-flutuante > input,
+.campo-flutuante > select {
+  width: 100%;
+  border: 1px solid var(--risco);
+  border-radius: var(--raio-mini);
+  background: var(--sup);
+  padding: 0.9375rem 0.875rem 0.75rem;
+  font-family: var(--font-corpo);
+  font-size: 1rem;
+  color: var(--texto);
+  transition: border-color var(--transicao);
+  appearance: none;
+}
+.campo-flutuante > select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 fill=%27none%27 stroke=%27%230a0a0a%27 stroke-width=%271.8%27/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+.campo-flutuante > select option {
+  background: var(--sup);
+  color: var(--texto);
+}
+.campo-flutuante > input::placeholder {
+  color: var(--texto-fraco);
+  opacity: 0.7;
+}
+.campo-flutuante > input:focus,
+.campo-flutuante > select:focus {
+  outline: none;
+  border-color: var(--texto);
+}
+.campo-flutuante:focus-within > span {
+  color: var(--texto);
+}
+
+/* a busca: linha, não caixa */
+.busca-linha {
+  border: 1px solid var(--risco);
+  border-radius: var(--raio-mini);
+  background: transparent;
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-corpo);
+  font-size: 0.875rem;
+  color: var(--texto);
+  transition: border-color var(--transicao);
+}
+.busca-linha::placeholder {
+  color: var(--texto-fraco);
+}
+.busca-linha:hover,
+.busca-linha:focus {
+  outline: none;
+  border-color: var(--texto);
+}
+.busca-linha option {
+  background: var(--sup);
+  color: var(--texto);
+}
+/* a busca do cabeçalho, no meio, dentro do preto: campo escuro, lupa
+   no verde */
+.busca-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border: 1px solid var(--fio);
+  border-radius: var(--raio);
+  background: var(--preto-2);
+  padding: 0 0.375rem 0 1rem;
+  transition: border-color var(--transicao);
+}
+.busca-cabecalho:focus-within {
+  border-color: var(--verde-raio);
+}
+.busca-cabecalho > input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  padding: 0.75rem 0;
+  font-family: var(--font-corpo);
+  font-size: 0.9375rem;
+  color: var(--branco);
+}
+.busca-cabecalho > input::placeholder {
+  color: var(--marfim-fraco);
+}
+.busca-cabecalho > input:focus {
+  outline: none;
+}
+.busca-cabecalho > button {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--raio-mini);
+  background: var(--verde-raio);
+  color: var(--preto);
+  transition: background-color var(--transicao);
+}
+.busca-cabecalho > button:hover {
+  background: var(--raio-escuro);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AS PORTAS DO CABEÇALHO. Cada porta é o desenho do formato (a
+   silhueta da armação) e o nome; o verde sobe por baixo da porta
+   acesa. No desktop, o mouse por cima abre a aba dela: um painel
+   branco com o que a vitrine tem. No toque não existe hover: a fila
+   é só links.
+   ───────────────────────────────────────────────────────────── */
+.porta {
+  position: relative;
+  flex-shrink: 0;
+}
+.porta-link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 4.75rem;
+  padding: 0.625rem 0.625rem 0.75rem;
+  font-family: var(--font-corpo);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--branco);
+  white-space: nowrap;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.porta-link > svg {
+  color: var(--branco);
+  transition: color var(--transicao), transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.porta-link::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0;
+  height: 2px;
+  background: var(--verde-raio);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.porta-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.porta-numero {
+  display: none;
+  align-items: center;
+  height: 1.25rem;
+  padding: 0 0.4375rem;
+  border-radius: var(--raio-mini);
+  background: var(--preto-3);
+  color: var(--branco);
+  font-family: var(--font-corpo);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.porta-nota {
+  display: none;
+  font-family: var(--font-corpo);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--marfim-fraco);
+}
+@media (min-width: 1024px) {
+  .porta-link {
+    flex-direction: row;
+    gap: 0.625rem;
+    min-width: 0;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.9375rem;
+  }
+  .porta-numero,
+  .porta-nota {
+    display: inline-flex;
+  }
+  .porta:hover > .porta-link,
+  .porta:focus-within > .porta-link {
+    background: var(--preto-2);
+  }
+  .porta:hover > .porta-link::after,
+  .porta:focus-within > .porta-link::after {
+    transform: scaleX(1);
+  }
+  .porta:hover > .porta-link > svg {
+    color: var(--verde-raio);
+  }
+  .porta:hover > .porta-link .porta-numero,
+  .porta:focus-within > .porta-link .porta-numero {
+    background: var(--verde-raio);
+    color: var(--preto);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   A GAVETA DO MENU. Entra pela direita, preta, do alto ao pé da tela,
+   com o véu escurecendo a página atrás.
+   ───────────────────────────────────────────────────────────── */
+.gaveta-veu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.6);
+  animation: veu-entra 200ms ease-out both;
+}
+.gaveta {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  width: min(24rem, 92vw);
+  border-left: 1px solid var(--verde-raio);
+  box-shadow: -30px 0 60px -30px rgba(0, 0, 0, 0.8);
+  animation: gaveta-entra 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.gaveta-porta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.125rem 0.75rem;
+  border-radius: var(--raio-mini);
+  transition: background-color var(--transicao);
+}
+.gaveta-porta:hover {
+  background: var(--preto-2);
+}
+@keyframes gaveta-entra {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes veu-entra {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   O AVISO DO TOPO. Quatro frases se revezam: cada uma sobe, fica
+   quatro segundos e sai por cima. Um ciclo de 16s, um item por vez,
+   com o atraso vindo de --i. Com menos movimento, fica só a primeira.
+   ───────────────────────────────────────────────────────────── */
+.aviso {
+  position: relative;
+  height: 2.25rem;
+  overflow: hidden;
+}
+@media (max-width: 639px) {
+  .aviso {
+    font-size: 0.6875rem;
+  }
+}
+.aviso-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  animation: aviso-roda 16s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+  animation-delay: calc(var(--i) * 4s);
+}
+@keyframes aviso-roda {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  4% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  23% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  27% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aviso-item {
+    animation: none;
+  }
+  .aviso-item[style*="--i: 0"] {
+    opacity: 1;
+  }
+}
+.porta-aba {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .porta-aba {
+    --sup: var(--papel);
+    --sup-2: var(--papel-2);
+    --texto: var(--tinta);
+    --texto-fraco: var(--tinta-fraca);
+    --risco: var(--linha);
+    --acento-texto: var(--raio-texto);
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 60;
+    width: max-content;
+    min-width: 18rem;
+    max-width: min(56rem, calc(100vw - 2rem));
+    padding: 1.25rem 1.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.94);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border-top: 2px solid var(--verde-raio);
+    border-radius: 0 0 var(--raio) var(--raio);
+    box-shadow: 0 30px 50px -24px rgba(0, 0, 0, 0.55);
+    color: var(--tinta);
+    color-scheme: light;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 160ms ease-out, transform 160ms ease-out, visibility 0s linear 160ms;
+  }
+  .porta-aba--direita {
+    left: auto;
+    right: 0;
+  }
+  .porta:hover > .porta-aba,
+  .porta:focus-within > .porta-aba {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 80ms, 80ms, 0s;
+  }
+}
+.porta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.5rem 0.5rem;
+  min-width: 10rem;
+  white-space: nowrap;
+  border-radius: var(--raio-mini);
+}
+.porta-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* pílulas: fio; a escolhida é tinta cheia com texto papel */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--risco);
+  border-radius: var(--raio-mini);
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-corpo);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--texto);
+  background: transparent;
+  transition: border-color var(--transicao), background-color var(--transicao), color var(--transicao);
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--texto);
+}
+.chip[aria-pressed="true"],
+.chip[data-ativo="true"],
+.chip--cheio {
+  border-color: var(--texto);
+  background: var(--texto);
+  color: var(--sup);
+}
+.chip--quadrado {
+  padding: 0.625rem 1rem;
+}
+.papel .chip {
+  color: var(--tinta);
+  border-color: var(--cimento-medio);
+}
+.papel .chip[aria-pressed="true"] {
+  background: var(--marrom-fundo);
+  border-color: var(--marrom-fundo);
+  color: var(--off-white);
+}
+
+/* ── régua, moldura, cartão ─────────────────────────────────── */
+.regua {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--risco);
+  padding-bottom: 0.875rem;
+}
+.regua::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 4.5rem;
+  height: 3px;
+  background: var(--verde-raio);
+}
+.moldura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid var(--raio-escuro);
+  border-radius: var(--raio);
+}
+.tem-moldura {
+  position: relative;
+}
+.tem-moldura > .moldura {
+  opacity: 0;
+  transition: opacity var(--transicao);
+}
+.tem-moldura:hover > .moldura,
+.tem-moldura:focus-within > .moldura,
+.tem-moldura[data-ativa="true"] > .moldura {
+  opacity: 1;
+}
+.papel .moldura {
+  border-color: var(--marrom);
+}
+.cartao {
+  background: var(--sup);
+  border: 1px solid var(--risco);
+  border-radius: var(--raio);
+  overflow: hidden;
+  transition: border-color var(--transicao);
+}
+.cartao:hover {
+  border-color: var(--texto);
+}
+
+/* um bloco de superfície com os cantos curtos e o conteúdo cortado */
+.bloco {
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+
+/* a sanfona do rodapé no celular: a seta vira para baixo quando abre */
+.rodape-seta {
+  transform: rotate(90deg);
+  transition: transform 200ms ease-out;
+}
+.rodape-sanfona[open] .rodape-seta {
+  transform: rotate(-90deg);
+}
+
+/* ── o miolo e as sangrias ──────────────────────────────────── */
+.miolo {
+  width: 100%;
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: var(--sangria);
+}
+/* um trilho que rola de lado sai do miolo até a borda da tela */
+.sangra {
+  margin-inline: calc(-1 * var(--sangria));
+  padding-inline: var(--sangria);
+}
+
+/* ── trilhos horizontais ────────────────────────────────────── */
+.faixa-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--sangria);
+}
+.faixa-scroll::-webkit-scrollbar {
+  display: none;
+}
+.faixa-scroll > * {
+  scroll-snap-align: start;
+}
+
+/* a foto como veio, sobre o cinza claro */
+.foto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--raio);
+  background: var(--sup-2);
+}
+
+/* a foto grande com o texto por cima: o véu escuro sobe de baixo */
+.veu::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.82) 100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   A PRATELEIRA ILUMINADA. O hero mostra as peças como a loja mostra:
+   cada uma no seu nicho preto, com o refletor por cima. É uma grade
+   de fotos com o grafite entre elas, e no hover o refletor acende
+   (o verde escorre pela borda de cima) e o nicho mostra o nome.
+   ───────────────────────────────────────────────────────────── */
+.caixa {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  background: var(--preto-2);
+  border-radius: var(--raio);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+.nicho {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #0b0b0b;
+}
+.nicho > img {
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nicho::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(60% 45% at 50% -5%, rgba(206, 247, 69, 0.45), transparent 70%);
+  opacity: 0;
+  transition: opacity 260ms ease-out;
+  pointer-events: none;
+}
+.nicho::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 0;
+  height: 2px;
+  z-index: 2;
+  background: var(--verde-raio);
+  transform: scaleX(0);
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nicho:hover > img,
+.nicho:focus-visible > img {
+  transform: scale(1.04);
+}
+.nicho:hover::before,
+.nicho:focus-visible::before {
+  opacity: 1;
+}
+.nicho:hover::after,
+.nicho:focus-visible::after {
+  transform: scaleX(1);
+}
+.nicho-nome {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 1.5rem 0.75rem 0.625rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+  color: var(--branco);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--transicao), transform var(--transicao);
+}
+.nicho:hover .nicho-nome,
+.nicho:focus-visible .nicho-nome {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 639px) {
+  .nicho-nome {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AS GARANTIAS: uma faixa de cinza de quadra com o que a loja cumpre
+   de fato, cada item com o desenho à esquerda. No celular rolam de lado.
+   ───────────────────────────────────────────────────────────── */
+.garantias {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--sangria);
+}
+.garantia {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: min(18rem, 78vw);
+  scroll-snap-align: start;
+  padding: 1.125rem 1.25rem 1.125rem 0;
+  margin-right: 1.25rem;
+  border-right: 1px solid var(--areia-escura);
+}
+.garantia:last-child {
+  border-right: 0;
+}
+.garantia-icone {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--raio);
+  background: var(--preto);
+  color: var(--verde-raio);
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.garantia-titulo {
+  display: block;
+  font-family: var(--font-corpo);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--tinta);
+}
+.garantia:hover > .garantia-icone,
+.garantia:focus-visible > .garantia-icone {
+  transform: translateY(-2px);
+}
+@media (min-width: 1024px) {
+  .garantias {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: visible;
+  }
+  .garantia {
+    min-width: 0;
+    margin-right: 0;
+    padding: 1.375rem 1.5rem;
+  }
+  .garantia:first-child {
+    padding-left: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   A PORTA: cada uma das quatro coisas que a loja vende é o desenho
+   dela em traço grande sobre o cinza de quadra, com o nome embaixo.
+   No hover a foto da peça estrelada aparece atrás do traço.
+   ───────────────────────────────────────────────────────────── */
+.formato {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--raio);
+  background: var(--areia-clara);
+  aspect-ratio: 4 / 5;
+  color: var(--tinta);
+}
+.formato-foto {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 320ms ease-out, transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: scale(1.04);
+}
+.formato:hover .formato-foto,
+.formato:focus-visible .formato-foto {
+  opacity: 1;
+  transform: scale(1);
+}
+.formato-traco {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18%;
+  transition: opacity 220ms ease-out;
+}
+.formato:hover .formato-traco,
+.formato:focus-visible .formato-traco {
+  opacity: 0;
+}
+.formato-rotulo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column; /* no celular a contagem senta embaixo do nome */
+  align-items: flex-start;
+  gap: 0.125rem;
+  padding: 0.875rem 1rem;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+@media (min-width: 640px) {
+  .formato-rotulo {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+}
+.formato:hover .formato-rotulo,
+.formato:focus-visible .formato-rotulo {
+  background: rgba(0, 0, 0, 0.82);
+  color: var(--branco);
+}
+
+/* o esqueleto de carregamento, com o brilho que corre */
+.esqueleto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--raio-mini);
+  background: var(--areia);
+}
+.esqueleto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  animation: esqueleto-brilho 1.2s ease-in-out infinite;
+}
+@keyframes esqueleto-brilho {
+  to {
+    transform: translateX(100%);
+  }
+}

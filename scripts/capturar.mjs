@@ -1,0 +1,10 @@
+import puppeteer from "puppeteer-core";
+const [url, out, w, h, full] = process.argv.slice(2);
+const b = await puppeteer.launch({ executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: [`--window-size=${w},${h}`] });
+const p = await b.newPage();
+await p.setViewport({ width: Number(w), height: Number(h), deviceScaleFactor: 2, isMobile: Number(w) < 600, hasTouch: Number(w) < 600 });
+await p.goto(url, { waitUntil: "networkidle0", timeout: 90000 });
+await new Promise(r => setTimeout(r, 1500));
+await p.screenshot({ path: out, fullPage: full === "full" });
+await b.close();
+console.log("ok", out);

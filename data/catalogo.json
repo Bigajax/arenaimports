@@ -1,0 +1,624 @@
+{
+  "categorias": [
+    {
+      "id": "c-tenis-de-corrida",
+      "nome": "Tênis de corrida",
+      "slug": "tenis-de-corrida",
+      "ordem": 1,
+      "ativo": true,
+      "capa": "/produtos/adidas-adizero-adios-pro-4.webp",
+      "capaBlur": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoHAAwAA4BaJZwAAvxOuZnAAN/BfveA2KS+TTY3wlpJ7ceHdWRfXbQoAAA="
+    },
+    {
+      "id": "c-sneakers",
+      "nome": "Sneakers",
+      "slug": "sneakers",
+      "ordem": 2,
+      "ativo": true,
+      "capa": "/produtos/new-balance-9060-creme.webp",
+      "capaBlur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoMAAwAA4BaJZQAD4ou1JYrab37eAD+80TkbtAvan3NDysflySk1QDduubzB9fQ2LLhtI5iGmJ/xkIWlXMmKMwYjglCeKsM657xXH0R4j51Q+OBTvFwAA=="
+    },
+    {
+      "id": "c-chuteiras",
+      "nome": "Chuteiras",
+      "slug": "chuteiras",
+      "ordem": 3,
+      "ativo": true,
+      "capa": "/produtos/nike-mercurial-vapor-society-branco-e-azul.webp",
+      "capaBlur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMAAwAA4BaJZQCdAYrJkvpAmpsMAD+9H/D0RLkNBotheysWtDMaZBY6yS9Nz35PxJPKo2bAftfIJkcSz3xXE6bHDSLnCvn6Zu+EAButMYeU8oUouCAAAAA"
+    },
+    {
+      "id": "c-bolsas",
+      "nome": "Bolsas",
+      "slug": "bolsas",
+      "ordem": 4,
+      "ativo": true,
+      "capa": "/produtos/bolsa-gucci-diana-gg.webp",
+      "capaBlur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoHAAwAA4BaJQBdgCHhGZz11MAAy0mOhwqqKSfwM10t35P8qDTtENBvp+5F0/HMKwb1Z9Y/6PYAAA=="
+    }
+  ],
+  "produtos": [
+    {
+      "id": "p-001",
+      "codigo": "AR-0001",
+      "nome": "Adidas Adizero Adios Pro Evo",
+      "slug": "adidas-adizero-adios-pro-evo",
+      "descricao": null,
+      "marca": "Adidas",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "tenis-de-corrida",
+      "tamanhos": [],
+      "cores": [
+        "branco e preto"
+      ],
+      "destaque": false,
+      "ativo": true,
+      "ordem": 1000,
+      "imagens": [
+        {
+          "url": "/produtos/adidas-adizero-adios-pro-evo.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoHAAwAA4BaJYwCdAEXflZ7MQ4AAPatheN59Z59+2ICinc0wEtNFmde1ShCGuu32IctxILwL/0xNKPlYpWcyFMzKLgAAA==",
+          "alt": "Adidas Adizero Adios Pro Evo",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-002",
+      "codigo": "AR-0002",
+      "nome": "Adidas Adizero branco",
+      "slug": "adidas-adizero-branco",
+      "descricao": null,
+      "marca": "Adidas",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "tenis-de-corrida",
+      "tamanhos": [],
+      "cores": [
+        "branco e preto"
+      ],
+      "destaque": false,
+      "ativo": true,
+      "ordem": 1001,
+      "imagens": [
+        {
+          "url": "/produtos/adidas-adizero-branco.webp",
+          "largura": 640,
+          "altura": 654,
+          "blur": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADwAQCdASoMAAwAAUAmJZwCdAEVzpHhMgAA/rR1EMoM2WVAxnGwMR6P20gAAA==",
+          "alt": "Adidas Adizero branco",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-003",
+      "codigo": "AR-0003",
+      "nome": "Nike Mercurial dourada",
+      "slug": "nike-mercurial-dourada",
+      "descricao": null,
+      "marca": "Nike",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "chuteiras",
+      "tamanhos": [],
+      "cores": [
+        "dourado, branco e vermelho"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 9,
+      "imagens": [
+        {
+          "url": "/produtos/nike-mercurial-dourada.webp",
+          "largura": 620,
+          "altura": 755,
+          "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAABwAgCdASoMAA8AAUAmJZwC7H8AGBr5uLLhx2EAAP7/Ksg5cUn27IiVkDX1I9MRcNEWpy2rREnfkD2Sm/WynhaAAAA=",
+          "alt": "Nike Mercurial dourada",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-004",
+      "codigo": "AR-0004",
+      "nome": "New Balance 9060 na loja",
+      "slug": "new-balance-9060-na-loja",
+      "descricao": null,
+      "marca": "New Balance",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "cinza e creme"
+      ],
+      "destaque": false,
+      "ativo": true,
+      "ordem": 1007,
+      "imagens": [
+        {
+          "url": "/produtos/new-balance-9060-na-loja.webp",
+          "largura": 640,
+          "altura": 534,
+          "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoMAAoAAUAmJZwC7AEPDTIhWtAA/v6oZRfNS2iS8TWDso4wCky86fSDlOVFC5P0WiQAAA==",
+          "alt": "New Balance 9060 na loja",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-005",
+      "codigo": "AR-0005",
+      "nome": "Nike Mercurial Vapor society branco e azul",
+      "slug": "nike-mercurial-vapor-society-branco-e-azul",
+      "descricao": null,
+      "marca": "Nike",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "chuteiras",
+      "tamanhos": [],
+      "cores": [
+        "branco e azul"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 3,
+      "imagens": [
+        {
+          "url": "/produtos/nike-mercurial-vapor-society-branco-e-azul.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMAAwAA4BaJZQCdAYrJkvpAmpsMAD+9H/D0RLkNBotheysWtDMaZBY6yS9Nz35PxJPKo2bAftfIJkcSz3xXE6bHDSLnCvn6Zu+EAButMYeU8oUouCAAAAA",
+          "alt": "Nike Mercurial Vapor society branco e azul",
+          "ordem": 0
+        },
+        {
+          "url": "/produtos/nike-mercurial-vapor-society-branco-e-azul-2.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABQAgCdASoMAAwAA4BaJZQCw7YvXwLFP6RA1AAA/vRaOh/epPeuYfVdxgjHeOnJ1OtHvlyTF17x3bZbC2p8dXtpISX4g1YVmyn1RjY+vWPAzRSqBnQoAS8fgl0Ga82L3G4AAA==",
+          "alt": "Nike Mercurial Vapor society branco e azul",
+          "ordem": 1
+        }
+      ]
+    },
+    {
+      "id": "p-006",
+      "codigo": "AR-0006",
+      "nome": "New Balance 9060 cinza",
+      "slug": "new-balance-9060-cinza",
+      "descricao": null,
+      "marca": "New Balance",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "cinza claro"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 10,
+      "imagens": [
+        {
+          "url": "/produtos/new-balance-9060-cinza.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoHAAwAA4BaJZwAAgc1URWAAPioUCaupQ8dHukXwbS11+uo96ylZMxkAyhiQf7y8AA=",
+          "alt": "New Balance 9060 cinza",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-007",
+      "codigo": "AR-0007",
+      "nome": "New Balance 9060 creme",
+      "slug": "new-balance-9060-creme",
+      "descricao": null,
+      "marca": "New Balance",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "creme e cinza"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 2,
+      "imagens": [
+        {
+          "url": "/produtos/new-balance-9060-creme.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoMAAwAA4BaJZQAD4ou1JYrab37eAD+80TkbtAvan3NDysflySk1QDduubzB9fQ2LLhtI5iGmJ/xkIWlXMmKMwYjglCeKsM657xXH0R4j51Q+OBTvFwAA==",
+          "alt": "New Balance 9060 creme",
+          "ordem": 0
+        },
+        {
+          "url": "/produtos/new-balance-9060-creme-2.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoMAAwAA4BaJZQC7ADcNXJ+QAD+9H9cgAKcGvOFMxMS9oxQBkEw4G04haLj95aNvtAS+xd5c3SWbvOZpCeGz05H8xXsE/EDf8fcAA==",
+          "alt": "New Balance 9060 creme",
+          "ordem": 1
+        }
+      ]
+    },
+    {
+      "id": "p-008",
+      "codigo": "AR-0008",
+      "nome": "Adidas Adizero",
+      "slug": "adidas-adizero",
+      "descricao": null,
+      "marca": "Adidas",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "tenis-de-corrida",
+      "tamanhos": [],
+      "cores": [
+        "branco e laranja"
+      ],
+      "destaque": false,
+      "ativo": true,
+      "ordem": 1021,
+      "imagens": [
+        {
+          "url": "/produtos/adidas-adizero.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoHAAwAA4BaJaQAAuUrJzAAAP6jf5gaBObOImB49AlfAGLQ+sMB88/fil/vqHxAAAA=",
+          "alt": "Adidas Adizero",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-009",
+      "codigo": "AR-0009",
+      "nome": "Nike Mercurial Superfly society",
+      "slug": "nike-mercurial-superfly-society",
+      "descricao": null,
+      "marca": "Nike",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "chuteiras",
+      "tamanhos": [],
+      "cores": [
+        "branco"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 11,
+      "imagens": [
+        {
+          "url": "/produtos/nike-mercurial-superfly-society.webp",
+          "largura": 1200,
+          "altura": 960,
+          "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoMAAoAAUAmJQBOgCHYz9iYAP766tpYLelYBqQ+j17OdyLPTbNz4NwvfewyEwBwAAA=",
+          "alt": "Nike Mercurial Superfly society",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-010",
+      "codigo": "AR-0010",
+      "nome": "Nike Dunk Low azul",
+      "slug": "nike-dunk-low-azul",
+      "descricao": null,
+      "marca": "Nike",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "azul e cinza"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 5,
+      "imagens": [
+        {
+          "url": "/produtos/nike-dunk-low-azul.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoMAAwAA4BaJZwAAlwv7HSnsAAA/vNdBtcXFAglIsDj8g48d63m46/4idijjUd2jfYXCGYhX2CAzL5PLFk+vyuD3XAukAAA",
+          "alt": "Nike Dunk Low azul",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-011",
+      "codigo": "AR-0011",
+      "nome": "Adidas Adizero Adios Pro 4",
+      "slug": "adidas-adizero-adios-pro-4",
+      "descricao": null,
+      "marca": "Adidas",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "tenis-de-corrida",
+      "tamanhos": [],
+      "cores": [
+        "branco e laranja"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 1,
+      "imagens": [
+        {
+          "url": "/produtos/adidas-adizero-adios-pro-4.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoHAAwAA4BaJZwAAvxOuZnAAN/BfveA2KS+TTY3wlpJ7ceHdWRfXbQoAAA=",
+          "alt": "Adidas Adizero Adios Pro 4",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-012",
+      "codigo": "AR-0012",
+      "nome": "Air Jordan 4 vermelho",
+      "slug": "air-jordan-4-vermelho",
+      "descricao": null,
+      "marca": "Jordan",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "vermelho e preto"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 4,
+      "imagens": [
+        {
+          "url": "/produtos/air-jordan-4-vermelho.webp",
+          "largura": 540,
+          "altura": 360,
+          "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAAgAAUAmJQBOgCHf6o4iAAD+/pChOV1LfQ69urZBzjFyFObe78lbFdxo94AA",
+          "alt": "Air Jordan 4 vermelho",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-013",
+      "codigo": "AR-0013",
+      "nome": "Bolsa Gucci Diana GG",
+      "slug": "bolsa-gucci-diana-gg",
+      "descricao": null,
+      "marca": "Gucci",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "bolsas",
+      "tamanhos": [],
+      "cores": [
+        "bege e marrom"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 7,
+      "imagens": [
+        {
+          "url": "/produtos/bolsa-gucci-diana-gg.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoHAAwAA4BaJQBdgCHhGZz11MAAy0mOhwqqKSfwM10t35P8qDTtENBvp+5F0/HMKwb1Z9Y/6PYAAA==",
+          "alt": "Bolsa Gucci Diana GG",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-014",
+      "codigo": "AR-0014",
+      "nome": "Air Jordan 1 High",
+      "slug": "air-jordan-1-high",
+      "descricao": null,
+      "marca": "Jordan",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "marrom, preto e branco"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 6,
+      "imagens": [
+        {
+          "url": "/produtos/air-jordan-1-high.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoMAAwAA4BaJbACdADbaZLKQAAA/GTgFy2W0cqE7PKjcFZQG8W8aFuFbNzRuM/j75zB0Evl+vbASuVsYiTK2LxmGXqOBWXO3RK9Q6NX3mvy0bO8hfyYbyrSkAAAAA==",
+          "alt": "Air Jordan 1 High",
+          "ordem": 0
+        },
+        {
+          "url": "/produtos/air-jordan-1-high-2.webp",
+          "largura": 1200,
+          "altura": 1200,
+          "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoMAAwAA4BaJbACdACg8w/IuAAA/gf+SLCA4PfoyXHE+uMd9dA5SOi7fn9pihOapxIfQk8/HT1OzWNLnzvdfJQ9qj1UEF/Du5jxKnnaqlMAAA==",
+          "alt": "Air Jordan 1 High",
+          "ordem": 1
+        }
+      ]
+    },
+    {
+      "id": "p-015",
+      "codigo": "AR-0015",
+      "nome": "Adidas Evo SL",
+      "slug": "adidas-evo-sl",
+      "descricao": null,
+      "marca": "Adidas",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "tenis-de-corrida",
+      "tamanhos": [],
+      "cores": [
+        "branco e preto"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 8,
+      "imagens": [
+        {
+          "url": "/produtos/adidas-evo-sl.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoHAAwAA4BaJbACdADx6vqHAADOOXNZZbEBCvsRN6Ir4VaTaY14nAG4vH2BtAhqyTqvLs6VFblwygWngLJQHej7Shw/4SA2AAA=",
+          "alt": "Adidas Evo SL",
+          "ordem": 0
+        }
+      ]
+    },
+    {
+      "id": "p-016",
+      "codigo": "AR-0016",
+      "nome": "Tênis Gucci branco",
+      "slug": "tenis-gucci-branco",
+      "descricao": null,
+      "marca": "Gucci",
+      "preco": null,
+      "preco_promocional": null,
+      "categoria_slug": "sneakers",
+      "tamanhos": [],
+      "cores": [
+        "branco"
+      ],
+      "destaque": true,
+      "ativo": true,
+      "ordem": 12,
+      "imagens": [
+        {
+          "url": "/produtos/tenis-gucci-branco.webp",
+          "largura": 640,
+          "altura": 1136,
+          "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACQAQCdASoHAAwAA4BaJYwAAuZ4UgAA/ryfei9jQhHYulSs7+cs8P9ZkyGrV34Yaf0b5+g6micL+P6wgvkrc25C3RFUnQAA",
+          "alt": "Tênis Gucci branco",
+          "ordem": 0
+        }
+      ]
+    }
+  ],
+  "hero": [
+    {
+      "url": "/produtos/adidas-adizero-adios-pro-4.webp",
+      "largura": 640,
+      "altura": 1136,
+      "blur": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoHAAwAA4BaJZwAAvxOuZnAAN/BfveA2KS+TTY3wlpJ7ceHdWRfXbQoAAA=",
+      "alt": "Adidas Adizero Adios Pro 4",
+      "ordem": 0,
+      "slug": "adidas-adizero-adios-pro-4"
+    },
+    {
+      "url": "/produtos/new-balance-9060-creme.webp",
+      "largura": 1200,
+      "altura": 1200,
+      "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoMAAwAA4BaJZQAD4ou1JYrab37eAD+80TkbtAvan3NDysflySk1QDduubzB9fQ2LLhtI5iGmJ/xkIWlXMmKMwYjglCeKsM657xXH0R4j51Q+OBTvFwAA==",
+      "alt": "New Balance 9060 creme",
+      "ordem": 0,
+      "slug": "new-balance-9060-creme"
+    },
+    {
+      "url": "/produtos/nike-mercurial-vapor-society-branco-e-azul.webp",
+      "largura": 1200,
+      "altura": 1200,
+      "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoMAAwAA4BaJZQCdAYrJkvpAmpsMAD+9H/D0RLkNBotheysWtDMaZBY6yS9Nz35PxJPKo2bAftfIJkcSz3xXE6bHDSLnCvn6Zu+EAButMYeU8oUouCAAAAA",
+      "alt": "Nike Mercurial Vapor society branco e azul",
+      "ordem": 0,
+      "slug": "nike-mercurial-vapor-society-branco-e-azul"
+    },
+    {
+      "url": "/produtos/air-jordan-4-vermelho.webp",
+      "largura": 540,
+      "altura": 360,
+      "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAAgAAUAmJQBOgCHf6o4iAAD+/pChOV1LfQ69urZBzjFyFObe78lbFdxo94AA",
+      "alt": "Air Jordan 4 vermelho",
+      "ordem": 0,
+      "slug": "air-jordan-4-vermelho"
+    },
+    {
+      "url": "/produtos/nike-dunk-low-azul.webp",
+      "largura": 1200,
+      "altura": 1200,
+      "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoMAAwAA4BaJZwAAlwv7HSnsAAA/vNdBtcXFAglIsDj8g48d63m46/4idijjUd2jfYXCGYhX2CAzL5PLFk+vyuD3XAukAAA",
+      "alt": "Nike Dunk Low azul",
+      "ordem": 0,
+      "slug": "nike-dunk-low-azul"
+    },
+    {
+      "url": "/produtos/air-jordan-1-high.webp",
+      "largura": 1200,
+      "altura": 1200,
+      "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoMAAwAA4BaJbACdADbaZLKQAAA/GTgFy2W0cqE7PKjcFZQG8W8aFuFbNzRuM/j75zB0Evl+vbASuVsYiTK2LxmGXqOBWXO3RK9Q6NX3mvy0bO8hfyYbyrSkAAAAA==",
+      "alt": "Air Jordan 1 High",
+      "ordem": 0,
+      "slug": "air-jordan-1-high"
+    },
+    {
+      "url": "/produtos/bolsa-gucci-diana-gg.webp",
+      "largura": 640,
+      "altura": 1136,
+      "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoHAAwAA4BaJQBdgCHhGZz11MAAy0mOhwqqKSfwM10t35P8qDTtENBvp+5F0/HMKwb1Z9Y/6PYAAA==",
+      "alt": "Bolsa Gucci Diana GG",
+      "ordem": 0,
+      "slug": "bolsa-gucci-diana-gg"
+    },
+    {
+      "url": "/produtos/adidas-evo-sl.webp",
+      "largura": 640,
+      "altura": 1136,
+      "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoHAAwAA4BaJbACdADx6vqHAADOOXNZZbEBCvsRN6Ir4VaTaY14nAG4vH2BtAhqyTqvLs6VFblwygWngLJQHej7Shw/4SA2AAA=",
+      "alt": "Adidas Evo SL",
+      "ordem": 0,
+      "slug": "adidas-evo-sl"
+    },
+    {
+      "url": "/produtos/nike-mercurial-dourada.webp",
+      "largura": 620,
+      "altura": 755,
+      "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAABwAgCdASoMAA8AAUAmJZwC7H8AGBr5uLLhx2EAAP7/Ksg5cUn27IiVkDX1I9MRcNEWpy2rREnfkD2Sm/WynhaAAAA=",
+      "alt": "Nike Mercurial dourada",
+      "ordem": 0,
+      "slug": "nike-mercurial-dourada"
+    },
+    {
+      "url": "/produtos/new-balance-9060-cinza.webp",
+      "largura": 640,
+      "altura": 1136,
+      "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoHAAwAA4BaJZwAAgc1URWAAPioUCaupQ8dHukXwbS11+uo96ylZMxkAyhiQf7y8AA=",
+      "alt": "New Balance 9060 cinza",
+      "ordem": 0,
+      "slug": "new-balance-9060-cinza"
+    },
+    {
+      "url": "/produtos/nike-mercurial-superfly-society.webp",
+      "largura": 1200,
+      "altura": 960,
+      "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoMAAoAAUAmJQBOgCHYz9iYAP766tpYLelYBqQ+j17OdyLPTbNz4NwvfewyEwBwAAA=",
+      "alt": "Nike Mercurial Superfly society",
+      "ordem": 0,
+      "slug": "nike-mercurial-superfly-society"
+    },
+    {
+      "url": "/produtos/tenis-gucci-branco.webp",
+      "largura": 640,
+      "altura": 1136,
+      "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACQAQCdASoHAAwAA4BaJYwAAuZ4UgAA/ryfei9jQhHYulSs7+cs8P9ZkyGrV34Yaf0b5+g6micL+P6wgvkrc25C3RFUnQAA",
+      "alt": "Tênis Gucci branco",
+      "ordem": 0,
+      "slug": "tenis-gucci-branco"
+    }
+  ]
+}
