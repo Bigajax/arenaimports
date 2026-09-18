@@ -44,8 +44,8 @@ export const site = {
   /* sem loja física: a Arena vende pelo WhatsApp e envia; a base é a
      Grande Florianópolis */
   cidade: "Florianópolis, SC",
-  /* o WhatsApp das artes do feed: (48) 98422-0326. Na prévia ele não é
-     usado: ver PREVIA. */
+  /* o WhatsApp da loja: (48) 98422-0326. É para onde todo botão "Pedir"
+     manda o pedido, já estruturado (ver lib/whatsapp.ts). */
   whatsapp: "5548984220326",
   instagram: "arenaimportsfloripa",
   url: resolverUrl(),
@@ -58,10 +58,7 @@ export const site = {
  * aponta para o estúdio com a mesma mensagem. Quando a loja contratar:
  * PREVIA = null e o número acima passa a valer.
  */
-export const PREVIA: { whatsapp: string; mensagem: string } | null = {
-  whatsapp: "5544991246187",
-  mensagem: "Oi! Vi a prévia da vitrine da Arena Imports Floripa e quero colocar no ar.",
-};
+export const PREVIA: { whatsapp: string; mensagem: string } | null = null;
 
 /** Valores iniciais da tabela `config`. Sobrescritos pelo banco quando existirem. */
 export const configPadrao: Record<string, string> = {

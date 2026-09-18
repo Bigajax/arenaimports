@@ -24,6 +24,7 @@ export function CompraProduto({ produto, whatsapp, base }: { produto: Produto; w
   const pedeTamanho = false;
 
   const link = linkPeca(produto, {
+    prontaEntrega: produto.pronta_entrega,
     whatsapp,
     base,
     tamanho: tamanho ?? (tamanhoLivre.trim() || undefined),

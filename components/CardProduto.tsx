@@ -32,7 +32,7 @@ export function CardProduto({
   const vigenteNumero = produto.preco_promocional ?? produto.preco;
   const vigente = precoBRL(vigenteNumero);
   const href = `/produto/${produto.slug}`;
-  const pedir = linkPeca(produto, { preco: vigenteNumero ?? null });
+  const pedir = linkPeca(produto, { preco: vigenteNumero ?? null, prontaEntrega: produto.pronta_entrega });
 
   return (
     <article className="cartao group flex h-full flex-col">

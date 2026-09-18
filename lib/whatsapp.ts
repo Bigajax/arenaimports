@@ -21,6 +21,9 @@ export type Pedido = {
   quantidade?: number;
   observacao?: string;
   preco?: number | null;
+  /* em mãos (sai hoje) ou sob encomenda: a primeira coisa que a Arena
+     precisa saber para responder */
+  prontaEntrega?: boolean;
 };
 
 /**
@@ -35,18 +38,21 @@ export function linkPeca(produto: Pick<Produto, "codigo" | "nome" | "slug">, opc
   const preco = opcoes.preco ?? null;
 
   const linhas = [
-    "Oi! Vi no site da Arena Imports e quero este modelo:",
-    `• ${produto.nome} (${produto.codigo})`,
+    "Oi, Arena! Quero este modelo:",
+    "",
+    `• Modelo: ${produto.nome} (${produto.codigo})`,
+    `• Tamanho: ${opcoes.tamanho ?? "a confirmar"}`,
     `• Quantidade: ${quantidade}`,
-    opcoes.tamanho ? `• Tamanho: ${opcoes.tamanho}` : null,
     opcoes.cor ? `• Cor: ${opcoes.cor}` : null,
-    opcoes.observacao?.trim() ? `• Obs.: ${opcoes.observacao.trim()}` : null,
+    opcoes.prontaEntrega === undefined ? null : opcoes.prontaEntrega ? "• Pronta entrega (sai no mesmo dia)" : "• Sob encomenda",
     preco !== null
       ? `• Preço no site: ${BRL.format(preco)}${quantidade > 1 ? ` (total ${BRL.format(preco * quantidade)})` : ""}`
       : "• Preço: a combinar",
-    "Tem no meu número? Como funciona o envio?",
+    opcoes.observacao?.trim() ? `• Obs.: ${opcoes.observacao.trim()}` : null,
+    "",
+    "Tem disponível? Como faço o pagamento e o envio?",
     url,
-  ].filter(Boolean);
+  ].filter((l) => l !== null);
 
   return linkWhatsApp(linhas.join("\n"), opcoes.whatsapp);
 }
@@ -57,5 +63,5 @@ export function linkAgendar(nome: string, whatsapp?: string): string {
 }
 
 export function linkGeral(whatsapp?: string): string {
-  return linkWhatsApp("Oi! Vim pelo site da Arena Imports Floripa.", whatsapp);
+  return linkWhatsApp("Oi, Arena! Vim pelo site e quero fazer um pedido.", whatsapp);
 }
