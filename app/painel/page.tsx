@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { PainelPecas } from "@/components/painel/PainelPecas";
 import { sessao } from "@/lib/auth";
@@ -11,5 +12,9 @@ export default async function PaginaPainel() {
 
   const { categorias, produtos } = await carregarCatalogo();
 
-  return <PainelPecas produtosIniciais={[...produtos].sort((a, b) => a.ordem - b.ordem)} categorias={categorias.filter((c) => c.ativo)} />;
+  return (
+    <Suspense>
+      <PainelPecas produtosIniciais={[...produtos].sort((a, b) => a.ordem - b.ordem)} categorias={categorias.filter((c) => c.ativo)} />
+    </Suspense>
+  );
 }

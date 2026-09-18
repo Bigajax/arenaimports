@@ -1342,15 +1342,68 @@ body {
   gap: 1rem;
   height: 3.5rem;
   padding: 0 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--linha);
+  border-bottom: 2px solid var(--verde-raio);
 }
 .pn-nav {
-  font-size: 0.875rem;
+  font-family: var(--font-display);
+  font-style: italic;
   font-weight: 700;
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--branco);
+}
+.pn-nav:hover {
+  color: var(--verde-raio);
+}
+
+/* o placar: a loja em três números, na letra da placa */
+.pn-placar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0.25rem 0 0.5rem;
+}
+.pn-placa {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--raio);
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-left: 3px solid var(--areia-escura);
+  text-align: left;
+  transition: border-color var(--transicao), background-color var(--transicao);
+}
+.pn-placa > b {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1;
   color: var(--tinta);
+}
+.pn-placa > span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+}
+.pn-placa:first-child {
+  border-left-color: var(--verde-raio);
+}
+.pn-placa--on {
+  background: var(--preto);
+  border-color: var(--preto);
+}
+.pn-placa--on > b {
+  color: var(--verde-raio);
+}
+.pn-placa--on > span {
+  color: var(--marfim-fraco);
 }
 .pn-pagina {
   max-width: 44rem;
@@ -1447,6 +1500,10 @@ body {
   gap: 0.75rem;
   align-items: center;
   min-width: 0;
+  text-align: left;
+}
+.pn-linha:hover {
+  border-color: var(--tinta);
 }
 .pn-foto {
   position: relative;
@@ -1456,6 +1513,15 @@ body {
   overflow: hidden;
   border-radius: var(--raio-mini);
   background: var(--areia);
+}
+.pn-codigo {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--tinta-fraca);
 }
 .pn-nome {
   display: -webkit-box;
@@ -1762,4 +1828,119 @@ div + .pn-campo {
 }
 .pn-pe--dois > .btn:first-child:not(:last-child) {
   flex: 0 0 auto;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   O MODAL DA PEÇA. Por cima da lista, com a tampa preta da vitrine
+   (código no verde, nome na letra da placa, o × à direita), o corpo
+   rolando e os botões presos no pé. No celular é uma folha que sobe e
+   ocupa a tela inteira; no desktop, uma caixa centrada de 40rem.
+   ───────────────────────────────────────────────────────────── */
+.pn-modal-veu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.62);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  animation: veu-entra 180ms ease-out both;
+}
+.pn-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100dvh;
+  background: var(--areia-clara);
+  animation: folha-sobe 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes folha-sobe {
+  from {
+    transform: translateY(6%);
+    opacity: 0;
+  }
+}
+@media (min-width: 640px) {
+  .pn-modal-veu {
+    align-items: center;
+    padding: 1.5rem;
+  }
+  .pn-modal {
+    width: 40rem;
+    height: auto;
+    max-height: calc(100dvh - 3rem);
+    border-radius: var(--raio);
+    overflow: hidden;
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  }
+}
+.pn-modal-corpo {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+.pn-modal-cab {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--preto);
+  color: var(--branco);
+  border-bottom: 2px solid var(--verde-raio);
+}
+.pn-modal-fechar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: auto;
+  border-radius: var(--raio-mini);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--branco);
+}
+.pn-modal-fechar:hover {
+  border-color: var(--verde-raio);
+  color: var(--verde-raio);
+}
+.pn-modal-corpo > .pn-bloco,
+.pn-modal-corpo > .pn-erro {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.pn-modal-corpo > .pn-bloco:first-of-type {
+  margin-top: 1rem;
+}
+.pn-modal-corpo > .pn-mais {
+  margin-bottom: 1rem;
+}
+.pn-modal-corpo {
+  overflow-y: auto;
+}
+.pn-modal-pe {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 0.625rem;
+  margin-top: auto;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--linha);
+}
+.pn-modal-pe > .btn {
+  min-height: 3rem;
+}
+/* o "+ foto" com a cara da loja: preto com o mais no verde */
+.pn-foto-mais {
+  border: 2px dashed var(--preto-3);
+  background: var(--preto);
+  color: var(--verde-raio);
+}
+.pn-foto-mais:hover {
+  border-color: var(--verde-raio);
 }

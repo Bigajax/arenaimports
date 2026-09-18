@@ -956,10 +956,10 @@
     {
       "id": "p-yp-funny1-255440034",
       "codigo": "AR-0024",
-      "nome": "ike Air Force 1 07 LOW",
+      "nome": "Nike Air Force 1 07 Low",
       "slug": "ike-air-force-1-07-low-iv6027-100",
       "descricao": "Ref. IV6027 100",
-      "marca": null,
+      "marca": "Nike",
       "preco": null,
       "preco_promocional": null,
       "categoria_slug": "sneakers",
@@ -1015,7 +1015,7 @@
     {
       "id": "p-yp-funny1-255439962",
       "codigo": "AR-0025",
-      "nome": "Air Force 1 07 LOW",
+      "nome": "Nike Air Force 1 07 Low branco e verde",
       "slug": "air-force-1-07-low-dq9688-101",
       "descricao": "Ref. DQ9688 101",
       "marca": "Nike",

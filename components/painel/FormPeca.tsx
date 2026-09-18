@@ -2,8 +2,6 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { excluirProduto, salvarProduto } from "@/lib/acoes";
 import { mascaraBRL, paraNumero, slugar } from "@/lib/formato";
 import { Icone } from "@/components/Icones";
@@ -22,8 +20,7 @@ const TAMANHOS_SUGERIDOS = ["34", "35", "36", "37", "38", "39", "40", "41", "42"
  * a dona da loja não vai preencher: marca e cor são opcionais e ficam
  * dobrados em "mais detalhes".
  */
-export function FormPeca({ produto, categorias, proximoCodigo }: { produto: Produto | null; categorias: Categoria[]; proximoCodigo: string }) {
-  const router = useRouter();
+export function FormPeca({ produto, categorias, proximoCodigo, aoConcluir, aoFechar }: { produto: Produto | null; categorias: Categoria[]; proximoCodigo: string; aoConcluir: (recado: string) => void; aoFechar: () => void }) {
   const nova = !produto;
   const [nome, setNome] = useState(produto?.nome ?? "");
   const [preco, setPreco] = useState(produto?.preco != null ? mascaraBRL(String(Math.round(produto.preco * 100))) : "");
@@ -100,8 +97,7 @@ export function FormPeca({ produto, categorias, proximoCodigo }: { produto: Prod
     });
     setSalvando(false);
     if (!r.ok) return setErro(r.erro);
-    router.push("/painel");
-    router.refresh();
+    aoConcluir(nova ? "Peça no ar" : "Peça salva");
   }
 
   async function excluir() {
@@ -111,18 +107,20 @@ export function FormPeca({ produto, categorias, proximoCodigo }: { produto: Prod
     const r = await excluirProduto(produto.id);
     setSalvando(false);
     if (!r.ok) return setErro(r.erro);
-    router.push("/painel");
-    router.refresh();
+    aoConcluir("Peça apagada");
   }
 
   return (
-    <div className="pn-pagina pn-pagina--form">
-      <div className="pn-cab">
-        <Link href="/painel" className="pn-voltar" aria-label="Voltar para as peças">
-          <Icone nome="seta-esq" className="h-5 w-5" peso={2} />
-        </Link>
-        <h1 className="display-secao text-tinta">{nova ? "Nova peça" : "Editar peça"}</h1>
-        {!nova ? <span className="ml-auto text-[0.75rem] font-semibold text-tinta-fraca">{produto.codigo}</span> : null}
+    <div className="pn-modal-corpo">
+      {/* ---------- a tampa preta do modal ---------- */}
+      <div className="pn-modal-cab">
+        <div className="min-w-0">
+          <span className="etiqueta text-raio">{nova ? "Cadastrar" : produto.codigo}</span>
+          <h2 className="manchete mt-1 truncate text-[1.5rem] text-branco">{nova ? "Nova peça" : produto.nome}</h2>
+        </div>
+        <button type="button" onClick={aoFechar} aria-label="Fechar" className="pn-modal-fechar">
+          <Icone nome="fechar" className="h-5 w-5" peso={2} />
+        </button>
       </div>
 
       {/* ---------- as fotos ---------- */}
@@ -266,7 +264,7 @@ export function FormPeca({ produto, categorias, proximoCodigo }: { produto: Prod
         </p>
       ) : null}
 
-      <div className="pn-pe pn-pe--dois">
+      <div className="pn-modal-pe">
         {!nova ? (
           <button type="button" onClick={excluir} disabled={salvando} className="btn btn--linha btn--pequeno">
             Apagar
