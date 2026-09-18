@@ -298,31 +298,31 @@
     {
       "id": "p-009",
       "codigo": "AR-0009",
-      "nome": "Nike Mercurial Superfly society",
+      "nome": "Nike Mercurial Superfly society branco",
       "slug": "nike-mercurial-superfly-society",
       "descricao": null,
       "marca": "Nike",
-      "preco": null,
+      "preco": 450,
       "preco_promocional": null,
       "categoria_slug": "chuteiras",
       "tamanhos": [],
       "cores": [
-        "branco"
+        "branco e azul gelo"
       ],
-      "destaque": false,
+      "destaque": true,
       "ativo": true,
-      "ordem": 5008,
+      "ordem": 1,
       "imagens": [
         {
           "url": "/produtos/nike-mercurial-superfly-society.webp",
           "largura": 1200,
           "altura": 960,
           "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoMAAoAAUAmJQBOgCHYz9iYAP766tpYLelYBqQ+j17OdyLPTbNz4NwvfewyEwBwAAA=",
-          "alt": "Nike Mercurial Superfly society",
+          "alt": "Nike Mercurial Superfly society branco",
           "ordem": 0
         }
       ],
-      "pronta_entrega": false
+      "pronta_entrega": true
     },
     {
       "id": "p-010",
@@ -6605,6 +6605,15 @@
   ],
   "hero": [
     {
+      "url": "/produtos/nike-mercurial-superfly-society.webp",
+      "largura": 1200,
+      "altura": 960,
+      "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoMAAoAAUAmJQBOgCHYz9iYAP766tpYLelYBqQ+j17OdyLPTbNz4NwvfewyEwBwAAA=",
+      "alt": "Nike Mercurial Superfly society branco",
+      "ordem": 0,
+      "slug": "nike-mercurial-superfly-society"
+    },
+    {
       "url": "/produtos/yp-dachang88-255516226-1.webp",
       "largura": 1000,
       "altura": 664,
@@ -6702,15 +6711,6 @@
       "alt": "Camisa Boca Juniors 2026/27 titular",
       "ordem": 0,
       "slug": "camisa-boca-juniors-2026-27-titular"
-    },
-    {
-      "url": "/produtos/yp-hzh890-219233782-1.webp",
-      "largura": 1200,
-      "altura": 1600,
-      "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoMABAAA4BaJaACdAEOzpjApQAA/u1LlVZvO7wNgirQbV7dTBWY+Gto9F/gq4PKmAA=",
-      "alt": "Bolsa Louis Vuitton 02",
-      "ordem": 0,
-      "slug": "bolsa-louis-vuitton-02"
     }
   ]
 }
