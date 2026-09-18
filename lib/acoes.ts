@@ -30,7 +30,13 @@ function atualizarVitrine() {
 }
 
 function mensagemDe(erro: unknown, padrao: string): string {
-  return erro instanceof Error ? erro.message : padrao;
+  if (!(erro instanceof Error)) return padrao;
+  /* na Vercel o disco é só leitura: o modo local mostra o catálogo mas
+     não grava. A mensagem diz o que está faltando em vez de vazar EROFS. */
+  if (/EROFS|read-only file system/i.test(erro.message)) {
+    return "O painel ainda não está ligado ao banco da loja: dá para ver, mas não para salvar. O estúdio está terminando essa ligação.";
+  }
+  return erro.message;
 }
 
 function falha(erro: unknown, padrao: string): { ok: false; erro: string } {
