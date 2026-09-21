@@ -1091,7 +1091,8 @@ body {
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 3px;
-  background: #0b0b0b;
+  /* a foto de estúdio entra inteira no quadro branco, como no cartão */
+  background: #ffffff;
 }
 .nicho > img {
   transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);

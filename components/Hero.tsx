@@ -51,7 +51,7 @@ export function Hero({ frase, estrelas, linkWhats, totais }: { frase: string; es
                   <li key={p.id}>
                     <Link href={`/produto/${p.slug}`} className="nicho">
                       {capa ? (
-                        <Image src={capa.url} alt={p.nome} fill priority={i < 3} sizes="(max-width: 1024px) 33vw, 18vw" placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} className="object-cover" />
+                        <Image src={capa.url} alt={p.nome} fill priority={i < 3} sizes="(max-width: 1024px) 33vw, 18vw" placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} className="object-contain" />
                       ) : null}
                       <span className="nicho-nome">{p.nome}</span>
                     </Link>
