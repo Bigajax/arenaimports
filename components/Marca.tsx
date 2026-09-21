@@ -11,7 +11,7 @@ import Image from "next/image";
  * letreiro com FLORIPA (pedido do André, 21/09).
  */
 export function Simbolo({ altura = 28, className = "", prioridade = false }: { altura?: number; className?: string; prioridade?: boolean }) {
-  return <Image src="/marca/simbolo.png" alt="" aria-hidden="true" width={Math.round(altura * (600 / 428))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
+  return <Image src="/marca/simbolo.png" alt="" aria-hidden="true" width={Math.round(altura * (315 / 230))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
 }
 
 /* o letreiro ARENA / IMPORTS / FLORIPA sem o símbolo (621 x 201, recortado da foto da logo que o André mandou em 21/09, a única com o FLORIPA inteiro): é o

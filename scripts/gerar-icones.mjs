@@ -33,8 +33,8 @@ async function og() {
     <style>text{font-family:"Barlow","Arial Narrow",Arial,sans-serif}</style>
     <rect width="${L}" height="${A}" fill="${PRETO}"/>
     <rect x="0" y="${A - 8}" width="${L}" height="8" fill="${VERDE}"/>
-    <text x="600" y="480" text-anchor="middle" font-size="30" font-weight="700" fill="#ffffff">Seu jogo começa pelo que você calça.</text>
-    <text x="600" y="524" text-anchor="middle" font-size="22" fill="#a3a5a0">Chuteiras, tênis de corrida, sneakers e bolsas de grife importados · São José, SC · pedido pelo WhatsApp</text>
+    <text x="600" y="480" text-anchor="middle" font-size="30" font-weight="700" fill="#ffffff">Direto da fonte. Direto pra você.</text>
+    <text x="600" y="524" text-anchor="middle" font-size="22" fill="#a3a5a0">Chuteiras, tênis de corrida, sneakers, camisas e bolsas importados. Florianópolis, envio para todo o Brasil. Pedido pelo WhatsApp</text>
   </svg>`);
   await sharp(legenda)
     .composite([{ input: logo, left: Math.round((L - lm.width) / 2), top: 90 }])

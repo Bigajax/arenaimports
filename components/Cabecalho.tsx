@@ -80,7 +80,7 @@ export function Cabecalho({ linkWhats, aviso, menu }: { categorias?: Categoria[]
           </button>
 
           <Link href="/" aria-label="Arena Imports Floripa, página inicial" className="flex shrink-0 items-center gap-2.5 text-branco">
-            <Simbolo altura={34} prioridade className="lg:!h-[42px] lg:!w-[59px]" />
+            <Simbolo altura={34} prioridade className="lg:!h-[42px] lg:!w-[58px]" />
             <Letreiro altura={32} prioridade className="lg:!h-[46px] lg:!w-[142px]" />
           </Link>
 
