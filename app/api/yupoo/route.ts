@@ -18,6 +18,9 @@ import { baixarFoto, lerAlbum, lerLink, limparTitulo, marcaDe } from "@/lib/yupo
  * depois de aparar o fundo), como no importar-yupoo.mjs.
  */
 export const runtime = "nodejs";
+/* seis fotos de 1 a 2 MB, o sharp e o Storage: a função precisa de mais
+   que os 15 s padrão da Vercel, senão o painel fica em "Buscando" para sempre */
+export const maxDuration = 60;
 
 const FOTOS = 4;
 

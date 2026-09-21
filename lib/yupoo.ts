@@ -29,7 +29,8 @@ export type Album = { loja: string; id: string; base: string; titulo: string; fo
    Aceita também o link curto de compartilhar (x.yupoo.com/photos/loja/albums/id). */
 export function lerLink(bruto: string): { loja: string; id: string; senha: string | null } | null {
   const texto = bruto.trim();
-  const m = texto.match(/https?:\/\/([a-z0-9_-]+)\.x\.yupoo\.com\/albums\/(\d+)/i) ?? texto.match(/https?:\/\/x\.yupoo\.com\/photos\/([a-z0-9_-]+)\/albums\/(\d+)/i);
+  /* com ou sem https, com ou sem o x., colado no meio de uma mensagem */
+  const m = texto.match(/([a-z0-9_-]+)\.x\.yupoo\.com\/albums\/(\d+)/i) ?? texto.match(/yupoo\.com\/photos\/([a-z0-9_-]+)\/albums\/(\d+)/i);
   if (!m) return null;
   const senha = texto.match(/[?&]senha=([^&\s]+)/)?.[1] ?? null;
   return { loja: m[1].toLowerCase(), id: m[2], senha };
