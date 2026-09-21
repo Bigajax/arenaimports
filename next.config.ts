@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* as fotos que o André sobe pelo painel moram no Storage do Supabase:
+     sem o domínio aqui, o <Image> recusa a URL e o cartão fica em branco
+     (foi o que aconteceu com a capa do Superfly em 21/09) */
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" }],
+  },
+
   eslint: {
     /**
      * O lint não trava o deploy.
