@@ -14,17 +14,17 @@ export function Simbolo({ altura = 28, className = "", prioridade = false }: { a
   return <Image src="/marca/simbolo.png" alt="" aria-hidden="true" width={Math.round(altura * (600 / 428))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
 }
 
-/* o letreiro ARENA / IMPORTS / FLORIPA sem o símbolo (1200 x 325): é o
+/* o letreiro ARENA / IMPORTS / FLORIPA sem o símbolo (621 x 201, recortado da foto da logo que o André mandou em 21/09, a única com o FLORIPA inteiro): é o
    que entra ao lado do símbolo no cabeçalho. Sempre com o FLORIPA: existe
    outra Arena Imports, e o André pediu o nome inteiro em toda marca
    (21/09). O letreiro.png antigo, sem o Floripa, ficou de reserva. */
 export function Letreiro({ altura = 30, className = "", prioridade = false }: { altura?: number; className?: string; prioridade?: boolean }) {
-  return <Image src="/marca/letreiro-floripa.png" alt="Arena Imports Floripa" width={Math.round(altura * (1200 / 325))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
+  return <Image src="/marca/letreiro-floripa.png" alt="Arena Imports Floripa" width={Math.round(altura * (621 / 201))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
 }
 
-/* o letreiro completo (1200 x 749) */
+/* o letreiro completo (621 x 417, da mesma foto) */
 export function Logo({ altura = 40, className = "", prioridade = false }: { altura?: number; className?: string; prioridade?: boolean }) {
-  return <Image src="/marca/logo.png" alt="Arena Imports Floripa" width={Math.round(altura * (1200 / 749))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
+  return <Image src="/marca/logo.png" alt="Arena Imports Floripa" width={Math.round(altura * (621 / 417))} height={altura} priority={prioridade} className={`inline-block shrink-0 ${className}`} />;
 }
 
 /* a assinatura do estúdio, em máscara, pintada pela cor do texto */
