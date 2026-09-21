@@ -53,7 +53,7 @@ export function FormularioLogin({ pedeEmail }: { pedeEmail: boolean }) {
 function Botao() {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" className="btn btn--primario w-full" disabled={pending}>
+    <button type="submit" className="btn btn--raio w-full" disabled={pending}>
       {pending ? "Entrando…" : "Entrar"}
     </button>
   );
