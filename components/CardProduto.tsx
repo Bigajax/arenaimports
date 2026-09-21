@@ -27,6 +27,10 @@ export function CardProduto({
   tamanhos?: string;
 }) {
   const capa = produto.imagens[0];
+  /* a foto entra inteira no quadro branco, sem cortar as pontas do par: o
+     banco não guarda as medidas da foto, então vale para todas (as poucas
+     em pé, do Instagram, ganham uma faixa branca dos lados) */
+  const deitada = true;
   const promo = temDesconto(produto);
   const cheio = precoBRL(produto.preco);
   const vigenteNumero = produto.preco_promocional ?? produto.preco;
@@ -36,7 +40,7 @@ export function CardProduto({
 
   return (
     <article className="cartao group flex h-full flex-col">
-      <Link href={href} className="foto block aspect-square rounded-b-none" aria-label={produto.nome}>
+      <Link href={href} className={`foto block aspect-square rounded-b-none ${deitada ? "!bg-white" : ""}`} aria-label={produto.nome}>
         {produto.pronta_entrega ? <span className="pronta absolute right-3 top-3 z-[1]">Pronta entrega</span> : null}
         {vigente ? (
           <span className="placa-etiqueta absolute left-3 top-3 z-[1] !flex items-baseline gap-2">
@@ -45,7 +49,7 @@ export function CardProduto({
           </span>
         ) : null}
         {capa ? (
-          <Image src={capa.url} alt={capa.alt ?? produto.nome} fill sizes={tamanhos} placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} priority={prioridade} className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]" />
+          <Image src={capa.url} alt={capa.alt ?? produto.nome} fill sizes={tamanhos} placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} priority={prioridade} className={`${deitada ? "object-contain p-2" : "object-cover"} transition-transform duration-500 ease-out group-hover:scale-[1.04]`} />
         ) : null}
       </Link>
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icone } from "./Icones";
-import { Simbolo } from "./Marca";
+import { Logo } from "./Marca";
 import type { Produto } from "@/lib/tipos";
 
 /**
@@ -22,7 +22,7 @@ export function Hero({ frase, estrelas, linkWhats, totais }: { frase: string; es
     <section aria-labelledby="titulo-hero" className="escuro relative overflow-hidden">
       <div className="miolo relative grid gap-10 py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16 lg:py-20">
         <div>
-          <Simbolo altura={44} prioridade />
+          <Logo altura={88} prioridade />
           <h1 id="titulo-hero" className="manchete mt-6 max-w-[12ch] text-[clamp(2.375rem,8.5vw,3.5rem)] text-branco lg:text-[clamp(3rem,5vw,4.75rem)]">
             {frase}
           </h1>

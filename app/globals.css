@@ -1983,3 +1983,140 @@ div + .pn-campo {
 .pn-foto-mais:hover {
   border-color: var(--verde-raio);
 }
+
+/* ─────────────────────────────────────────────────────────────
+   A GALERIA DA PEÇA (21/09): a foto inteira no quadro branco, a lupa
+   no mouse e a foto ampliada em tela cheia com pinça.
+   ───────────────────────────────────────────────────────────── */
+.galeria-quadro {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--raio);
+  background: #ffffff;
+  cursor: zoom-in;
+}
+.galeria-quadro > img {
+  transition: transform 120ms ease-out;
+  will-change: transform;
+}
+.galeria-lupa {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .galeria-lupa > span {
+    display: none;
+  }
+}
+.galeria-mini {
+  position: relative;
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border-radius: var(--raio);
+  background: #ffffff;
+  border: 2px solid transparent;
+  transition: border-color var(--transicao);
+}
+@media (min-width: 1024px) {
+  .galeria-mini {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+}
+.galeria-mini:hover {
+  border-color: var(--cimento-escuro, #999);
+}
+.galeria-mini--atual {
+  border-color: var(--tinta);
+}
+.galeria-ampliada {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.94);
+  color: #fff;
+  animation: veu-entra 160ms ease-out both;
+}
+.galeria-ampliada-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+}
+.galeria-ampliada-fechar {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+.galeria-ampliada-fechar:hover {
+  border-color: #fff;
+}
+.galeria-ampliada-quadro {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  user-select: none;
+  background: #ffffff;
+}
+.galeria-ampliada-quadro > img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: center;
+  will-change: transform;
+}
+.galeria-ampliada-seta {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  transform: translateY(-50%);
+}
+.galeria-ampliada-seta--esq {
+  left: 0.75rem;
+}
+.galeria-ampliada-seta--dir {
+  right: 0.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .galeria-quadro > img,
+  .galeria-ampliada {
+    transition: none;
+    animation: none;
+  }
+}

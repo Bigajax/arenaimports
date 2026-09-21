@@ -9,14 +9,15 @@ import type { Produto } from "@/lib/tipos";
  * letreiro, o que a loja é (a frase da própria bio: "seu portal para o
  * mundo premium"), como funciona (pronta entrega e sob encomenda) e as
  * marcas que passam por ela, as mesmas das artes do feed, como uma
- * lista e não como logos. À direita, a foto de bastidor do feed. É o
+ * lista e não como logos. À direita, a arte da loja. É o
  * único bloco de texto longo da página.
  */
 const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Vans", "Asics", "Chanel", "Gucci", "Louis Vuitton", "Saint Laurent", "Dior", "Miu Miu"];
 
 export function Loja({ linkWhats, foto }: { linkWhats: string; foto: Produto | null }) {
-  /* a segunda foto da Vapor é a de bastidor, com o logo ao fundo */
-  const capa = foto?.imagens[1] ?? foto?.imagens[0];
+  /* a arte que o André mandou em 21/09 (o mapa, o navio, a camisa do
+     Brasil, a chuteira rosa e as marcas) no lugar da foto de bastidor */
+  void foto;
   return (
     <section id="loja" aria-labelledby="titulo-loja" className="escuro mt-14 scroll-mt-24 lg:mt-20">
       <div className="miolo grid gap-10 py-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:gap-16 lg:py-20">
@@ -57,13 +58,12 @@ export function Loja({ linkWhats, foto }: { linkWhats: string; foto: Produto | n
         </div>
 
         <div className="flex flex-col gap-4">
-          <span className="foto veu block aspect-[4/3] rounded-[var(--raio)] bg-preto-2 lg:aspect-[5/4]">
-            {capa ? <Image src={capa.url} alt="Bastidor da Arena Imports" fill sizes="(max-width: 1024px) 100vw, 44vw" placeholder={capa.blur ? "blur" : "empty"} blurDataURL={capa.blur ?? undefined} className="object-cover object-[center_40%]" /> : null}
-            <span className="absolute inset-x-0 bottom-0 z-[1] p-4 sm:p-5">
-              <span className="etiqueta block">Pedido pelo WhatsApp</span>
-              <span className="mt-1 block text-[1rem] font-semibold leading-tight text-branco sm:text-[1.0625rem]">Sem cadastro, sem carrinho: você manda o modelo e o tamanho, a Arena confirma e combina o envio.</span>
-            </span>
+          <span className="foto block aspect-[16/9] rounded-[var(--raio)] bg-preto-2">
+            <Image src="/loja/arte-arena.webp" alt="A arte da Arena Imports Floripa: importados direto da China, chuteiras de campo, society e futsal, tênis de corrida, camisetas de times, bolsas importadas e as marcas" fill sizes="(max-width: 1024px) 100vw, 44vw" className="object-cover" />
           </span>
+          <p className="text-[0.9375rem] text-white/80">
+            <b className="font-semibold text-branco">Pedido pelo WhatsApp.</b> Sem cadastro, sem carrinho: você manda o modelo e o tamanho, a Arena confirma e combina o envio.
+          </p>
         </div>
       </div>
     </section>

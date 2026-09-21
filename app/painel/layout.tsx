@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { acaoSair } from "@/lib/acoes";
 import { sessao } from "@/lib/auth";
-import { Simbolo } from "@/components/Marca";
+import { Logo } from "@/components/Marca";
 
 export const metadata: Metadata = {
   title: "Painel",
@@ -25,7 +25,7 @@ export default async function LayoutPainel({ children }: { children: React.React
       {autenticado ? (
         <header className="pn-barra escuro">
           <Link href="/painel" aria-label="Painel da Arena" className="flex items-center gap-2.5 text-branco">
-            <Simbolo altura={30} />
+            <Logo altura={40} />
             <span className="romana text-[1rem] uppercase leading-none">
               Arena <span className="text-raio">painel</span>
             </span>
