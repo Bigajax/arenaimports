@@ -36,6 +36,8 @@ export function FormPeca({ produto, categorias, proximoCodigo, aoConcluir, aoFec
   const [ativo, setAtivo] = useState(produto?.ativo ?? true);
   const [imagens, setImagens] = useState<Imagem[]>(produto?.imagens ?? []);
   const [enviando, setEnviando] = useState<number | null>(null);
+  const [linkYupoo, setLinkYupoo] = useState("");
+  const [buscandoYupoo, setBuscandoYupoo] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const entrada = useRef<HTMLInputElement>(null);
@@ -59,6 +61,32 @@ export function FormPeca({ produto, categorias, proximoCodigo, aoConcluir, aoFec
       }
     }
     if (entrada.current) entrada.current.value = "";
+  }
+
+  /* o link do álbum do fornecedor: o servidor baixa as fotos (o Yupoo não
+     deixa salvar pelo celular) e lê o nome, a marca, a cor e os tamanhos do
+     título; só preenche o que ainda está vazio */
+  async function buscarYupoo() {
+    const link = linkYupoo.trim();
+    if (!link) return setErro("Cola o link do álbum do Yupoo.");
+    setErro(null);
+    setBuscandoYupoo(true);
+    try {
+      const r = await fetch("/api/yupoo", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ link }) });
+      const corpo = await r.json();
+      if (!r.ok) throw new Error(typeof corpo.erro === "string" ? corpo.erro : "Não deu para buscar no Yupoo.");
+      const novas = (corpo.imagens as { url: string; largura: number | null; altura: number | null; blur: string }[]).map((img, k) => ({ url: img.url, alt: null, largura: img.largura, altura: img.altura, blur: img.blur, ordem: imagens.length + k }));
+      setImagens((atual) => [...atual, ...novas].map((img, k) => ({ ...img, ordem: k })));
+      if (!nome.trim() && corpo.nome) setNome(corpo.nome);
+      if (!marca.trim() && corpo.marca) setMarca(corpo.marca);
+      if (!cor.trim() && corpo.cor) setCor(corpo.cor);
+      if (!tamanhos.length && Array.isArray(corpo.tamanhos) && corpo.tamanhos.length) setTamanhos(corpo.tamanhos.filter((t: string) => TAMANHOS_SUGERIDOS.includes(t)));
+      setLinkYupoo("");
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : "Não deu para buscar no Yupoo.");
+    } finally {
+      setBuscandoYupoo(false);
+    }
   }
 
   function tirarFoto(i: number) {
@@ -141,10 +169,19 @@ export function FormPeca({ produto, categorias, proximoCodigo, aoConcluir, aoFec
               {enviando !== null ? <span className="text-[0.8125rem] font-semibold">{enviando}%</span> : <span className="text-[1.75rem] leading-none">+</span>}
               <span className="text-[0.75rem] font-semibold">{enviando !== null ? "enviando" : "foto"}</span>
             </button>
-            <input ref={entrada} type="file" accept="image/*" multiple capture="environment" className="hidden" onChange={(e) => escolherFotos(e.target.files)} />
+            <input ref={entrada} type="file" accept="image/*" multiple className="hidden" onChange={(e) => escolherFotos(e.target.files)} />
           </li>
         </ul>
-        <p className="pn-ajuda">A primeira é a capa. A câmera abre direto no celular; no computador, escolhe o arquivo.</p>
+        <p className="pn-ajuda">A primeira é a capa. No celular, o botão pergunta se é da galeria ou da câmera.</p>
+
+        <label className="pn-campo mt-4">
+          <span className="pn-rotulo">Ou cola o link do álbum do Yupoo</span>
+          <input value={linkYupoo} onChange={(e) => setLinkYupoo(e.target.value)} placeholder="https://loja.x.yupoo.com/albums/123456" inputMode="url" autoComplete="off" onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), buscarYupoo())} />
+        </label>
+        <button type="button" onClick={buscarYupoo} disabled={buscandoYupoo || enviando !== null} className="btn btn--linha btn--pequeno mt-2 w-full">
+          {buscandoYupoo ? "Buscando as fotos..." : "Buscar as fotos do álbum"}
+        </button>
+        <p className="pn-ajuda">Abre o álbum no Yupoo, toca em compartilhar, copia o link e cola aqui: as quatro fotos entram sozinhas, com o nome e os tamanhos do título. Fornecedor com senha: cola o link e acrescenta ?senha=a-senha.</p>
       </section>
 
       {/* ---------- o essencial ---------- */}
