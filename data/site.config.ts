@@ -67,7 +67,7 @@ export const configPadrao: Record<string, string> = {
   cidade: site.cidade,
   /* frases separadas por "|": o cabeçalho reveza uma de cada vez */
   aviso_topo: "Importados premium direto da fonte | Pronta entrega: sai no mesmo dia | Envio para todo o Brasil | Pedido pelo WhatsApp, sem cadastro",
-  frase_hero: "Seu jogo começa pelo que você calça.",
+  frase_hero: "Direto da fonte. Direto pra você.",
   endereco: site.endereco,
   horario: "",
 };

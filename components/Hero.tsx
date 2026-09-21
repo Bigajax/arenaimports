@@ -23,11 +23,11 @@ export function Hero({ frase, estrelas, linkWhats, totais }: { frase: string; es
       <div className="miolo relative grid gap-10 py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16 lg:py-20">
         <div>
           <Logo altura={88} prioridade />
-          <h1 id="titulo-hero" className="manchete mt-6 max-w-[12ch] text-[clamp(2.375rem,8.5vw,3.5rem)] text-branco lg:text-[clamp(3rem,5vw,4.75rem)]">
+          <h1 id="titulo-hero" className="manchete mt-6 max-w-[13ch] text-[clamp(2.375rem,8.5vw,3.5rem)] text-branco lg:text-[clamp(3rem,5vw,4.75rem)]">
             {frase}
           </h1>
           <p className="falada mt-6 max-w-[44ch] text-[1.0625rem] text-white/80 lg:text-[1.125rem]">
-            Importados premium direto da fonte, de Florianópolis para todo o Brasil: {totais.produtos} modelos entre chuteiras, tênis de corrida, sneakers e bolsas de grife, em pronta entrega ou sob encomenda. Você escolhe aqui, pede pelo WhatsApp e a Arena confere tamanho e disponibilidade.
+            Chuteira, tênis de corrida, sneaker, camisa de time e bolsa de grife, importados direto da China: {totais.produtos} modelos. O que está em mãos sai hoje de Floripa; o resto chega da fonte com prazo combinado. Escolhe aqui, chama no WhatsApp, a Arena confere o tamanho.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link href="/pronta-entrega" className="btn btn--raio">
