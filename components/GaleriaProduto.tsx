@@ -7,7 +7,7 @@ import type { Imagem } from "@/lib/tipos";
 
 /**
  * A galeria da peça. A foto entra INTEIRA, sem corte (object-contain
- * num quadro quadrado e branco): o André viu a Vapor com as pontas
+ * num quadro quadrado e branco): o Luiz viu a Vapor com as pontas
  * cortadas e pediu o par inteiro sempre. Para ver de perto, dois
  * jeitos: no computador, passar o mouse sobre a foto amplia 2,2x
  * seguindo o cursor (a lupa das lojas grandes); em qualquer tela, tocar

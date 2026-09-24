@@ -15,7 +15,7 @@ import type { Produto } from "@/lib/tipos";
 const MARCAS = ["Nike", "Adidas", "Jordan", "New Balance", "Puma", "Vans", "Asics", "Chanel", "Gucci", "Louis Vuitton", "Saint Laurent", "Dior", "Miu Miu"];
 
 export function Loja({ linkWhats, foto }: { linkWhats: string; foto: Produto | null }) {
-  /* a arte que o André mandou em 21/09 (o mapa, o navio, a camisa do
+  /* a arte que o Luiz mandou em 21/09 (o mapa, o navio, a camisa do
      Brasil, a chuteira rosa e as marcas) no lugar da foto de bastidor */
   void foto;
   return (

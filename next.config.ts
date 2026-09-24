@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* as fotos que o André sobe pelo painel moram no Storage do Supabase:
+  /* as fotos que o Luiz sobe pelo painel moram no Storage do Supabase:
      sem o domínio aqui, o <Image> recusa a URL e o cartão fica em branco
      (foi o que aconteceu com a capa do Superfly em 21/09) */
   images: {

@@ -8,7 +8,7 @@
  * três primeiras fotos (são as de estúdio, as que interessam), limpa o
  * título (fica marca + modelo + referência, sem o chinês) e escreve a
  * peça em data/catalogo.json, sob encomenda e sem preço: o preço e o
- * "em mãos" o André marca no painel.
+ * "em mãos" o Luiz marca no painel.
  *
  * Lojas com senha: o Yupoo confere a senha no cookie `indexlockcode`.
  * As fotos exigem o Referer da loja para baixar.

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 /**
- * A marca da Arena: a arte definitiva que o André mandou em 21/09 (PNG com
+ * A marca da Arena: a arte definitiva que o Luiz mandou em 21/09 (PNG com
  * transparência, 1516x1038), de onde saem os três arquivos: a logo inteira
  * (logo.png 1508x938), o letreiro ARENA / IMPORTS / FLORIPA sem o símbolo
  * (letreiro-floripa.png 1494x436, cortado no vão acima do ARENA) e o

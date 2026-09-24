@@ -1,5 +1,5 @@
 /**
- * O YUPOO PELO PAINEL: o André cola o link do álbum do fornecedor e as
+ * O YUPOO PELO PAINEL: o Luiz cola o link do álbum do fornecedor e as
  * fotos entram na peça.
  *
  * O Yupoo não deixa salvar a foto pelo celular (a página cobre a imagem
@@ -13,7 +13,7 @@
  *
  * Lojas com senha: o Yupoo confere a senha no cookie `indexlockcode`.
  * As senhas conhecidas ficam em SENHAS; uma loja nova com senha entra
- * aqui (ou o André passa a senha no próprio link: `?senha=...`).
+ * aqui (ou o Luiz passa a senha no próprio link: `?senha=...`).
  */
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36";
 
