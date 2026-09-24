@@ -31,7 +31,7 @@ export function FormPeca({ produto, categorias, proximoCodigo, aoConcluir, aoFec
   const [marca, setMarca] = useState(produto?.marca ?? "");
   const [cor, setCor] = useState(produto?.cores[0] ?? "");
   const [descricao, setDescricao] = useState(produto?.descricao ?? "");
-  const [prontaEntrega, setProntaEntrega] = useState(produto?.pronta_entrega ?? true);
+  const [prontaEntrega, setProntaEntrega] = useState(produto?.pronta_entrega ?? false);
   const [destaque, setDestaque] = useState(produto?.destaque ?? false);
   const [ativo, setAtivo] = useState(produto?.ativo ?? true);
   const [imagens, setImagens] = useState<Imagem[]>(produto?.imagens ?? []);
