@@ -2019,11 +2019,6 @@ div + .pn-campo {
   font-weight: 600;
   pointer-events: none;
 }
-@media (hover: hover) and (pointer: fine) {
-  .galeria-lupa > span {
-    display: none;
-  }
-}
 .galeria-mini {
   position: relative;
   display: block;

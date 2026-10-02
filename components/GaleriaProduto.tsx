@@ -8,16 +8,18 @@ import type { Imagem } from "@/lib/tipos";
 /**
  * A galeria da peça. A foto entra INTEIRA, sem corte (object-contain
  * num quadro quadrado e branco): o Luiz viu a Vapor com as pontas
- * cortadas e pediu o par inteiro sempre. Para ver de perto, dois
- * jeitos: no computador, passar o mouse sobre a foto amplia 2,2x
- * seguindo o cursor (a lupa das lojas grandes); em qualquer tela, tocar
- * na foto abre em tela cheia, com pinça, roda do mouse, arraste e
- * toque duplo. As miniaturas também mostram a foto inteira.
+ * cortadas e pediu o par inteiro sempre. Para ver de perto, tocar ou
+ * clicar na foto abre em tela cheia, com pinça, roda do mouse, arraste
+ * e toque duplo. As miniaturas também mostram a foto inteira.
+ *
+ * Sem lupa no mouse (02/10): ela ampliava 2,2x só de o cursor passar
+ * por cima, e quem abria a peça já chegava com o mouse sobre a foto,
+ * então a foto abria ampliada e parecia defeito. O zoom só acontece
+ * quando a pessoa pede.
  */
 export function GaleriaProduto({ imagens, nome }: { imagens: Imagem[]; nome: string }) {
   const [atual, setAtual] = useState(0);
   const [aberta, setAberta] = useState(false);
-  const [lupa, setLupa] = useState<{ x: number; y: number } | null>(null);
   const foto = imagens[atual];
 
   if (!foto) return <div className="foto aspect-square w-full" />;
@@ -51,13 +53,6 @@ export function GaleriaProduto({ imagens, nome }: { imagens: Imagem[]; nome: str
           className="galeria-quadro"
           aria-label="Ver a foto de perto"
           onClick={() => setAberta(true)}
-          onPointerEnter={(e) => e.pointerType === "mouse" && setLupa({ x: 50, y: 50 })}
-          onPointerMove={(e) => {
-            if (e.pointerType !== "mouse") return;
-            const r = e.currentTarget.getBoundingClientRect();
-            setLupa({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
-          }}
-          onPointerLeave={() => setLupa(null)}
         >
           <Image
             key={foto.url}
@@ -69,11 +64,10 @@ export function GaleriaProduto({ imagens, nome }: { imagens: Imagem[]; nome: str
             blurDataURL={foto.blur ?? undefined}
             priority
             className="object-contain"
-            style={lupa ? { transform: "scale(2.2)", transformOrigin: `${lupa.x}% ${lupa.y}%` } : undefined}
           />
           <span className="galeria-lupa" aria-hidden="true">
             <Icone nome="lupa" className="h-4 w-4" peso={2} />
-            <span>Toca pra ver de perto</span>
+            <span>Ver de perto</span>
           </span>
         </button>
         {imagens.length > 1 ? (
