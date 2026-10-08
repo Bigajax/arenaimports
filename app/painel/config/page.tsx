@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { ContratarEstudio } from "@/components/painel/ContratarEstudio";
 import { FormularioConfig } from "@/components/painel/FormularioConfig";
 import { sessao } from "@/lib/auth";
 import { obterConfig } from "@/lib/dados";
@@ -22,6 +23,14 @@ export default async function PaginaConfig() {
       <div className="mt-10">
         <FormularioConfig config={config} />
       </div>
+
+      {/* o resto do site muda com o estúdio (08/10/2026): o botão abre o
+          modal de contratar, com banner, cupom, lista VIP ou outra mudança */}
+      <section className="pn-lado__bloco mt-10 justify-items-start" aria-label="O que o estúdio faz">
+        <p className="pn-lado__rotulo">O resto do site</p>
+        <p className="pn-lado__texto">As fotos da capa, as vitrines da página inicial, as categorias e as partes novas mudam com o estúdio. Banner de campanha, cupom e lista VIP também.</p>
+        <ContratarEstudio loja="Arena Imports" />
+      </section>
     </div>
   );
 }

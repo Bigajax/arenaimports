@@ -92,8 +92,10 @@ export function ModalPeca({
     };
   });
 
+  /* o cursor já no nome, só no computador: no celular o foco abria o
+     teclado e rolava o modal para o meio, escondendo as fotos (08/10/2026) */
   useEffect(() => {
-    painel.current?.querySelector<HTMLInputElement>("#campo-nome")?.focus();
+    if (window.matchMedia("(min-width: 640px)").matches) painel.current?.querySelector<HTMLInputElement>("#campo-nome")?.focus();
   }, []);
 
   function tentarFechar() {

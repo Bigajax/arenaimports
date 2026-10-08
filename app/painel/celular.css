@@ -483,19 +483,51 @@
   }
 }
 
-/* ── o cadastro da peça em tela cheia, no celular ───────────── */
+/* ── o MODAL no celular: o cadastro da peça, o editor do banner e o
+   "Como funciona" (08/10/2026, tarde). De manhã eles abriam em tela
+   cheia; o Rafael, testando a SneakerSpot no ar: "não pode abrir a tela
+   toda, tem que ser em modal". Agora sobem de baixo como uma folha: o
+   fundo escurece, a página aparece atrás no alto, cantos de cima
+   redondos e a alça. O conteúdo rola por dentro, o Salvar fica no pé. ── */
 @media (max-width: 639px) {
   .pn-modal-fundo {
-    padding: 0;
+    padding: 3rem 0 0;
     backdrop-filter: none;
+    background: rgba(17, 17, 17, 0.55);
   }
   .pn-modal.pn-modal--peca {
-    min-height: 100dvh;
+    position: relative;
+    min-height: calc(100dvh - 3rem);
     margin: 0;
     max-width: none;
-    padding: 1.25rem 1rem 0;
+    padding: 1.5rem 1rem 0;
     border: 0;
-    box-shadow: none;
+    border-radius: 1.25rem 1.25rem 0 0;
+    box-shadow: 0 -12px 32px -12px rgba(0, 0, 0, 0.35);
+    animation: pn-modal-sobe 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* a alça: diz ao dedo que é uma folha por cima da página */
+  .pn-modal.pn-modal--peca::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    width: 2.5rem;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--pn-fio);
+    transform: translateX(-50%);
+  }
+  @keyframes pn-modal-sobe {
+    from {
+      transform: translateY(2rem);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pn-modal.pn-modal--peca {
+      animation: none;
+    }
   }
   .pn-modal--peca .pn-modal__fechar {
     top: 0.5rem;
@@ -527,17 +559,20 @@
     border: 1.5px solid var(--pn-fio);
   }
 
-  /* o "Como funciona" em tela cheia, como o cadastro (09/10, "essas
-     partes também"): o cartão com sombra deixava 300px para o exemplo */
+  /* o "Como funciona" como folha de baixo, igual ao cadastro */
   .pn-como {
     width: 100%;
     max-width: none;
-    height: 100dvh;
-    max-height: 100dvh;
-    margin: 0;
-    padding: 1.25rem 1rem 0;
+    height: calc(100dvh - 3rem);
+    max-height: calc(100dvh - 3rem);
+    margin: auto 0 0;
+    padding: 1.5rem 1rem 0;
     border: 0;
-    box-shadow: none;
+    border-radius: 1.25rem 1.25rem 0 0;
+    box-shadow: 0 -12px 32px -12px rgba(0, 0, 0, 0.35);
+  }
+  .pn-como::backdrop {
+    background: rgba(17, 17, 17, 0.55);
   }
   .pn-como__x-form {
     top: 0.5rem;
@@ -600,5 +635,152 @@
 
   .pn-banner {
     grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+}
+
+/* ── os BANNERS no celular (08/10/2026, a foto do Rafael da SneakerSpot
+   no ar: o "EDITAR" saía cortado da caixa e cada linha virava três
+   fileiras). Agora uma fileira só: No ar à esquerda, as setas, o lápis e
+   o Apagar, todos com 44px. O editor abre no modal (PainelBanners.tsx). ── */
+.pn-banner__setas .btn {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  font-size: 1.125rem;
+}
+@media (max-width: 899px) {
+  .pn-banner .pn-peca__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .pn-banner .pn-peca__acoes > .pn-chave {
+    margin-right: auto;
+  }
+  .pn-banner .pn-peca__acoes > .btn--texto {
+    min-height: 2.75rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* o rodapé preso do editor de banner: o Salvar ocupa o que sobra */
+.pn-modal--banner .pn-modal__rodape .pn-carimbo {
+  flex: 0 1 auto;
+}
+@media (max-width: 639px) {
+  .pn-modal--banner .pn-modal__rodape {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+  .pn-modal--banner .pn-modal__rodape .pn-carimbo {
+    flex: 1;
+  }
+  .pn-modal--banner .pn-modal__rodape .pn-carimbo button {
+    width: 100%;
+    min-height: 3rem;
+  }
+  .pn-modal--banner .pn-modal__rodape > .btn--texto {
+    min-height: 3rem;
+    padding: 0 1rem;
+    border: 1.5px solid var(--pn-fio);
+  }
+}
+
+/* ── o modal de CONTRATAR O ESTÚDIO (08/10/2026): quatro cartões, cada
+   um abre a conversa pronta. Sem preço: o preço é conversa. ── */
+.pn-contratar .pn-sub {
+  margin-top: 0.5rem;
+}
+.pn-contratar__lista {
+  display: grid;
+  gap: 0.625rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pn-contratar__item {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) 1.25rem;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 4.25rem;
+  padding: 0.75rem 1rem;
+  background: var(--pn-papel);
+  border: 1.5px solid var(--pn-tinta);
+  box-shadow: 3px 3px 0 var(--pn-tinta);
+  color: var(--pn-tinta);
+  text-decoration: none;
+  transition: transform 80ms ease-out, box-shadow 80ms ease-out;
+}
+.pn-contratar__item:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--pn-tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pn-contratar__item:hover {
+    background: var(--pn-gelo);
+  }
+}
+.pn-contratar__icone {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: var(--pn-gelo);
+}
+.pn-contratar__icone svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+.pn-contratar__item b {
+  display: block;
+  font-family: var(--pn-archivo), "Arial Narrow", sans-serif;
+  font-variation-settings: "wdth" 80;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.pn-contratar__item small {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--pn-nevoa);
+}
+.pn-contratar__seta {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--pn-nevoa);
+}
+.pn-contratar__plano {
+  margin-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--pn-nevoa);
+}
+.pn-contratar__plano button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--pn-tinta);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+@media (max-width: 639px) {
+  /* o modal de contratar é curto: não ocupa a altura toda */
+  .pn-modal.pn-contratar {
+    min-height: auto;
+    margin-top: auto;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  }
+  .pn-modal-fundo:has(.pn-contratar) {
+    display: flex;
+    flex-direction: column;
   }
 }
