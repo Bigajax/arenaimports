@@ -1,0 +1,55 @@
+/* ═════════════════════════════════════════════════════════════
+   SÓ DA ARENA (08/10/2026): o que o painel do molde ganhou para servir
+   ao Luiz. O resto do painel é o do molde (painel.css e celular.css).
+   ═════════════════════════════════════════════════════════════ */
+
+/* o link do álbum do Yupoo, embaixo das fotos do cadastro */
+.pn-yupoo {
+  margin-top: 1rem;
+  padding: 0.875rem 1rem 1rem;
+  border: 1.5px dashed var(--pn-fio);
+  background: var(--pn-gelo);
+}
+.pn-yupoo label {
+  display: block;
+  font-family: var(--pn-mono), monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pn-tinta);
+}
+.pn-yupoo > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.625rem;
+  align-items: end;
+  margin-top: 0.375rem;
+}
+.pn-yupoo .btn--linha {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  white-space: nowrap;
+}
+.pn-yupoo p {
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--pn-nevoa);
+}
+@media (max-width: 479px) {
+  .pn-yupoo > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* os filtros da lista: busca, categoria e "em mãos ou encomenda" */
+@media (min-width: 700px) {
+  .pn-filtros {
+    grid-template-columns: minmax(0, 1fr) 14rem 14rem;
+  }
+  .pn-filtros #estoque-painel {
+    border-left: 1.5px solid var(--pn-fio);
+    border-top: 0;
+  }
+}

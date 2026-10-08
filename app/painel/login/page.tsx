@@ -1,3 +1,4 @@
+import "./entrada.css";
 import { redirect } from "next/navigation";
 import { Logo } from "@/components/Marca";
 import { FormularioLogin } from "@/components/painel/FormularioLogin";

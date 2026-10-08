@@ -1,0 +1,12 @@
+/* O cabeçalho da caixa de entrada do painel da Arena. Era a única regra do
+   painel antigo (a seção O PAINEL do globals.css, aposentada em 08/10/2026,
+   quando o painel passou a ser o do molde) que o login ainda usa. */
+.pn-modal-cab {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--preto);
+  color: var(--branco);
+  border-bottom: 2px solid var(--verde-raio);
+}

@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 
-/* a peça abre num modal por cima da lista: esta rota só encaminha */
-export default async function PaginaPeca({ params }: { params: Promise<{ id: string }> }) {
+/* O endereço antigo da peça (/painel/peca/<id> e /painel/peca/nova), do
+   painel de 18/09 que a cartilha do Luiz ensina. Desde 08/10/2026 a peça
+   abre no cadastro de Peças: quem chega pelo endereço velho cai lá. */
+export default async function PecaAntiga({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  redirect(`/painel?peca=${encodeURIComponent(id)}`);
+  redirect(id === "nova" ? "/painel/pecas?nova=1" : "/painel/pecas");
 }

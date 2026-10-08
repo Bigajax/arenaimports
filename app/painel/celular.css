@@ -1,0 +1,604 @@
+/* ═════════════════════════════════════════════════════════════
+   O PAINEL NO CELULAR (09/10/2026, pedido do Rafael: "melhorar a
+   experiência no mobile"). Uma camada só, importada por último no
+   layout: em vez de mais remendos no painel.css, aqui mora o que vale
+   para o dedo. O caso: a barra tinha 7 abas em 360px (o "Desempenho"
+   não cabia), o cadastro da peça era um cartão de 276px úteis com o
+   Salvar no fim da rolagem, e arrastar para reordenar não existe no dedo.
+
+   Em cima, as peças novas que valem em toda largura; embaixo, só o
+   celular (até 899px, onde a barra de abas aparece).
+   ═════════════════════════════════════════════════════════════ */
+
+.pn {
+  /* a altura da barra de abas mais a área do gesto do iPhone: tudo o que
+     fica preso embaixo se mede por ela, nunca por um número solto */
+  --pn-barra: 0px;
+  min-height: 100dvh;
+}
+.pn-entrada {
+  min-height: 100dvh;
+}
+
+/* ── a lista de peças: abrir tocando, e o "Mudar a ordem" ────── */
+.pn-peca__foto {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+.pn-peca__abrir {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pn-peca__abrir:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+.pn-peca__editar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pn-como__editar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.pn-como__editar svg {
+  width: 0.9375rem;
+  height: 0.9375rem;
+}
+.pn-peca__lapis {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.pn-ordem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  color: var(--pn-nevoa);
+}
+.pn-ordem .btn--linha {
+  min-height: 2.75rem;
+  padding: 0 1.125rem;
+}
+.pn-ordem .btn--linha[aria-pressed="true"] {
+  background: var(--pn-tinta);
+  color: var(--pn-papel);
+}
+.pn-peca__ordem {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+@media (min-width: 900px) {
+  .pn-peca__ordem {
+    grid-column: auto;
+  }
+}
+.pn-peca__ordem .btn--linha {
+  width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  font-size: 1.125rem;
+}
+.pn-peca__ordem .btn--linha:disabled {
+  opacity: 0.3;
+}
+
+/* ── as fotos da peça: tocar abre capa, mover e tirar ───────── */
+.pn-foto-peca__toque {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.pn-foto-peca__toque:focus-visible {
+  outline: 2px solid var(--pn-tinta);
+  outline-offset: -2px;
+}
+.pn-foto-peca[data-aberta] {
+  outline: 2px solid var(--pn-tinta);
+  outline-offset: 2px;
+}
+.pn-foto-peca__acoes {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: color-mix(in srgb, var(--pn-tinta) 70%, transparent);
+}
+.pn-foto-peca__acoes button {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  border: 0;
+  background: color-mix(in srgb, var(--pn-papel) 92%, transparent);
+  font-family: var(--pn-archivo), "Arial Narrow", sans-serif;
+  font-variation-settings: "wdth" 80;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--pn-tinta);
+  cursor: pointer;
+}
+.pn-foto-peca__acoes button:disabled {
+  color: var(--pn-sombra);
+  cursor: default;
+}
+.pn-foto-peca__acoes button:last-child {
+  color: var(--pn-erro, #b3261e);
+}
+
+/* o Apagar, no fim do formulário, longe do Salvar */
+.pn-modal__apagar {
+  margin-top: 2rem;
+}
+.pn-modal__apagar .btn--texto {
+  min-height: 2.75rem;
+  color: var(--pn-erro, #b3261e);
+  border-color: currentColor;
+}
+
+/* o rodapé do cadastro preso embaixo, em toda largura */
+.pn-modal__rodape {
+  position: sticky;
+  bottom: -1.5rem;
+  z-index: 3;
+  background: var(--pn-papel);
+}
+
+/* ═════════════════════════════════════════════════════════════
+   SÓ O CELULAR
+   ═════════════════════════════════════════════════════════════ */
+@media (max-width: 899px) {
+  .pn {
+    /* a cápsula (3.75rem) mais o respiro embaixo e a área do gesto */
+    --pn-barra: calc(3.75rem + 0.75rem + env(safe-area-inset-bottom));
+  }
+  .pn--logado {
+    padding-bottom: calc(var(--pn-barra) + 1.5rem);
+  }
+
+  /* sem cabeçalho no celular (09/10): a página começa embaixo do relógio */
+  .pn--logado main {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* ── a barra: uma CÁPSULA que flutua (09/10/2026, "o nav mais
+     atualizado") ────────────────────────────────────────────────
+     Solta da borda, arredondada, BRANCA (pedido do Rafael, depois da
+     versão em tinta), com fio fino, sombra macia e um respiro embaixo, o
+     jeito dos apps de agora. A aba aberta fica em tinta, com uma pílula
+     clara atrás do ícone. No centro, o Desempenho com o selo do
+     Performance, no mesmo nível das outras. */
+  .pn-barra {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 0.3125rem;
+    background: #fff;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 1.375rem;
+    box-shadow:
+      0 14px 32px -12px rgba(17, 17, 17, 0.28),
+      0 2px 8px rgba(17, 17, 17, 0.08);
+  }
+  .pn-barra a,
+  .pn-barra > button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    min-height: 3.125rem;
+    padding: 0.25rem 0;
+    border: 0;
+    border-radius: 1.125rem;
+    background: none;
+    font-family: var(--pn-archivo), "Arial Narrow", sans-serif;
+    font-variation-settings: "wdth" 80;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    color: #8a8a84;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 150ms ease-out;
+  }
+  .pn-barra svg {
+    width: 1.3125rem;
+    height: 1.3125rem;
+  }
+  /* a pílula da aba aberta, atrás do ícone */
+  .pn-barra a > svg,
+  .pn-barra > button > svg,
+  .pn-barra__selo {
+    box-sizing: content-box;
+    padding: 0.1875rem 0.875rem;
+    border-radius: 999px;
+    transition: background-color 180ms ease-out;
+  }
+  .pn-barra a[aria-current="page"],
+  .pn-barra > button[aria-current="page"],
+  .pn-barra > button[aria-expanded="true"] {
+    color: var(--pn-tinta);
+    font-weight: 700;
+  }
+  .pn-barra a[aria-current="page"] > svg,
+  .pn-barra > button[aria-current="page"] > svg,
+  .pn-barra > button[aria-expanded="true"] > svg,
+  .pn-barra a.pn-barra__destaque[aria-current="page"] .pn-barra__selo {
+    background: var(--pn-gelo);
+  }
+  /* sem o fio das versões de antes */
+  .pn-barra a::before,
+  .pn-barra > button::before {
+    content: none !important;
+  }
+  .pn-barra a:active > svg,
+  .pn-barra > button:active > svg {
+    background: var(--pn-gelo);
+  }
+
+  /* o Desempenho: o selo rosa no lugar do ícone e o nome sempre aceso */
+  .pn-barra a.pn-barra__destaque {
+    color: var(--pn-tinta);
+    font-weight: 700;
+  }
+  .pn-barra__selo {
+    display: grid;
+    place-items: center;
+    height: 1.3125rem;
+  }
+  .pn-barra__selo svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    background: none !important;
+  }
+  .pn-barra a.pn-barra__destaque:active .pn-barra__selo svg {
+    transform: scale(0.92);
+  }
+
+  /* ── a folha do "Mais" ── */
+  .pn-folha {
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+    background: rgba(17, 17, 17, 0.45);
+    animation: pn-folha-fundo 180ms ease-out both;
+  }
+  /* a folha flutua também, um cartão acima da cápsula */
+  .pn-folha__corpo {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(var(--pn-barra) + 0.5rem);
+    max-height: calc(100dvh - var(--pn-barra) - 4rem);
+    overflow-y: auto;
+    padding: 0.5rem 0;
+    background: var(--pn-papel);
+    border-radius: 1.375rem;
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.4);
+    animation: pn-folha-sobe 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .pn-folha__alca {
+    display: block;
+    width: 2.5rem;
+    height: 4px;
+    margin: 0.25rem auto 0.5rem;
+    border-radius: 999px;
+    background: var(--pn-fio);
+  }
+  .pn-folha ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pn-folha a,
+  .pn-folha button {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0 1.25rem;
+    border: 0;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    color: var(--pn-tinta);
+    cursor: pointer;
+  }
+  .pn-folha a[aria-current="page"] {
+    background: var(--pn-gelo);
+    box-shadow: inset 3px 0 0 var(--pn-verde);
+  }
+  .pn-folha svg {
+    flex: none;
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+  .pn-folha__fio {
+    height: 1px;
+    margin: 0.375rem 1.25rem;
+    background: var(--pn-fio);
+  }
+  @keyframes pn-folha-fundo {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes pn-folha-sobe {
+    from {
+      transform: translateY(1.5rem);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pn-folha,
+    .pn-folha__corpo {
+      animation: none;
+    }
+  }
+
+  /* ── o que fica preso embaixo se mede pela barra ── */
+  .pn-salvar {
+    bottom: var(--pn-barra);
+  }
+  .pn-avisos {
+    bottom: calc(var(--pn-barra) + 0.75rem);
+  }
+  .pn:has(.pn-salvar) .pn-avisos {
+    bottom: calc(var(--pn-barra) + 5.5rem);
+  }
+
+  /* ── a lista de peças ── */
+  .pn-peca {
+    padding: 0.875rem 1rem;
+  }
+  .pn-peca__acoes {
+    display: grid;
+    grid-template-columns: auto auto 2.75rem;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .pn-peca__acoes .pn-chave {
+    white-space: nowrap;
+  }
+  .pn-peca__preco--vazio {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .pn-peca__nome {
+    line-height: 1.2;
+  }
+  .pn-peca__acoes .btn--linha {
+    margin-left: 0;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    justify-content: center;
+  }
+  .pn-peca__editar span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .pn-placar span {
+    font-size: 0.6875rem;
+  }
+  /* o "Ver quais" com 44px de toque: o traço vira sublinhado do texto,
+     senão ele descia para o pé da caixa */
+  .pn-placar button {
+    min-height: 2.75rem;
+    margin: -0.5rem 0 -0.75rem;
+    padding: 0;
+    border-bottom: 0;
+    font-size: 0.6875rem;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.3em;
+  }
+
+  /* ── toques pequenos que ganham 44px ── */
+  .pn-modal__mais,
+  .pn-tam__acoes button,
+  .pn-tam__outro summary,
+  .pn-ficha__voltar,
+  .pn-lista__tirar,
+  .pn-lista__mais {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+  }
+  .pn-modal__fechar,
+  .pn-editor__x {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  /* a dica que abre e fecha: a linha inteira é o toque */
+  .pn-dica--abre summary {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .cl-explica ul {
+    margin-top: 0.5rem;
+  }
+
+  /* Clientes: o botão de copiar na largura toda, embaixo do título */
+  .pn-cabeca .pn-carimbo {
+    width: 100%;
+  }
+  .pn-cabeca .pn-carimbo button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* o vão do toque não fica marcado depois do dedo (iOS) */
+  .pn-carimbo:hover,
+  .pn-carimbo button:hover {
+    transform: none;
+  }
+
+  /* ── banners: a foto e o foco em uma coluna ── */
+  .pn-foto__palco {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* o horário: as duas horas empilham no aperto */
+@media (max-width: 380px) {
+  .pn-horario__horas {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── o cadastro da peça em tela cheia, no celular ───────────── */
+@media (max-width: 639px) {
+  .pn-modal-fundo {
+    padding: 0;
+    backdrop-filter: none;
+  }
+  .pn-modal.pn-modal--peca {
+    min-height: 100dvh;
+    margin: 0;
+    max-width: none;
+    padding: 1.25rem 1rem 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .pn-modal--peca .pn-modal__fechar {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  .pn-modal--peca .pn-modal__titulo {
+    padding-right: 3rem;
+  }
+  .pn-modal__rodape {
+    bottom: 0;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    border-top: 1.5px solid var(--pn-tinta);
+  }
+  .pn-modal__rodape > div {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    width: 100%;
+    gap: 0.75rem;
+    margin-left: 0;
+  }
+  .pn-modal__rodape .btn {
+    min-height: 3rem;
+    justify-content: center;
+  }
+  .pn-modal__rodape .btn--texto {
+    padding: 0 1rem;
+    border: 1.5px solid var(--pn-fio);
+  }
+
+  /* o "Como funciona" em tela cheia, como o cadastro (09/10, "essas
+     partes também"): o cartão com sombra deixava 300px para o exemplo */
+  .pn-como {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 1.25rem 1rem 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .pn-como__x-form {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  .pn-como__x {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .pn-como__titulo {
+    padding-right: 3rem;
+  }
+  .pn-como__abas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .pn-como__aba {
+    min-height: 2.75rem;
+    padding: 0.5rem;
+  }
+  .pn-como__fim {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 1rem -1rem 0;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background: var(--pn-papel);
+    border-top: 1.5px solid var(--pn-tinta);
+  }
+  .pn-como__dica {
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .pn-como__fim .pn-carimbo,
+  .pn-como__fim .pn-carimbo button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* apagar de vez: uma folha de baixo */
+  .pn-confirma {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .pn-confirma__caixa.pn-modal {
+    max-width: none;
+    padding: 1.5rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 1.5px solid var(--pn-tinta);
+    box-shadow: none;
+  }
+  .pn-confirma__caixa .btn {
+    min-height: 3rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .pn-banner {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+}
