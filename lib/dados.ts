@@ -123,6 +123,37 @@ export const obterConfig = cache(async (): Promise<Config> => {
   return { ...configPadrao, ...doBanco };
 });
 
+/**
+ * A peça que a contagem do estúdio (estudio/) confere antes de gravar um
+ * evento: existe e está no ar? A Arena não marca número esgotado, então
+ * os esgotados vêm sempre vazios. Guardada por 60 s (08/10/2026, do molde).
+ */
+const PECAS_MEDIDAS = new Map<string, { quando: number; peca: PecaMedida | null }>();
+type PecaMedida = { slug: string; esgotados: string[] };
+export async function pecaParaMedir(slug: string): Promise<PecaMedida | null> {
+  const agora = Date.now();
+  const guardada = PECAS_MEDIDAS.get(slug);
+  if (guardada && agora - guardada.quando < 60_000) return guardada.peca;
+
+  let peca: PecaMedida | null = null;
+  if (MODO === "local") {
+    const { produtos } = await lerCatalogo();
+    const p = produtos.find((x) => x.slug === slug && x.ativo);
+    if (p) peca = { slug, esgotados: [] };
+  } else {
+    const { data } = await clienteServidor({ getAll: () => [] })
+      .from("produtos")
+      .select("slug")
+      .eq("slug", slug)
+      .eq("ativo", true)
+      .maybeSingle<{ slug: string }>();
+    if (data) peca = { slug, esgotados: [] };
+  }
+  if (PECAS_MEDIDAS.size > 2000) PECAS_MEDIDAS.clear();
+  PECAS_MEDIDAS.set(slug, { quando: agora, peca });
+  return peca;
+}
+
 export async function obterProduto(slug: string): Promise<Produto | null> {
   const { produtos } = await carregarCatalogo();
   return produtos.find((p) => p.slug === slug && p.ativo) ?? null;

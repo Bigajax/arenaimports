@@ -1,0 +1,980 @@
+/* ─────────────────────────────────────────────────────────────
+   A ABA DESEMPENHO, NO JEITO DE PAINEL DE NEGÓCIO (06/10/2026, noite).
+   Referência escolhida pelo Rafael: Shopify e Stripe. Fundo cinza claro,
+   cartões brancos com borda fina e canto de 12px, uma sombra de 1px, uma
+   cor só de destaque (o verde do Performance), ícone em cada cartão,
+   título em caixa normal, letras e espaços numa escala só (4px).
+   Esta aba usa o verde em vez da cor da loja: é o produto do estúdio, e o
+   painel neutro (tudo #111) deixava a tela "cinza e preta".
+   ───────────────────────────────────────────────────────────── */
+.vis-pagina { max-width: 76rem; }
+.dz {
+  --fio-claro: #ebebeb;
+  --dz-borda: #e3e3e3;
+  --dz-texto: #303030;
+  --dz-suave: #616161;
+  --dz-fundo: #f1f1f1;
+  --dz-verde: #0c9159;
+  --dz-verde-escuro: #076b42;
+  --dz-verde-claro: #e6f4ed;
+  --dz-vermelho: #c4302b;
+  --dz-vermelho-claro: #fdecea;
+  /* os gráficos do desenho.ts leem --pn-sol: aqui, o verde */
+  --pn-sol: var(--dz-verde);
+  --pn-tinta: var(--dz-texto);
+  --pn-nevoa: var(--dz-suave);
+  --pn-fio: var(--dz-borda);
+  color: var(--dz-texto);
+  font-family: var(--font-corpo);
+  font-variant-numeric: tabular-nums;
+}
+.dz-cartao {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--dz-borda);
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+/* o cabeçalho da página */
+.dz-cabeca { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.dz-titulo { font-family: var(--font-corpo); font-weight: 650; font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.01em; color: var(--dz-texto); }
+.dz-intro { margin-top: 0.25rem; font-size: 0.875rem; color: var(--dz-suave); }
+.dz-periodo { display: inline-flex; padding: 3px; gap: 2px; background: #e6e6e6; border-radius: 10px; font-size: 0.8125rem; font-weight: 600; }
+.dz-periodo a, .dz-periodo span { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; border-radius: 8px; color: var(--dz-suave); }
+.dz-periodo a[aria-current="page"] { background: #fff; color: var(--dz-texto); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+.dz-periodo span[aria-disabled] { opacity: 0.55; cursor: not-allowed; }
+.dz-periodo svg { width: 0.8rem; height: 0.8rem; }
+@media (hover: hover) and (pointer: fine) { .dz-periodo a:not([aria-current]):hover { color: var(--dz-texto); } }
+
+/* os quatro números: um cartão só, quatro colunas */
+.dz-numeros { margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #fff; border: 1px solid var(--dz-borda); border-radius: 12px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04); overflow: hidden; }
+@media (min-width: 900px) { .dz-numeros { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dz-numero { display: grid; gap: 0.5rem; padding: 1rem 1.25rem 0.75rem; min-width: 0; border-left: 1px solid var(--fio-claro); }
+.dz-numero:first-child { border-left: 0; }
+@media (max-width: 899px) {
+  .dz-numero:nth-child(3) { border-left: 0; }
+  .dz-numero:nth-child(n + 3) { border-top: 1px solid var(--fio-claro); }
+}
+.dz-numero .rot { font-size: 0.8125rem; font-weight: 500; color: var(--dz-suave); }
+.dz-numero .linha { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.dz-numero .val { font-weight: 650; font-size: 1.75rem; line-height: 1.1; letter-spacing: -0.02em; color: var(--dz-texto); }
+.dz-selo { display: inline-flex; align-items: center; gap: 0.15rem; padding: 0.1rem 0.45rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: #ececec; color: var(--dz-suave); }
+.dz-selo.sobe { background: var(--dz-verde-claro); color: var(--dz-verde-escuro); }
+.dz-selo.desce { background: var(--dz-vermelho-claro); color: var(--dz-vermelho); }
+.dz-mini { display: block; width: 100%; height: 2rem; color: var(--dz-verde); }
+
+/* as três colunas */
+.dz-colunas { margin-top: 1rem; display: grid; gap: 1rem; align-items: start; }
+@media (min-width: 900px) { .dz-colunas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dz-cartao__cabeca { display: flex; align-items: center; gap: 0.6rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--fio-claro); }
+.dz-cartao__cabeca h2 { font-family: var(--font-corpo); font-weight: 650; font-size: 0.9375rem; color: var(--dz-texto); }
+.dz-icone { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 8px; background: var(--dz-verde-claro); color: var(--dz-verde-escuro); flex: none; }
+.dz-icone svg { width: 1rem; height: 1rem; }
+.dz-icone-redondo { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 999px; background: #f1f1f1; color: var(--dz-texto); flex: none; }
+.dz-icone-redondo.pago { background: var(--dz-verde-claro); color: var(--dz-verde-escuro); }
+.dz-icone-redondo svg { width: 1.05rem; height: 1.05rem; }
+.dz-icone-redondo--grande { width: 2.75rem; height: 2.75rem; }
+.dz-icone-redondo--grande svg { width: 1.3rem; height: 1.3rem; }
+.dz-miniatura { width: 2.5rem; height: 2.5rem; border-radius: 8px; object-fit: cover; display: block; background: #f1f1f1; border: 1px solid var(--fio-claro); flex: none; }
+.dz-vazio { padding-top: 0.75rem; font-size: 0.875rem; line-height: 1.45; color: var(--dz-suave); }
+.dz-vazio-topo { margin-top: 1.25rem; font-size: 0.9rem; color: var(--dz-suave); }
+.dz-rodape { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--fio-claro); font-size: 0.8125rem; line-height: 1.45; color: var(--dz-suave); }
+.dz-rodape[hidden] { display: none; }
+.dz-rodape:empty { display: none; }
+.dz-destaque { margin-top: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; background: var(--dz-verde-claro); font-size: 0.8125rem; font-weight: 600; line-height: 1.45; color: var(--dz-verde-escuro); }
+.dz-destaque:empty { display: none; }
+.dz-sub { margin-top: 1rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: var(--dz-suave); }
+.dz-link { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.35rem; font-size: 0.8125rem; font-weight: 600; color: var(--dz-verde-escuro); }
+.dz-link svg { width: 0.8rem; height: 0.8rem; }
+@media (hover: hover) and (pointer: fine) { .dz-link:hover { text-decoration: underline; text-underline-offset: 3px; } }
+
+/* o que fazer agora */
+.dz-fazer { list-style: none; padding: 0; }
+.dz-fazer li { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.85rem 0; border-top: 1px solid var(--fio-claro); }
+.dz-fazer li:first-child { border-top: 0; }
+.dz-fazer li > div { min-width: 0; }
+.dz-fazer .frase { font-weight: 600; font-size: 0.875rem; line-height: 1.4; color: var(--dz-texto); }
+.dz-fazer .contexto { margin-top: 0.15rem; font-size: 0.8125rem; line-height: 1.45; color: var(--dz-suave); }
+
+/* as listas: peças, origem, pares */
+.dz-lista, .dz-origem, .dz-pares { list-style: none; padding: 0; }
+.dz-lista li, .dz-pares li { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0; border-top: 1px solid var(--fio-claro); }
+.dz-lista li:first-child, .dz-pares li:first-child, .dz-origem li:first-child { border-top: 0; }
+.dz-lista__texto { flex: 1; min-width: 0; display: grid; gap: 0.1rem; }
+.dz-lista__texto a, .dz-lista__texto b { font-weight: 600; font-size: 0.875rem; color: var(--dz-texto); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dz-lista__texto small { font-size: 0.75rem; color: var(--dz-suave); }
+.dz-lista__valor { display: grid; justify-items: end; font-weight: 650; font-size: 0.9375rem; color: var(--dz-texto); white-space: nowrap; }
+.dz-lista__valor small { font-weight: 400; font-size: 0.6875rem; color: var(--dz-suave); }
+@media (hover: hover) and (pointer: fine) { .dz-lista__texto a:hover { text-decoration: underline; text-underline-offset: 3px; } }
+.dz-origem li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.4rem 0.75rem; align-items: center; padding: 0.6rem 0; border-top: 1px solid var(--fio-claro); }
+.dz-logo { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 8px; border: 1px solid var(--fio-claro); flex: none; }
+.dz-barra { grid-column: 2 / -1; height: 6px; border-radius: 999px; background: #efefef; overflow: hidden; }
+.dz-barra i { display: block; height: 100%; border-radius: 999px; background: var(--dz-verde); }
+
+/* o Performance fechado: um cartão com o cadeado, a contagem e o botão */
+.dz-perf-fechado { margin-top: 1rem; display: grid; gap: 1rem; align-items: center; padding: 1.25rem; background: linear-gradient(0deg, #fff, #fff), #fff; border-color: #cfe7da; }
+@media (min-width: 900px) { .dz-perf-fechado { grid-template-columns: auto minmax(0, 1fr) auto; gap: 1.25rem; padding: 1.25rem 1.5rem; } }
+.dz-sobre { font-size: 0.75rem; font-weight: 650; color: var(--dz-verde-escuro); }
+.dz-perf-fechado__titulo { margin-top: 0.15rem; font-weight: 650; font-size: 1.0625rem; line-height: 1.35; color: var(--dz-texto); }
+.dz-perf-fechado__lead { margin-top: 0.25rem; font-size: 0.8125rem; line-height: 1.5; color: var(--dz-suave); max-width: 64ch; }
+.dz-botao { display: inline-flex; align-items: center; justify-content: center; min-height: 2.5rem; padding: 0 1rem; border-radius: 10px; background: var(--dz-verde); color: #fff; font-weight: 600; font-size: 0.875rem; white-space: nowrap; box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2); }
+@media (hover: hover) and (pointer: fine) { .dz-botao:hover { background: var(--dz-verde-escuro); } }
+.dz-botao:active { transform: translateY(1px); }
+
+/* o Performance liberado */
+.dz-perf { margin-top: 2rem; }
+.dz-perf__cabeca { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.dz-perf__titulo { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-corpo); font-weight: 650; font-size: 1.125rem; color: var(--dz-texto); }
+.dz-perf__titulo::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--dz-verde); }
+.dz-assinatura { font-size: 0.75rem; color: var(--dz-suave); }
+@media (hover: hover) and (pointer: fine) { .dz-assinatura:hover { text-decoration: underline; text-underline-offset: 3px; } }
+
+/* os posts */
+.dz-posts { list-style: none; padding: 0; }
+.dz-posts li { padding: 0.6rem 0; border-top: 1px solid var(--fio-claro); }
+.dz-posts li:first-child { border-top: 0; }
+.dz-posts .nome { display: block; font-weight: 600; font-size: 0.875rem; color: var(--dz-texto); }
+.dz-posts .nums { display: flex; gap: 1rem; align-items: baseline; margin-top: 0.15rem; }
+.dz-posts .num { font-weight: 650; font-size: 0.9375rem; color: var(--dz-texto); }
+.dz-posts .num.sol { color: var(--dz-verde-escuro); }
+.dz-posts .num small { font-weight: 400; font-size: 0.75rem; color: var(--dz-suave); margin-left: 0.2rem; }
+.dz-posts .taxa { display: block; font-size: 0.75rem; color: var(--dz-suave); }
+
+/* criar o link de um post: fechado até pedir */
+.dz-medir { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--fio-claro); }
+.dz-medir summary { cursor: pointer; font-weight: 600; font-size: 0.8125rem; color: var(--dz-verde-escuro); }
+.dz-medir .vis-passos { grid-template-columns: 1fr !important; }
+.dz-medir .pn-carimbo { filter: none; }
+.dz-medir .pn-carimbo > button { border-radius: 8px; background: var(--dz-verde); text-transform: none; font-family: var(--font-corpo); font-weight: 600; }
+.dz .vis-passos__n { border-radius: 999px; background: var(--dz-verde); }
+.dz .vis-links__form input { border-radius: 8px; background: #fff; border-color: var(--dz-borda); }
+
+/* nas colunas, cinco linhas bastam */
+.dz-cartao .vis-barras li:nth-child(n + 6) { display: none; }
+.dz .vis-barras .trilho { height: 6px; border-radius: 999px; background: #efefef; overflow: hidden; }
+.dz .vis-barras .trilho i { border-radius: 999px; }
+.dz .vis-barras .num { font-family: var(--font-corpo); font-weight: 650; }
+
+/* peças compartilhadas com o desenho.ts */
+.vis-grafico { margin-top: 0.5rem; }
+.vis svg { display: block; overflow: visible; }
+.vis svg text { font-family: var(--font-corpo); font-size: 11px; fill: var(--pn-nevoa); font-variant-numeric: tabular-nums; }
+.vis-vazio { padding: 0.5rem 0; color: var(--pn-nevoa); font-size: 0.85rem; list-style: none; }
+.vis-barras { list-style: none; margin-top: 0.4rem; padding: 0; }
+.vis-barras li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: baseline; padding-block: 5px; cursor: default; }
+.vis-barras .nome { font-size: 0.85rem; line-height: 1.25; overflow-wrap: anywhere; }
+.vis-barras .num { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; white-space: nowrap; color: var(--pn-tinta); }
+.vis-barras .num small { font-family: var(--font-corpo); font-weight: 400; font-size: 0.74rem; color: var(--pn-nevoa); margin-left: 4px; }
+.vis-barras .trilho { grid-column: 1 / -1; height: 6px; background: var(--fio-claro); }
+.vis-barras .trilho i { display: block; height: 100%; background: var(--pn-tinta); }
+.vis-barras li.sol .trilho i { background: var(--pn-sol); }
+.vis-escolha { margin-top: 0.4rem; width: 100%; border: 1px solid var(--pn-fio); background: var(--pn-gelo); padding: 0.45rem 0.6rem; font-size: 0.88rem; }
+
+/* o gerador de link do post */
+.vis-links { margin-top: 0.75rem; }
+.vis-links__form { display: flex; gap: 0.6rem; align-items: center; }
+.vis-links__form input { flex: 1; min-width: 0; border: 1px solid var(--pn-fio); background: var(--pn-gelo); padding: 0.6rem 0.7rem; font-size: 1rem; }
+.vis-links__form .pn-carimbo > button { min-height: 2.6rem; padding: 0 1rem; font-size: 0.9rem; }
+.vis-links__erro { margin-top: 0.4rem; color: var(--pn-sol-escuro); font-size: 0.85rem; }
+.vis-links__lista { list-style: none; margin-top: 0.6rem; padding: 0; }
+.vis-links__lista li { display: flex; align-items: center; gap: 0.5rem; padding-block: 0.4rem; border-top: 1px solid var(--fio-claro); font-size: 0.85rem; }
+.vis-links__lista .nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vis-links__lista .nome small { display: block; font-size: 0.75rem; color: var(--pn-nevoa); overflow: hidden; text-overflow: ellipsis; }
+.vis-links__lista button { font-weight: 700; color: var(--pn-tinta); text-decoration: underline; text-underline-offset: 3px; min-height: 2rem; }
+.vis-links__lista button.apagar { color: var(--pn-nevoa); font-weight: 400; }
+.vis-links__titulo { margin-top: 1.25rem; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+.vis-passos { list-style: none; padding: 0; margin-top: 1rem; display: grid; gap: 1rem; }
+.vis-passos > li { display: flex; gap: 0.75rem; align-items: flex-start; min-width: 0; }
+.vis-passos > li > div { min-width: 0; flex: 1; }
+.vis-passos__n {
+  flex: none; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; background: var(--pn-sol); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+}
+.vis-passos b { font-family: var(--font-display); font-size: 0.95rem; color: var(--pn-tinta); }
+.vis-passos p { margin-top: 0.25rem; font-size: 0.85rem; color: var(--pn-nevoa); }
+.vis-passos .vis-links__form { margin-top: 0.6rem; }
+.vis-novo { margin-top: 0.5rem; padding: 0.75rem; background: var(--pn-gelo); border: 1px solid var(--pn-tinta); }
+.vis-novo__titulo { font-weight: 700; color: var(--pn-tinta) !important; }
+.vis-novo__url { margin: 0.35rem 0 0.7rem; padding: 0.5rem 0.6rem; background: #fff; border: 1px dashed var(--pn-tinta); font-size: 0.85rem; color: var(--pn-tinta) !important; overflow-wrap: anywhere; user-select: all; }
+.vis-onde { list-style: none; padding: 0; margin-top: 0.4rem; }
+.vis-onde li { font-size: 0.84rem; color: var(--pn-nevoa); padding-block: 0.3rem; border-top: 1px solid var(--fio-claro); }
+.vis-onde li b { font-family: var(--font-corpo); font-size: 0.84rem; }
+.vis-aviso { margin-top: 1rem; padding: 0.7rem 0.9rem; background: var(--pn-gelo); border-left: 3px solid var(--pn-tinta); font-size: 0.84rem; color: var(--pn-nevoa); }
+.vis-aviso b { color: var(--pn-tinta); }
+.vis-previa { margin-top: 0.45rem !important; font-size: 0.85rem; color: var(--pn-nevoa); }
+.vis-previa b { font-family: var(--font-corpo); color: var(--pn-tinta); overflow-wrap: anywhere; }
+
+/* a dica flutuante dos gráficos: fica no body, fora do .vis */
+.vis-dica {
+  position: fixed; z-index: 80; pointer-events: none; min-width: 120px; max-width: 240px;
+  background: #141210; color: #fff; padding: 8px 10px; font-size: 12px; line-height: 1.35;
+  box-shadow: 3px 3px 0 rgba(20, 18, 16, 0.25); opacity: 0; transition: opacity 0.12s;
+}
+.vis-dica.on { opacity: 1; }
+.vis-dica b { display: block; font-size: 15px; }
+.vis-dica span { display: block; color: #cfcac2; }
+.vis-dica .linha { display: flex; align-items: center; gap: 6px; }
+.vis-dica .linha::before { content: ""; width: 10px; height: 2px; background: var(--k, #fff); }
+
+/* o aviso de "liberado até": um modal marcado como importante, que abre
+   quando o dono entra e some depois de fechado (AvisoLiberado.tsx) */
+.pn-dialogo { margin: auto; border-radius: 14px; border: 1px solid #e3e3e3; background: var(--pn-papel); color: var(--pn-tinta); padding: 1.5rem; width: min(28rem, calc(100% - 2rem)); box-shadow: 0 20px 50px rgba(0,0,0,.18); }
+.pn-dialogo::backdrop { background: rgba(17, 17, 17, 0.45); }
+.pn-dialogo__rotulo { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 700; color: var(--pn-tinta); }
+.pn-dialogo__rotulo::before { content: ""; width: 0.6rem; height: 0.6rem; background: #c98a00; }
+.pn-dialogo h2 { margin-top: 0.6rem; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; line-height: 1.25; }
+.pn-dialogo p + p, .pn-dialogo h2 + p { margin-top: 0.6rem; font-size: 0.95rem; line-height: 1.5; color: var(--pn-nevoa); }
+.pn-dialogo__acoes { margin-top: 1.25rem; }
+
+/* nas colunas, cinco linhas bastam: o resto é ruído */
+.dz-coluna .vis-barras li:nth-child(n + 6) { display: none; }
+
+/* os números são botões: abrem o dia a dia (06/10/2026) */
+button.dz-numero { text-align: left; background: #fff; cursor: pointer; transition: background-color 120ms ease-out; }
+@media (hover: hover) and (pointer: fine) { button.dz-numero:hover { background: #fafafa; } button.dz-numero:hover .dz-abrir { opacity: 1; } }
+button.dz-numero[aria-expanded="true"] { background: #f6fbf8; box-shadow: inset 0 -2px 0 var(--dz-verde); }
+.dz-numero .rot { display: flex; justify-content: space-between; gap: 0.5rem; }
+.dz-abrir { font-size: 0.75rem; font-weight: 600; color: var(--dz-verde-escuro); opacity: 0; transition: opacity 120ms ease-out; }
+button.dz-numero[aria-expanded="true"] .dz-abrir, button.dz-numero:focus-visible .dz-abrir { opacity: 1; }
+@media (hover: none) { .dz-abrir { opacity: 1; } }
+
+.dz-detalhe { margin-top: 1rem; }
+.dz-detalhe__cabeca { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.dz-detalhe__cabeca h2 { font-weight: 650; font-size: 1rem; color: var(--dz-texto); }
+.dz-detalhe__cabeca p { margin-top: 0.2rem; min-height: 1.2em; font-size: 0.8125rem; color: var(--dz-suave); }
+.dz-fechar { width: 2rem; height: 2rem; border-radius: 8px; font-size: 1.25rem; line-height: 1; color: var(--dz-suave); }
+@media (hover: hover) and (pointer: fine) { .dz-fechar:hover { background: #f1f1f1; color: var(--dz-texto); } }
+.dz-detalhe__grafico { margin-top: 0.75rem; width: 100%; overflow: hidden; }
+.dz-detalhe__grafico svg { display: block; touch-action: pan-y; }
+.dz-detalhe__grafico text { font-size: 11px; fill: var(--dz-suave); }
+.dz-detalhe__resumo { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--fio-claro); display: grid; gap: 0.75rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dz-detalhe__resumo dt { font-size: 0.75rem; color: var(--dz-suave); }
+.dz-detalhe__resumo dd { margin-top: 0.15rem; font-weight: 650; font-size: 1rem; color: var(--dz-texto); }
+.dz-detalhe__resumo small { display: block; font-weight: 400; font-size: 0.75rem; color: var(--dz-suave); }
+
+/* o detalhe em colunas com a média de 7 dias (06/10/2026) */
+.dz-detalhe__frase { color: var(--dz-texto) !important; font-weight: 600; }
+.dz-detalhe__legenda { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: 0.75rem; color: var(--dz-suave); }
+.dz-detalhe__legenda span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.dz-detalhe__legenda i { display: inline-block; }
+.dz-detalhe__legenda .col { width: 0.7rem; height: 0.7rem; border-radius: 2px; background: #b9e0cb; }
+.dz-detalhe__legenda .lin { width: 1rem; height: 2.5px; border-radius: 2px; background: var(--dz-verde-escuro); }
+.dz-detalhe__legenda .parc { width: 0.7rem; height: 0.7rem; border-radius: 2px; border: 1.5px dashed #8fcaa9; background: #fff; }
+.dz-col { fill: #b9e0cb; transition: fill 100ms ease-out; }
+.dz-col.foco { fill: #7cc39d; }
+.dz-col.parcial { fill: #fff; stroke: #8fcaa9; stroke-width: 1.5; stroke-dasharray: 3 2; }
+.dz-detalhe__grafico .dz-parcial { font-size: 10px; fill: var(--dz-suave); }
+
+/* as três listas revisadas (06/10/2026) */
+.dz-colunas--iguais { align-items: stretch; }
+.dz-colunas--iguais > .dz-cartao { display: flex; flex-direction: column; }
+.dz-colunas--iguais .dz-rodape { margin-top: auto; padding-top: 0.75rem; }
+.dz-colunas--iguais .dz-cartao > ul, .dz-colunas--iguais .dz-cartao > table, .dz-colunas--iguais .dz-cartao > .dz-origem { margin-bottom: 0.75rem; }
+.dz-etiqueta { display: inline-block; margin-bottom: 0.2rem; padding: 0.05rem 0.45rem; border-radius: 999px; background: #f1f1f1; font-size: 0.6875rem; font-weight: 600; color: var(--dz-suave); }
+.dz-fazer .frase { font-size: 0.9375rem; }
+
+/* a tabela das peças: cabeçalho de coluna, nome em duas linhas, a taxa com cor */
+.dz-tabela { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.dz-tabela th, .dz-tabela td { padding: 0.55rem 0; border-top: 1px solid var(--fio-claro); text-align: right; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.dz-tabela thead th { border-top: 0; padding: 0.6rem 0 0.4rem; font-size: 0.6875rem; font-weight: 600; color: var(--dz-suave); white-space: nowrap; }
+.dz-tabela th:first-child { text-align: left; padding-right: 0.5rem; }
+.dz-tabela td { padding-left: 0.6rem; color: var(--dz-texto); }
+.dz-tabela tbody th { font-weight: 400; }
+.dz-tabela__peca { display: flex; align-items: center; gap: 0.6rem; }
+.dz-tabela__peca a { font-weight: 600; font-size: 0.8125rem; line-height: 1.3; color: var(--dz-texto); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (hover: hover) and (pointer: fine) { .dz-tabela__peca a:hover { text-decoration: underline; text-underline-offset: 3px; } }
+.dz-tabela .dz-miniatura { width: 2.25rem; height: 2.25rem; }
+.dz-taxa { display: inline-block; min-width: 2rem; padding: 0.1rem 0.4rem; border-radius: 999px; background: var(--dz-verde-claro); color: var(--dz-verde-escuro); font-weight: 650; text-align: center; }
+.dz-taxa.baixa { background: var(--dz-vermelho-claro); color: var(--dz-vermelho); }
+.dz-rodape .dz-taxa { min-width: 0; font-size: 0.75rem; }
+
+/* de onde vieram: a taxa de chamada é o destaque */
+.dz-colhead { display: flex; justify-content: space-between; padding: 0.6rem 0 0.2rem; font-size: 0.6875rem; font-weight: 600; color: var(--dz-suave); }
+.dz-origem .dz-lista__valor { font-size: 1.05rem; }
+.dz-origem .dz-lista__valor.melhor { color: var(--dz-verde-escuro); }
+.dz-origem .dz-barra { height: 4px; }
+.dz-origem .dz-barra i { background: #b9e0cb; }
+.dz-tabela thead th:not(:first-child) { padding-left: 0.6rem; }
+
+/* o ícone de expandir no canto de cada número (06/10/2026): sempre à vista, discreto */
+.dz-abrir { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; margin: -0.3rem -0.4rem 0 0; border-radius: 8px; color: var(--dz-suave); opacity: 1; }
+.dz-abrir svg { width: 0.95rem; height: 0.95rem; }
+@media (hover: hover) and (pointer: fine) { button.dz-numero:hover .dz-abrir { background: #f1f1f1; color: var(--dz-texto); } }
+button.dz-numero[aria-expanded="true"] .dz-abrir { background: var(--dz-verde-claro); color: var(--dz-verde-escuro); }
+
+/* o ícone de expandir, mais minimalista (06/10/2026): menor, traço fino,
+   cinza claro, sem fundo; só escurece no mouse e quando está aberto */
+.dz-abrir { width: 1.25rem; height: 1.25rem; margin: -0.1rem -0.2rem 0 0; border-radius: 0; color: #b5b5b5; background: none !important; }
+.dz-abrir svg { width: 0.8rem; height: 0.8rem; stroke-width: 1.6; }
+@media (hover: hover) and (pointer: fine) { button.dz-numero:hover .dz-abrir { color: var(--dz-texto); } }
+button.dz-numero[aria-expanded="true"] .dz-abrir { color: var(--dz-texto); }
+button.dz-numero[aria-expanded="true"] { background: #fafafa; box-shadow: inset 0 -1.5px 0 var(--dz-texto); }
+
+/* o botão do relatório do mês, ao lado do período (06/10/2026) */
+.dz-cabeca__acoes { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.dz-relatorio { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 2.25rem; padding: 0 0.85rem; border-radius: 8px; background: #fff; border: 1px solid #c9c9c9; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05); font-size: 0.8125rem; font-weight: 600; color: var(--dz-texto); }
+.dz-relatorio svg { width: 1rem; height: 1rem; color: var(--dz-verde-escuro); }
+.dz-relatorio::first-letter { text-transform: uppercase; }
+@media (hover: hover) and (pointer: fine) { .dz-relatorio:hover { background: #f6f6f6; } }
+
+/* ─────────────────────────────────────────────────────────────
+   A PARTE PAGA REVISADA (06/10/2026, noite). O que mudou e por quê:
+   - uma regra só para frase de conclusão: texto normal com um fio verde à
+     esquerda, sem fundo. Dois blocos verdes sólidos pesavam, e a frase "vale
+     repetir" no mesmo cartão era texto puro;
+   - os termos de busca em preto: em verde pareciam links;
+   - cada linha do estoque tem a ação que ela pede (Cadastrar, Repor);
+   - o número que acabou vira selo na frente do nome, em vez de quebrar linha;
+   - a proporção dos posts e a variação dos pares usam os mesmos selos da
+     parte grátis (dz-taxa e dz-selo): a mesma medida tinha três desenhos;
+   - os números mais pedidos viram uma faixa de 8px dividida por tamanho.
+   ───────────────────────────────────────────────────────────── */
+.dz-destaque { padding: 0.15rem 0 0.15rem 0.75rem; border-left: 3px solid var(--dz-verde); border-radius: 0; background: none; font-weight: 500; color: var(--dz-texto); }
+.dz-destaque[hidden] { display: none; }
+
+.dz .vis-barras li { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; padding-block: 7px; }
+.dz .vis-barras .nome { color: var(--dz-texto); display: flex; align-items: center; gap: 0.45rem; }
+.dz .vis-barras .acao { font-size: 0.75rem; font-weight: 600; color: var(--dz-verde-escuro); padding: 0.1rem 0.4rem; border-radius: 6px; }
+@media (hover: hover) and (pointer: fine) { .dz .vis-barras .acao:hover { background: var(--dz-verde-claro); } }
+.dz .vis-barras .acao:focus-visible { outline: 2px solid var(--dz-verde); outline-offset: 1px; }
+.dz-num { display: inline-grid; place-items: center; min-width: 1.75rem; height: 1.35rem; padding: 0 0.35rem; border-radius: 6px; border: 1px solid var(--dz-borda); background: #fafafa; font-style: normal; font-weight: 650; font-size: 0.75rem; color: var(--dz-texto); flex: none; }
+.dz .vis-barras li.sol .dz-num { border-color: #b9e0cb; background: var(--dz-verde-claro); color: var(--dz-verde-escuro); }
+
+.dz-posts .nums { flex-wrap: wrap; gap: 0.6rem 1rem; }
+.dz-posts .taxa { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: var(--dz-suave); }
+.dz-posts .taxa .dz-taxa { font-style: normal; font-size: 0.75rem; min-width: 1.75rem; }
+
+.dz-pares li { align-items: flex-start; }
+.dz-pares .dz-lista__texto small { white-space: normal; }
+.dz-pares .dz-lista__valor { gap: 0.25rem; font-size: 1.05rem; }
+.dz-pares .dz-selo { font-size: 0.6875rem; }
+
+.dz-faixa__peca { margin-top: 0.35rem; display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; font-size: 0.875rem; }
+.dz-faixa__peca b { font-weight: 600; color: var(--dz-texto); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dz-faixa__peca .dz-link { margin-top: 0; white-space: nowrap; font-size: 0.75rem; }
+.dz-faixa { margin-top: 0.6rem; display: flex; gap: 3px; }
+.dz-faixa .parte { flex: 1 1 0; min-width: 2rem; display: grid; gap: 0.3rem; justify-items: center; cursor: default; }
+.dz-faixa .parte i { display: block; width: 100%; height: 8px; border-radius: 999px; background: #d9d9d9; }
+.dz-faixa .parte.sol i { background: var(--dz-verde); }
+.dz-faixa .parte b { font-weight: 650; font-size: 0.8125rem; line-height: 1; color: var(--dz-texto); }
+.dz-faixa .parte small { font-size: 0.6875rem; line-height: 1; color: var(--dz-suave); }
+.dz-faixa .parte.sol b { color: var(--dz-verde-escuro); }
+.dz-faixa .vis-vazio { flex: 1; }
+
+/* de que cidade vieram (07/10): a lista curta embaixo das origens, e os
+   posts marcados no detalhe diário. As duas ideias vieram do Mixpanel
+   (o "By City" e as Annotations), traduzidas para a língua da aba. */
+.dz-cidades { list-style: none; padding: 0; margin-top: 0.4rem; }
+.dz-cidades li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: baseline; padding-block: 5px; }
+.dz-cidades .nome { font-size: 0.8125rem; color: var(--dz-texto); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dz-cidades .num { font-weight: 650; font-size: 0.875rem; white-space: nowrap; color: var(--dz-texto); }
+.dz-cidades .num small { font-weight: 400; font-size: 0.6875rem; color: var(--dz-suave); margin-left: 4px; }
+.dz-cidades .trilho { grid-column: 1 / -1; height: 4px; border-radius: 999px; background: #efefef; overflow: hidden; }
+.dz-cidades .trilho i { display: block; height: 100%; border-radius: 999px; background: #9a9a9a; }
+.dz-cidades li:first-child .trilho i { background: var(--dz-verde); }
+.dz-detalhe__legenda .marco { width: 0; height: 0.8rem; border-left: 1.5px dashed var(--dz-texto); opacity: 0.7; }
+.dz-detalhe__grafico .dz-marco text { font-size: 10.5px; font-weight: 600; fill: var(--dz-texto); }
+
+/* O SELO DO PERFORMANCE (07/10/2026): a roseta com o raio, sempre no verde
+   do Performance; apagado (cinza) onde o plano ainda não foi ligado. Ele
+   substitui o ponto verde da divisória e acompanha a palavra Performance. */
+.pn-selo { color: var(--dz-verde, #0c9159); flex: none; vertical-align: -0.2em; }
+.pn-selo--apagado { color: #b5b5b5; }
+.dz-titulo { display: inline-flex; align-items: center; gap: 0.5rem; }
+.dz-perf__titulo::before { content: none; }
+.dz-sobre { display: inline-flex; align-items: center; gap: 0.35rem; }
+.pn-dialogo h2 .pn-selo { vertical-align: -0.15em; margin-right: 0.1rem; }
+
+/* o quarto número é uma proporção (07/10): a unidade "de 100" ao lado do
+   valor, e o minigráfico em linha contra a média tracejada, sem área */
+.dz-numero .val .unid { margin-left: 0.3rem; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0; color: var(--dz-suave); }
+.dz-mini .ref { color: var(--dz-texto); }
+
+/* ═════════════════════════════════════════════════════════════
+   A CASA NA ABA DESEMPENHO (07/10/2026). A mesma gramática do relatório
+   do mês: papel e tinta, Archivo condensada na manchete e nos números,
+   mono em caixa alta nos rótulos, o filete duplo nos títulos, seções em
+   colunas separadas por um filete em vez de cartões brancos, UMA sombra
+   dura (a ficha "O que fazer agora", que é a decisão da semana). O verde
+   do Performance segue como a cor de assinatura; o rosa só na ação de
+   conhecer o Performance. Por cima das regras Shopify, sem apagá-las.
+   ═════════════════════════════════════════════════════════════ */
+.dz {
+  --fio-claro: #d8d3c4;
+  --dz-borda: #d8d3c4;
+  --dz-texto: #14181a;
+  --dz-suave: #3a4144;
+  --dz-fundo: #f2efe6;
+  --dz-ficha: #fbf9f3;
+  --dz-papel-2: #eae6d9;
+  --dz-linha: #d8d3c4;
+  --dz-verde-claro: #e1efe6;
+  --dz-vermelho: #b3261e;
+  --dz-vermelho-claro: #f5e2df;
+  --dz-rosa: #e31b62;
+  --dz-rosa-escuro: #b81250;
+  --dz-display: var(--pn-archivo), "Arial Narrow", sans-serif;
+  --dz-mono: var(--pn-mono), ui-monospace, monospace;
+  --dz-corpo: var(--pn-inter), system-ui, sans-serif;
+  font-family: var(--dz-corpo);
+}
+.dz .vis-barras .num, .dz-posts .num, .dz-lista__valor, .dz-detalhe__resumo dd, .dz-origem .dz-lista__valor, .dz-cidades .num, .dz-faixa .parte b { font-family: var(--dz-mono); }
+
+/* o cabeçalho: a manchete e o filete duplo */
+.dz-cabeca { align-items: flex-end; padding-bottom: 1.25rem; box-shadow: 0 1.5px 0 var(--dz-texto), 0 4.5px 0 var(--dz-linha); }
+.dz-titulo { font-family: var(--dz-display); font-variation-settings: "wdth" 70; font-weight: 800; font-size: 2.5rem; line-height: 0.95; letter-spacing: -0.025em; gap: 0.6rem; }
+.dz-intro { margin-top: 0.6rem; font-size: 0.9375rem; }
+.dz-periodo { padding: 0; gap: 0; background: none; border: 1.5px solid var(--dz-texto); border-radius: 0; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dz-periodo a, .dz-periodo span { border-radius: 0; padding: 0.6rem 0.85rem; color: var(--dz-suave); border-left: 1.5px solid var(--dz-texto); }
+.dz-periodo > :first-child { border-left: 0; }
+.dz-periodo a[aria-current="page"] { background: var(--dz-texto); color: var(--dz-ficha); box-shadow: none; }
+.dz-periodo span[aria-disabled] { opacity: 0.5; }
+.dz-relatorio { min-height: 2.5rem; border-radius: 0; border: 1.5px solid var(--dz-texto); background: var(--dz-ficha); color: var(--dz-texto); font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; box-shadow: 4px 4px 0 var(--dz-texto); transition: transform 80ms ease-out, box-shadow 80ms ease-out; }
+.dz-relatorio svg { color: var(--dz-texto); }
+@media (hover: hover) and (pointer: fine) { .dz-relatorio:hover { background: var(--dz-papel-2); } }
+.dz-relatorio:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--dz-texto); }
+
+/* os quatro números: um placar, sem caixa */
+.dz-numeros { margin-top: 0; background: none; border: 0; border-radius: 0; box-shadow: none; border-bottom: 1.5px solid var(--dz-texto); overflow: visible; }
+.dz-numero, button.dz-numero { background: none; border-left: 1.5px solid var(--dz-linha); padding: 1.1rem 1rem 1rem; transition: background-color 100ms ease-out; }
+.dz-numero:first-child { border-left: 0; padding-left: 0; }
+@media (max-width: 899px) { .dz-numero:nth-child(3) { border-left: 0; padding-left: 0; } .dz-numero:nth-child(n + 3) { border-top: 1px solid var(--dz-linha); } }
+.dz-numero .rot { font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-verde-escuro); }
+.dz-numero .val { font-family: var(--dz-display); font-variation-settings: "wdth" 75; font-weight: 800; font-size: 2.75rem; line-height: 0.95; letter-spacing: -0.02em; }
+.dz-numero .val .unid { font-family: var(--dz-corpo); }
+@media (hover: hover) and (pointer: fine) { button.dz-numero:hover { background: var(--dz-ficha); } }
+button.dz-numero[aria-expanded="true"] { background: var(--dz-ficha); box-shadow: inset 0 -3px 0 var(--dz-texto); }
+.dz-abrir { color: #a39e92; }
+.dz-mini { color: var(--dz-verde); }
+
+/* os selos: quina reta, mono */
+.dz-selo, .dz-taxa, .dz-num { border-radius: 0; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.04em; }
+.dz-selo { background: var(--dz-papel-2); color: var(--dz-suave); padding: 0.15rem 0.45rem; }
+.dz-selo.sobe { background: var(--dz-verde-claro); color: var(--dz-verde-escuro); }
+.dz-selo.desce { background: var(--dz-vermelho-claro); color: var(--dz-vermelho); }
+.dz-taxa { padding: 0.15rem 0.4rem; }
+.dz-num { border: 1px solid var(--dz-linha); background: var(--dz-ficha); }
+.dz .vis-barras li.sol .dz-num { border-color: var(--dz-verde); }
+.dz-etiqueta { margin-bottom: 0.25rem; padding: 0; border-radius: 0; background: none; font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dz-verde-escuro); }
+.dz-sub, .dz-colhead, .dz-tabela thead th, .dz-detalhe__resumo dt { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-verde-escuro); }
+.dz-tabela thead th, .dz-detalhe__resumo dt { color: var(--dz-suave); }
+
+/* os cartões viram colunas: sem fundo, um filete vertical entre elas */
+.dz-cartao { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; }
+.dz-colunas { margin-top: 2.5rem; gap: 2.5rem; align-items: stretch; }
+@media (min-width: 900px) {
+  .dz-colunas { gap: 0 2.25rem; }
+  .dz-colunas > .dz-cartao + .dz-cartao { border-left: 1.5px solid var(--dz-linha); padding-left: 2.25rem; }
+}
+.dz-cartao__cabeca { margin-bottom: 0.75rem; padding-bottom: 0.6rem; border-bottom: 0; box-shadow: 0 1.5px 0 var(--dz-texto), 0 4.5px 0 var(--dz-linha); }
+.dz-cartao__cabeca h2 { font-family: var(--dz-display); font-variation-settings: "wdth" 80; font-weight: 700; font-size: 1.3125rem; line-height: 1.15; letter-spacing: -0.01em; }
+.dz-icone { display: none; }
+
+/* a ficha: "O que fazer agora", o único objeto com sombra dura */
+.dz-colunas > section[aria-labelledby="dz-fazer"] { padding: 1.25rem 1.25rem 1.5rem; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); box-shadow: 8px 8px 0 var(--dz-verde); }
+.dz-colunas > section[aria-labelledby="dz-fazer"] .dz-cartao__cabeca h2 { font-size: 1.375rem; }
+.dz-icone-redondo { border-radius: 0; border: 1px solid var(--dz-linha); background: var(--dz-fundo); color: var(--dz-texto); }
+.dz-fazer .frase { font-size: 1rem; }
+.dz-miniatura, .dz-fazer img { border-radius: 0; border: 1px solid var(--dz-linha); }
+
+/* as listas: filetes, logos em quadrado, barras de tinta */
+.dz-logo { border-radius: 0; border: 1px solid var(--dz-linha); background: var(--dz-ficha); }
+.dz-barra, .dz .vis-barras .trilho, .dz-cidades .trilho { border-radius: 0; background: var(--dz-papel-2); }
+.dz-barra i, .dz .vis-barras .trilho i, .dz-cidades .trilho i, .dz-faixa .parte i { border-radius: 0; }
+.dz-cidades .trilho i { background: var(--dz-texto); }
+.dz-cidades li:first-child .trilho i, .dz-barra i { background: var(--dz-verde); }
+.dz .vis-barras .trilho i { background: var(--dz-texto); }
+.dz .vis-barras li.sol .trilho i { background: var(--dz-verde); }
+.dz-faixa .parte i { background: var(--dz-papel-2); }
+.dz-faixa .parte.sol i { background: var(--dz-verde); }
+.dz .vis-barras .acao { border-radius: 0; font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dz-link, .dz-medir summary { font-weight: 600; }
+.dz-destaque { border-left-width: 3px; }
+
+/* o Performance: a divisória com o filete duplo e o selo */
+.dz-perf { margin-top: 3rem; }
+.dz-perf__cabeca { padding-bottom: 0.6rem; box-shadow: 0 1.5px 0 var(--dz-texto), 0 4.5px 0 var(--dz-linha); }
+.dz-perf__titulo { font-family: var(--dz-display); font-variation-settings: "wdth" 70; font-weight: 800; font-size: 1.75rem; letter-spacing: -0.02em; }
+.dz-assinatura { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dz-perf-fechado { margin-top: 2.5rem; padding: 1.5rem; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); border-radius: 0; box-shadow: 8px 8px 0 var(--dz-verde); }
+.dz-sobre { font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.dz-perf-fechado__titulo { font-family: var(--dz-display); font-variation-settings: "wdth" 78; font-weight: 800; font-size: 1.375rem; letter-spacing: -0.015em; }
+.dz-botao { border-radius: 0; background: var(--dz-rosa); color: #fff; font-family: var(--dz-mono); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; box-shadow: 4px 4px 0 var(--dz-rosa-escuro); transition: transform 80ms ease-out, box-shadow 80ms ease-out; }
+@media (hover: hover) and (pointer: fine) { .dz-botao:hover { background: var(--dz-rosa-escuro); } }
+.dz-botao:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--dz-rosa-escuro); }
+.dz-medir .pn-carimbo > button, .dz .vis-passos__n { border-radius: 0; background: var(--dz-texto); }
+.dz .vis-links__form input { border-radius: 0; border: 0; border-bottom: 1.5px solid var(--dz-linha); background: transparent; }
+
+/* o detalhe: uma folha de papel com filete, colunas verdes e a média em tinta */
+.dz-detalhe { margin-top: 1.25rem; padding: 1.25rem; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); }
+.dz-detalhe__cabeca h2 { font-family: var(--dz-display); font-variation-settings: "wdth" 80; font-weight: 700; font-size: 1.25rem; }
+.dz-fechar { border-radius: 0; }
+.dz-col { fill: var(--dz-verde); opacity: 0.5; }
+.dz-col.foco { opacity: 0.95; }
+.dz-col.parcial { fill: var(--dz-ficha); stroke: var(--dz-verde); opacity: 1; }
+.dz-detalhe__grafico polyline { stroke: var(--dz-texto); }
+.dz-detalhe__legenda .col { border-radius: 0; background: var(--dz-verde); opacity: 0.5; }
+.dz-detalhe__legenda .lin { background: var(--dz-texto); }
+.dz-detalhe__legenda .parc { border-radius: 0; border-color: var(--dz-verde); background: var(--dz-ficha); }
+.dz-detalhe__legenda { font-family: var(--dz-mono); font-size: 0.5625rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.dz-detalhe__grafico text { font-family: var(--dz-mono); font-size: 10px; }
+.dz-detalhe__resumo { border-top: 1px solid var(--dz-linha); }
+.dz-detalhe__resumo dd { font-family: var(--dz-display); font-variation-settings: "wdth" 78; font-weight: 800; font-size: 1.375rem; }
+
+/* o aviso de "liberado até": ficha com filete e sombra */
+.pn-dialogo { border-radius: 0; border: 1.5px solid var(--dz-texto, #14181a); box-shadow: 8px 8px 0 #0c9159; background: #fbf9f3; }
+.pn-dialogo__rotulo { font-family: var(--pn-mono), monospace; font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.pn-dialogo__rotulo::before { background: #14181a; }
+.pn-dialogo h2 { font-family: var(--pn-archivo), sans-serif; font-variation-settings: "wdth" 78; font-weight: 800; }
+
+/* AMARRADO (07/10, logo depois): "gostei, mas me parece que está tudo solto".
+   As colunas flutuavam no papel, cada título com a sua régua numa altura.
+   Agora cada bloco é uma FICHA com filete de tinta: o placar dos números
+   (e o detalhe gruda nele por baixo), a folha das três colunas grátis, e
+   a folha do Performance, a única com a sombra dura, porque é o produto. */
+.dz-cabeca { padding-bottom: 1rem; }
+.dz-numeros { margin-top: 1.25rem; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); }
+.dz-numero, button.dz-numero { padding: 1rem 1.25rem; }
+.dz-numero:first-child, .dz-numero:first-child.dz-numero { padding-left: 1.25rem; }
+@media (max-width: 899px) { .dz-numero:nth-child(3) { padding-left: 1.25rem; } }
+.dz-detalhe { margin-top: 0; border-top: 0; }
+.dz-colunas { margin-top: 1.25rem; gap: 0; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); align-items: stretch; }
+.dz-colunas > .dz-cartao { padding: 1.25rem; }
+@media (min-width: 900px) {
+  .dz-colunas { gap: 0; }
+  .dz-colunas > .dz-cartao + .dz-cartao { border-left: 1.5px solid var(--dz-linha); padding-left: 1.25rem; }
+}
+@media (max-width: 899px) { .dz-colunas > .dz-cartao + .dz-cartao { border-top: 1.5px solid var(--dz-linha); } }
+.dz-colunas > section[aria-labelledby="dz-fazer"] { padding: 1.25rem; border: 0; box-shadow: none; background: var(--dz-ficha); }
+.dz-colunas > section[aria-labelledby="dz-fazer"] .dz-cartao__cabeca h2 { font-size: 1.3125rem; }
+.dz-perf { margin-top: 1.25rem; background: var(--dz-ficha); border: 1.5px solid var(--dz-texto); box-shadow: 8px 8px 0 var(--dz-verde); }
+.dz-perf__cabeca { padding: 1rem 1.25rem 0.75rem; box-shadow: none; border-bottom: 1.5px solid var(--dz-texto); }
+.dz-perf > .dz-colunas { margin-top: 0; border: 0; background: none; box-shadow: none; }
+.dz-perf-fechado { margin-top: 1.25rem; }
+.vis-pagina { padding-bottom: 2rem; }
+
+/* a parte paga, travada (07/10/2026): a folha do Performance aparece
+   desfocada, com dados de exemplo, e o cartão de conhecer fica por cima,
+   centrado. inert no React tira foco e clique de tudo que está embaixo. */
+.dz-perf-trava { position: relative; display: grid; margin-top: 1.25rem; }
+.dz-perf-trava > * { grid-area: 1 / 1; }
+.dz-perf-trava > .dz-perf { margin-top: 0; filter: blur(7px); opacity: 0.55; pointer-events: none; user-select: none; box-shadow: none; }
+.dz-perf-trava > .dz-perf-fechado { position: relative; z-index: 1; align-self: center; justify-self: center; width: min(100% - 2rem, 46rem); margin: 2rem 1rem; }
+
+/* O CARTÃO FECHADO CHAMA ATENÇÃO (07/10, "acho que ainda não chama atenção
+   assim"): papel sobre papel sumia. O cartão vira a seção escura da casa:
+   grafite com o texto em papel, o rótulo em esmeralda vivo (o único verde
+   que lê sobre grafite), a manchete em Archivo condensada, o cadeado numa
+   plaquinha gravada e a sombra dura esmeralda. O desfoque de baixo fica
+   mais presente, porque é ele que mostra o que a loja está perdendo. */
+.dz-perf-trava > .dz-perf { filter: blur(6px); opacity: 0.75; }
+.dz-perf-trava > .dz-perf-fechado { padding: 1.75rem clamp(1.25rem, 3vw, 2.25rem); background: var(--dz-texto); color: var(--dz-fundo); border-color: var(--dz-texto); box-shadow: 10px 10px 0 var(--dz-verde); }
+.dz-perf-trava .dz-sobre { color: #1fbf7a; }
+.dz-perf-trava .dz-sobre .pn-selo { color: #1fbf7a; }
+.dz-perf-trava .dz-perf-fechado__titulo { margin-top: 0.35rem; font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 800; font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--dz-fundo); }
+.dz-perf-trava .dz-perf-fechado__lead { margin-top: 0.6rem; font-size: 0.875rem; color: #cfcbbf; max-width: 58ch; }
+.dz-perf-trava .dz-icone-redondo { border: 0; background: rgba(255, 255, 255, 0.08); color: var(--dz-fundo); box-shadow: inset 0 1px 0 #ffffff26, 0 1px 0 #00000045; }
+.dz-perf-trava .dz-botao { box-shadow: 4px 4px 0 var(--dz-rosa-escuro); }
+
+/* SEM CARTÃO POR CIMA (07/10, "esse modal está ruim... só os gráficos
+   desfocados com possibilidade de clique"). A folha do Performance fica
+   com o cabeçalho nítido (selo, nome, o link de conhecer no lugar da
+   assinatura) e uma linha com a contagem real; o miolo aparece desfocado e
+   uma camada transparente por cima leva ao WhatsApp do estúdio. No mouse,
+   o desfoque afrouxa um pouco: é o convite. */
+.dz-perf-trava { display: block; }
+.dz-perf-trava > .dz-perf { filter: none; opacity: 1; pointer-events: auto; user-select: auto; box-shadow: 8px 8px 0 var(--dz-verde); }
+.dz-perf__miolo { position: relative; }
+.dz-perf--oculto .dz-perf__miolo > .dz-colunas { filter: blur(6px); opacity: 0.7; user-select: none; transition: filter 160ms ease-out, opacity 160ms ease-out; }
+.dz-perf__clique { position: absolute; inset: 0; z-index: 1; cursor: pointer; }
+.dz-perf__clique:focus-visible { outline: 2.5px solid var(--dz-verde); outline-offset: -2.5px; }
+@media (hover: hover) and (pointer: fine) {
+  .dz-perf__miolo:has(.dz-perf__clique:hover) > .dz-colunas { filter: blur(4px); opacity: 0.85; }
+}
+.dz-perf__conhecer { display: inline-flex; align-items: center; gap: 0.45rem; padding-bottom: 2px; border-bottom: 1.5px solid var(--dz-texto); font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-texto); }
+.dz-perf__conhecer svg { width: 0.8rem; height: 0.8rem; }
+@media (hover: hover) and (pointer: fine) { .dz-perf__conhecer:hover { color: var(--dz-verde-escuro); border-color: var(--dz-verde-escuro); } }
+.dz-perf__chamada { padding: 0.85rem 1.25rem 0; font-size: 0.9375rem; line-height: 1.5; color: var(--dz-texto); max-width: 70ch; }
+
+/* o relatório com cadeado para loja travada, e a faixa "pelo estúdio neste
+   mês" embaixo das colunas pagas (07/10/2026) */
+.dz-relatorio--travado { color: var(--dz-suave); border-style: dashed; box-shadow: none; }
+.dz-relatorio--travado svg { color: var(--dz-suave); }
+.dz-relatorio--travado::first-letter { text-transform: uppercase; }
+@media (hover: hover) and (pointer: fine) { .dz-relatorio--travado:hover { color: var(--dz-texto); border-color: var(--dz-texto); border-style: solid; } }
+.dz-estudio { list-style: none; margin: 0; padding: 1rem 1.25rem 1.25rem; border-top: 1.5px solid var(--dz-texto); display: grid; gap: 0.6rem 2rem; }
+@media (min-width: 900px) { .dz-estudio { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.dz-estudio__rotulo { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dz-verde-escuro); padding-top: 0.2rem; }
+.dz-estudio li:not(.dz-estudio__rotulo) { display: grid; gap: 0.15rem; font-size: 0.875rem; line-height: 1.45; color: var(--dz-suave); }
+.dz-estudio b { font-weight: 600; color: var(--dz-texto); }
+.dz-estudio a { font-weight: 600; color: var(--dz-verde-escuro); text-decoration: underline; text-underline-offset: 3px; }
+
+/* O MODAL DO PLANO (07/10/2026): a ficha da casa, com o selo, a manchete em
+   Archivo, o gancho com a contagem real, as três camadas numeradas e a
+   única ação em rosa. Os gatilhos viraram botões e perdem a cara de botão
+   do navegador aqui. */
+button.dz-perf__conhecer, button.dz-perf__clique, button.dz-relatorio { background: none; border: 0; font: inherit; cursor: pointer; }
+button.dz-perf__conhecer { border-bottom: 1.5px solid var(--dz-texto); }
+button.dz-relatorio--travado { border: 1.5px dashed var(--dz-texto); background: var(--dz-ficha); }
+.dz-plano { width: min(34rem, calc(100% - 2rem)); padding: 1.75rem clamp(1.25rem, 4vw, 2rem); }
+.dz-plano__rotulo { color: var(--dz-verde-escuro); }
+.dz-plano .pn-dialogo__rotulo::before { display: none; }
+.dz-plano h2 { margin-top: 0.75rem; font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 800; font-size: clamp(1.5rem, 3vw, 1.875rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--dz-texto); }
+.dz-plano__gancho { margin-top: 0.85rem; padding: 0.15rem 0 0.15rem 0.75rem; border-left: 3px solid var(--dz-verde); font-size: 0.9375rem; font-weight: 500; line-height: 1.5; color: var(--dz-texto); }
+.dz-plano__itens { list-style: none; counter-reset: camada; margin: 1.25rem 0 0; padding: 0; border-top: 1.5px solid var(--dz-texto); }
+.dz-plano__itens li { counter-increment: camada; display: grid; grid-template-columns: 1.75rem minmax(0, 1fr); gap: 0.1rem 0.75rem; padding: 0.85rem 0; border-top: 1px solid var(--dz-linha); }
+.dz-plano__itens li:first-child { border-top: 0; }
+.dz-plano__itens li::before { content: counter(camada); grid-row: 1 / 3; font-family: var(--dz-mono); font-size: 0.75rem; font-weight: 700; color: var(--dz-verde-escuro); padding-top: 0.15rem; }
+.dz-plano__itens b { font-size: 0.9375rem; font-weight: 600; color: var(--dz-texto); }
+.dz-plano__itens span { font-size: 0.875rem; line-height: 1.5; color: var(--dz-suave); }
+.dz-plano__nota { margin-top: 1rem; padding-top: 0.85rem; border-top: 1.5px solid var(--dz-texto); font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-suave); }
+.dz-plano__acoes { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-top: 1.25rem; }
+.dz-plano__depois { background: none; border: 0; font: inherit; font-size: 0.875rem; font-weight: 600; color: var(--dz-suave); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+@media (hover: hover) and (pointer: fine) { .dz-plano__depois:hover { color: var(--dz-texto); } }
+
+/* a oferta no modal (07/10/2026): o valor em Archivo grande, as condições
+   em mono, a frase do primeiro mês; depois a lista do que está incluído */
+.dz-plano__oferta { margin-top: 1.25rem; padding: 1rem 1.25rem 1.1rem; background: var(--dz-texto); color: var(--dz-fundo); }
+.dz-plano__valor { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.dz-plano__valor b { font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 800; font-size: 2.75rem; line-height: 0.95; letter-spacing: -0.03em; color: var(--dz-fundo); }
+.dz-plano__valor span { font-family: var(--dz-mono); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #cfcbbf; }
+.dz-plano__condicoes { margin-top: 0.6rem; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #1fbf7a; }
+.dz-plano__teste { margin-top: 0.35rem; font-size: 0.875rem; line-height: 1.45; color: #e6e2d6; }
+.dz-plano__inclui { margin-top: 1.25rem; font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dz-verde-escuro); }
+.dz-plano .dz-plano__itens { margin-top: 0.35rem; border-top: 1.5px solid var(--dz-texto); }
+.dz-plano__acoes { border-top: 1.5px solid var(--dz-texto); padding-top: 1.25rem; }
+
+/* o modal do plano mais curto (07/10): cabe sem rolar numa tela de 700px */
+.dz-plano { padding: 1.25rem clamp(1.25rem, 4vw, 1.75rem) 1.25rem; }
+.dz-plano h2 { margin-top: 0.5rem; font-size: clamp(1.375rem, 2.6vw, 1.625rem); }
+.dz-plano__gancho { margin-top: 0.6rem; font-size: 0.875rem; }
+.dz-plano__oferta { margin-top: 0.85rem; padding: 0.75rem 1rem 0.85rem; }
+.dz-plano__valor b { font-size: 2.25rem; }
+.dz-plano__condicoes { margin-top: 0.4rem; }
+.dz-plano__teste { margin-top: 0.25rem; font-size: 0.8125rem; }
+.dz-plano__inclui { margin-top: 0.85rem; }
+.dz-plano__itens li { padding: 0.55rem 0; gap: 0.05rem 0.75rem; }
+.dz-plano__itens b { font-size: 0.875rem; }
+.dz-plano__itens span { font-size: 0.8125rem; line-height: 1.4; }
+.dz-plano__acoes { margin-top: 0.85rem; padding-top: 0.85rem; }
+/* ainda rolava 25px a 674px de altura: sai o rótulo "o que está incluído"
+   (a lista fala por si depois da oferta) e a manchete baixa um ponto */
+.dz-plano__inclui { display: none; }
+.dz-plano .dz-plano__itens { margin-top: 0.85rem; }
+.dz-plano h2 { font-size: clamp(1.25rem, 2.4vw, 1.5rem); }
+.dz-plano__itens li { padding: 0.5rem 0; }
+
+/* O MODAL REFEITO COMO OFERTA (07/10, "faz como check e está sem promessa
+   forte"): a promessa na manchete, a prova com a contagem real em negrito,
+   o preço legível sobre grafite (as regras do diálogo pintavam de cinza por
+   especificidade), e o que está incluído como régua de conferência, com o
+   ✓ na margem direita. */
+.dz-plano h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); line-height: 1.05; }
+.dz-plano .dz-plano__prova { margin-top: 0.75rem; font-size: 0.9375rem; line-height: 1.5; color: var(--dz-suave); }
+.dz-plano .dz-plano__prova b { font-weight: 600; color: var(--dz-texto); }
+.dz-plano .dz-plano__oferta { margin-top: 1rem; padding: 0.85rem 1.1rem 0.95rem; }
+.dz-plano .dz-plano__valor { margin: 0; }
+.dz-plano .dz-plano__valor b { font-size: 2.5rem; color: var(--dz-fundo); }
+.dz-plano .dz-plano__valor span { color: #cfcbbf; }
+.dz-plano .dz-plano__condicoes { margin-top: 0.45rem; font-size: 0.625rem; color: #1fbf7a; }
+.dz-plano .dz-plano__teste { margin-top: 0.3rem; font-size: 0.875rem; line-height: 1.4; color: #f2efe6; }
+.dz-plano__lista { list-style: none; margin: 1rem 0 0; padding: 0; border-top: 1.5px solid var(--dz-texto); }
+.dz-plano__lista li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.5rem 0; border-top: 1px solid var(--dz-linha); font-size: 0.875rem; line-height: 1.4; color: var(--dz-texto); }
+.dz-plano__lista li:first-child { border-top: 0; }
+.dz-plano__lista li::after { content: "✓"; flex: none; font-weight: 700; color: var(--dz-verde); }
+.dz-plano .dz-plano__acoes { margin-top: 1rem; padding-top: 1rem; }
+
+/* o x de fechar no canto de cima do modal do plano (07/10), no lugar do
+   "Agora não": quadrado de 2rem, traço fino, escurece no mouse */
+.dz-plano__topo { position: absolute; top: 0.75rem; right: 0.75rem; margin: 0; }
+.dz-plano__fechar { display: grid; place-items: center; width: 2rem; height: 2rem; background: none; border: 0; padding: 0; color: var(--dz-suave); cursor: pointer; }
+.dz-plano__fechar svg { width: 1.1rem; height: 1.1rem; }
+@media (hover: hover) and (pointer: fine) { .dz-plano__fechar:hover { color: var(--dz-texto); background: var(--dz-papel-2); } }
+.dz-plano__fechar:focus-visible { outline: 2.5px solid var(--dz-verde); outline-offset: 1px; }
+.dz-plano .dz-plano__rotulo { padding-right: 2.5rem; }
+/* sobra de 6px a 674px de altura: as ações mais coladas */
+.dz-plano .dz-plano__acoes { margin-top: 0.75rem; padding-top: 0.75rem; }
+.dz-plano .dz-plano__lista { margin-top: 0.85rem; }
+
+/* o botão do relatório travado (07/10, "melhora o design daqui"): a borda
+   tracejada e o cinza liam como botão desligado. Vira o mesmo carimbo do
+   botão liberado, com o cadeado em esmeralda no lugar do documento: é um
+   botão que funciona (abre o plano), não um que está fora do ar. */
+button.dz-relatorio--travado, .dz-relatorio--travado { border: 1.5px solid var(--dz-texto); border-style: solid; background: var(--dz-ficha); color: var(--dz-texto); box-shadow: 4px 4px 0 var(--dz-texto); }
+.dz-relatorio--travado svg { color: var(--dz-verde-escuro); width: 0.9rem; height: 0.9rem; }
+@media (hover: hover) and (pointer: fine) { .dz-relatorio--travado:hover { background: var(--dz-papel-2); color: var(--dz-texto); } }
+.dz-relatorio--travado:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--dz-texto); }
+
+/* A FAIXA DO ESTÚDIO (07/10/2026): a seção escura da casa no pé da folha do
+   Performance. Grafite, o selo e o rótulo em esmeralda vivo, a frase do
+   serviço em papel, e três plaquinhas gravadas (véu de branco, fio claro em
+   cima, escuro embaixo), cada uma com o estado em mono: em preparo, pronto,
+   a data. É o que a lojista paga, dito como entrega e não como recurso. */
+.dz-estudio { margin: 0; padding: 1.25rem 1.25rem 1.35rem; border-top: 1.5px solid var(--dz-texto); background: var(--dz-texto); color: var(--dz-fundo); display: block; }
+.dz-estudio__cabeca { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem 2rem; flex-wrap: wrap; }
+.dz-estudio__rotulo { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #1fbf7a; }
+.dz-estudio__rotulo .pn-selo { color: #1fbf7a; }
+.dz-estudio__frase { font-family: var(--dz-display); font-variation-settings: "wdth" 78; font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--dz-fundo); }
+.dz-estudio__itens { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+@media (min-width: 900px) { .dz-estudio__itens { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dz-estudio__itens li { display: grid; gap: 0.3rem; align-content: start; padding: 0.9rem 1rem 1rem; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 1px 0 #ffffff26, 0 1px 0 #00000045; font-size: 0.8125rem; line-height: 1.45; color: #cfcbbf; }
+.dz-estudio__estado { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #1fbf7a; }
+.dz-estudio__itens b { font-family: var(--dz-display); font-variation-settings: "wdth" 80; font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--dz-fundo); }
+.dz-estudio__itens a { display: inline-block; margin-top: 0.35rem; font-weight: 600; color: #1fbf7a; text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .dz-estudio__itens a:hover { color: var(--dz-fundo); } }
+/* travada, a faixa também fica sob a camada clicável, mas nítida: é o convite */
+.dz-perf--oculto .dz-estudio { filter: none; }
+/* "não tá dando para ler" (07/10): a regra antiga da faixa clara
+   (.dz-estudio li:not(...)) era mais específica e pintava o texto de
+   cinza-escuro sobre o grafite. Aqui, com a mesma força, a cor de papel. */
+.dz-estudio .dz-estudio__itens li { color: #dedad0; display: grid; gap: 0.3rem; font-size: 0.8125rem; line-height: 1.45; }
+.dz-estudio .dz-estudio__itens li > span:not(.dz-estudio__estado) { color: #dedad0; }
+.dz-estudio .dz-estudio__itens b { color: var(--dz-fundo); }
+.dz-estudio .dz-estudio__itens .dz-estudio__estado { color: #1fbf7a; }
+
+/* a ação da folha travada (07/10, "design, conversão e profissionalismo"):
+   era um link em mono com cadeado, que lia como coisa bloqueada. Vira o
+   carimbo rosa da casa, com o preço à vista em letra menor. */
+.dz-perf__ativar { min-height: 2.5rem; padding: 0 1rem; gap: 0.7rem; border: 0; }
+.dz-perf__ativar small { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ffd6e3; padding-left: 0.7rem; border-left: 1px solid rgba(255, 255, 255, 0.35); }
+.dz-perf__cabeca { align-items: center; }
+
+/* a faixa sem a frase à direita (07/10, "parece uma justificativa"): só o
+   rótulo com o mês, e as três plaquinhas */
+.dz-estudio__cabeca { justify-content: flex-start; }
+.dz-estudio__frase { display: none; }
+
+/* o modal do plano fora da aba Desempenho (07/10, a aba Site): os tokens
+   moram na .vis-pagina, e o modal precisa deles onde quer que abra */
+.dz-plano {
+  --fio-claro: #d8d3c4;
+  --dz-borda: #d8d3c4;
+  --dz-texto: #14181a;
+  --dz-suave: #3a4144;
+  --dz-fundo: #f2efe6;
+  --dz-ficha: #fbf9f3;
+  --dz-papel-2: #eae6d9;
+  --dz-linha: #d8d3c4;
+  --dz-verde-claro: #e1efe6;
+  --dz-vermelho: #b3261e;
+  --dz-vermelho-claro: #f5e2df;
+  --dz-rosa: #e31b62;
+  --dz-rosa-escuro: #b81250;
+  --dz-display: var(--pn-archivo), "Arial Narrow", sans-serif;
+  --dz-mono: var(--pn-mono), ui-monospace, monospace;
+  --dz-corpo: var(--pn-inter), system-ui, sans-serif;
+}
+/* e a letra do corpo da aba, que fora dela o modal não herdava */
+.dz-plano { font-family: var(--dz-corpo); }
+/* o "Relatório do mês" travado saía grande (07/10): o "font: inherit" do
+   button.dz-relatorio apagava o mono pequeno. Volta ao tamanho dos carimbos. */
+button.dz-relatorio, button.dz-relatorio--travado { font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; min-height: 2.5rem; padding: 0 0.85rem; }
+
+/* A CONTAGEM DO PERFORMANCE (07/10/2026): quieta quando falta mais de uma
+   semana (uma linha com o selo), faixa de papel com filete rosa quando
+   está perto do fim, faixa grafite quando acabou (a reativação). O Pix é o
+   carimbo rosa; o cartão, o link quieto ao lado. */
+.dz-conta { margin-bottom: 1.25rem; }
+.dz-conta--quieta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--dz-suave); }
+.dz-conta--quieta b { color: var(--dz-texto); }
+.dz-conta--quieta a { font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-texto); text-decoration: none; border-bottom: 1.5px solid var(--dz-texto); }
+.dz-conta--fim, .dz-conta--acabou { display: grid; gap: 1rem 2rem; align-items: center; padding: 1.1rem 1.25rem; border: 1.5px solid var(--dz-texto); }
+@media (min-width: 900px) { .dz-conta--fim, .dz-conta--acabou { grid-template-columns: minmax(0, 1fr) auto; } }
+.dz-conta--fim { background: var(--dz-ficha); box-shadow: inset 6px 0 0 var(--dz-rosa); padding-left: 1.6rem; }
+.dz-conta--acabou { background: var(--dz-texto); color: var(--dz-fundo); box-shadow: 8px 8px 0 var(--dz-rosa); }
+.dz-conta__rotulo { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dz-rosa); }
+.dz-conta--acabou .dz-conta__rotulo { color: #ff6f9c; }
+.dz-conta h2 { margin-top: 0.35rem; font-family: var(--dz-display); font-variation-settings: "wdth" 74; font-weight: 800; font-size: clamp(1.375rem, 2.6vw, 1.75rem); line-height: 1.05; letter-spacing: -0.015em; }
+.dz-conta__texto > p:last-child { margin-top: 0.4rem; max-width: 60ch; font-size: 0.9375rem; line-height: 1.5; color: var(--dz-suave); }
+.dz-conta--acabou .dz-conta__texto > p:last-child { color: #dedad0; }
+.dz-conta__acoes { display: grid; gap: 0.6rem; justify-items: start; }
+.dz-conta__pix { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.2rem; background: var(--dz-rosa); color: #fff; box-shadow: 4px 4px 0 var(--dz-rosa-escuro); font-family: var(--dz-mono); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: transform 80ms ease-out, box-shadow 80ms ease-out; }
+.dz-conta__pix:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--dz-rosa-escuro); }
+@media (hover: hover) and (pointer: fine) { .dz-conta__pix:hover { background: var(--dz-rosa-escuro); } }
+.dz-conta__cartao { font-size: 0.8125rem; font-weight: 600; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+.dz-plano .dz-plano__anual { margin-top: 0.5rem; font-size: 0.8125rem; color: #dedad0; }
+.dz-plano .dz-plano__anual b { color: #fff; }
+.dz-plano__jeitos { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.1rem; }
+.dz-plano__cartao { font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-texto); text-decoration: none; border-bottom: 1.5px solid var(--dz-texto); }
+
+/* a contagem fica fora do bloco da aba: leva os tokens dela, como o modal */
+.dz-conta {
+  --fio-claro: #d8d3c4;
+  --dz-borda: #d8d3c4;
+  --dz-texto: #14181a;
+  --dz-suave: #3a4144;
+  --dz-fundo: #f2efe6;
+  --dz-ficha: #fbf9f3;
+  --dz-papel-2: #eae6d9;
+  --dz-linha: #d8d3c4;
+  --dz-verde-claro: #e1efe6;
+  --dz-vermelho: #b3261e;
+  --dz-vermelho-claro: #f5e2df;
+  --dz-rosa: #e31b62;
+  --dz-rosa-escuro: #b81250;
+  --dz-display: var(--pn-archivo), "Arial Narrow", sans-serif;
+  --dz-mono: var(--pn-mono), ui-monospace, monospace;
+  --dz-corpo: var(--pn-inter), system-ui, sans-serif;
+  font-family: var(--dz-corpo);
+}
+
+/* o X do aviso de renovação e de reativação (07/10): no canto, some até amanhã */
+.dz-dispensavel { position: relative; }
+.dz-dispensavel__x { position: absolute; top: 0.6rem; right: 0.6rem; display: grid; place-items: center; width: 2rem; height: 2rem; background: none; border: 0; color: var(--dz-suave, #3a4144); cursor: pointer; }
+.dz-dispensavel__x svg { width: 1.05rem; height: 1.05rem; }
+.dz-conta--acabou + .dz-dispensavel__x { color: #dedad0; }
+@media (hover: hover) and (pointer: fine) { .dz-dispensavel__x:hover { background: rgba(127, 127, 127, 0.15); } }
+.dz-dispensavel .dz-conta--fim, .dz-dispensavel .dz-conta--acabou { padding-right: 3rem; }
+
+/* OS TRÊS PLANOS NO MODAL (07/10/2026): fichas que se escolhem, a escolhida
+   em tinta com a sombra dura verde (como na página de assinar); o selo rosa
+   no anual; embaixo, as condições numa linha. O botão rosa muda com a escolha. */
+.dz-plano__jeitos3 { display: grid; gap: 0.6rem; margin-top: 1rem; }
+@media (min-width: 560px) { .dz-plano__jeitos3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dz-plano__jeito { position: relative; display: grid; align-content: start; gap: 0.25rem; padding: 0.8rem 0.85rem 0.85rem; text-align: left; font: inherit; background: var(--dz-ficha); color: var(--dz-texto); border: 1.5px solid var(--dz-texto); cursor: pointer; transition: background-color 100ms ease-out, box-shadow 100ms ease-out; }
+@media (hover: hover) and (pointer: fine) { .dz-plano__jeito:hover { background: #fff; } }
+.dz-plano__jeito[aria-checked="true"] { background: var(--dz-texto); color: var(--dz-fundo); box-shadow: 4px 4px 0 #0c9159; }
+.dz-plano__jeito-nome { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dz-plano__jeito[aria-checked="true"] .dz-plano__jeito-nome { color: #1fbf7a; }
+.dz-plano__jeito b { font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 800; font-size: 1.75rem; line-height: 1; letter-spacing: -0.02em; }
+.dz-plano__jeito-diz { font-size: 0.75rem; line-height: 1.35; color: var(--dz-suave); }
+.dz-plano__jeito[aria-checked="true"] .dz-plano__jeito-diz { color: #dedad0; }
+.dz-plano__jeito-selo { position: absolute; top: -0.6rem; right: 0.5rem; padding: 0.15rem 0.4rem; background: #e31b62; color: #fff; font-family: var(--dz-mono); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.dz-plano .dz-plano__rodape { margin-top: 0.55rem; font-size: 0.75rem; line-height: 1.4; color: var(--dz-suave); }
+
+/* PAGAR ALI MESMO (07/10/2026): o modal com a página de pagar do estúdio
+   embutida. Folha da casa, filete de tinta, sombra dura verde; o quadro
+   acompanha a altura da página (ela avisa), e o modal rola se passar da
+   tela. O desconto do anual: o cheio riscado em cima do preço. */
+.dz-pagar { margin: auto; width: min(52rem, calc(100% - 1.5rem)); max-height: calc(100dvh - 1.5rem); padding: 0; border: 1.5px solid #14181a; background: #f2efe6; box-shadow: 8px 8px 0 #0c9159; overflow: auto; }
+.dz-pagar::backdrop { background: rgba(20, 24, 26, 0.55); }
+.dz-pagar__topo { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.6rem 0.75rem 0.6rem 1.1rem; background: #f2efe6; border-bottom: 1.5px solid #14181a; }
+.dz-pagar__rotulo { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--pn-mono), monospace; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #076b42; }
+.dz-pagar__x { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; background: none; border: 0; color: #3a4144; cursor: pointer; }
+.dz-pagar__x svg { width: 1.15rem; height: 1.15rem; }
+@media (hover: hover) and (pointer: fine) { .dz-pagar__x:hover { background: #eae6d9; color: #14181a; } }
+.dz-pagar__quadro { display: block; width: 100%; border: 0; background: #f2efe6; }
+.dz-pagar__fim { padding: 0 1.1rem 1.1rem; }
+button.dz-conta__pix, button.dz-conta__cartao, button.dz-conta__link { border: 0; cursor: pointer; text-align: left; }
+button.dz-conta__cartao { background: none; padding: 0; font: inherit; font-size: 0.8125rem; font-weight: 600; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+button.dz-conta__cartao s { opacity: 0.7; }
+button.dz-conta__link { background: none; padding: 0 0 1px; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dz-texto); border-bottom: 1.5px solid var(--dz-texto); }
+.dz-plano__jeito-cheio { font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 700; font-size: 0.9375rem; line-height: 1; color: var(--dz-suave); }
+.dz-plano__jeito[aria-checked="true"] .dz-plano__jeito-cheio { color: #b9b5aa; }
+button.dz-botao { border: 0; cursor: pointer; }
+
+/* AS TRÊS OPÇÕES DA FAIXA (07/10/2026): o texto em cima, as plaquinhas
+   embaixo, de ponta a ponta. Cada plaquinha: o jeito em mono, o preço em
+   Archivo, uma linha do que acontece. O Pix em rosa com a sombra escura; as
+   outras em contorno (papel na faixa clara, véu de branco na grafite). O
+   anual leva o cheio riscado ao lado do preço e o selo da economia. */
+.dz-conta--fim, .dz-conta--acabou { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .dz-conta--fim, .dz-conta--acabou { grid-template-columns: minmax(0, 1fr); } }
+.dz-conta__acoes { display: block; }
+.dz-conta__opcoes { display: grid; gap: 0.75rem; }
+@media (min-width: 700px) { .dz-conta__opcoes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+button.dz-conta__opcao { position: relative; display: grid; align-content: start; gap: 0.2rem; padding: 0.75rem 0.9rem 0.8rem; text-align: left; font: inherit; cursor: pointer; background: var(--dz-ficha); color: var(--dz-texto); border: 1.5px solid var(--dz-texto); box-shadow: 4px 4px 0 var(--dz-texto); transition: transform 80ms ease-out, box-shadow 80ms ease-out, background-color 100ms ease-out; }
+button.dz-conta__opcao:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--dz-texto); }
+@media (hover: hover) and (pointer: fine) { button.dz-conta__opcao:hover { background: #fff; } }
+.dz-conta__opcao-nome { font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.dz-conta__opcao b { font-family: var(--dz-display); font-variation-settings: "wdth" 72; font-weight: 800; font-size: 1.625rem; line-height: 1; letter-spacing: -0.02em; }
+.dz-conta__opcao b s { margin-left: 0.25rem; font-size: 0.9375rem; font-weight: 700; opacity: 0.55; text-decoration-thickness: 1.5px; }
+.dz-conta__opcao-diz { font-size: 0.75rem; line-height: 1.3; opacity: 0.8; }
+.dz-conta__opcao-selo { position: absolute; top: -0.6rem; right: 0.6rem; padding: 0.15rem 0.45rem; background: var(--dz-verde, #0c9159); color: #fff; font-family: var(--dz-mono); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+button.dz-conta__opcao--pix { background: var(--dz-rosa); color: #fff; border-color: var(--dz-rosa); box-shadow: 4px 4px 0 var(--dz-rosa-escuro); }
+button.dz-conta__opcao--pix:active { box-shadow: 0 0 0 var(--dz-rosa-escuro); }
+@media (hover: hover) and (pointer: fine) { button.dz-conta__opcao--pix:hover { background: var(--dz-rosa-escuro); } }
+.dz-conta--acabou button.dz-conta__opcao:not(.dz-conta__opcao--pix) { background: rgba(255, 255, 255, 0.07); color: var(--dz-fundo); border-color: rgba(255, 255, 255, 0.35); box-shadow: inset 0 1px 0 #ffffff26; }
+@media (hover: hover) and (pointer: fine) { .dz-conta--acabou button.dz-conta__opcao:not(.dz-conta__opcao--pix):hover { background: rgba(255, 255, 255, 0.13); } }
+.dz-conta--acabou .dz-conta__opcao-selo { background: #1fbf7a; color: var(--dz-texto); }
+
+/* A FAIXA DO ESTÚDIO QUE SE EXPLICA (07/10/2026): rótulo "Incluído no
+   Performance", título em Archivo com o que é, uma linha dizendo que a loja
+   não faz nada; o estado de cada entrega em verde vivo e frase de gente; o
+   relatório pronto ganha um botão de contorno claro. */
+.dz-estudio__cabeca { display: grid; gap: 0.35rem; justify-content: start; }
+.dz-estudio__titulo { font-family: var(--dz-display); font-variation-settings: "wdth" 74; font-weight: 800; font-size: clamp(1.25rem, 2.4vw, 1.5rem); line-height: 1.1; letter-spacing: -0.015em; color: var(--dz-fundo); }
+.dz-estudio .dz-estudio__sub { font-size: 0.875rem; line-height: 1.45; color: #dedad0; }
+.dz-estudio__itens li .dz-estudio__estado { font-size: 0.625rem; }
+.dz-estudio__abrir { justify-self: start; margin-top: 0.5rem; display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0 0.85rem; border: 1.5px solid #1fbf7a; color: #1fbf7a; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .dz-estudio__abrir:hover { background: #1fbf7a; color: var(--dz-texto); } }
+/* o botão do relatório vence a regra antiga de link da faixa */
+.dz-estudio__itens a.dz-estudio__abrir { display: inline-flex; align-items: center; margin-top: 0.5rem; text-decoration: none; color: #1fbf7a; }
+@media (hover: hover) and (pointer: fine) { .dz-estudio__itens a.dz-estudio__abrir:hover { color: var(--dz-texto); } }
+
+/* A FAIXA PRETA DO PERFORMANCE ATIVO (07/10/2026): grafite, uma linha só;
+   "Performance ativo" em mono verde vivo, a data em papel com os dias em
+   negrito, o botão rosa pequeno à direita, e a barra verde no pé, que
+   encolhe com os dias que faltam. */
+.dz-conta--preta { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.5rem; padding: 0.7rem 1rem 0.85rem 1.1rem; background: var(--dz-texto); color: var(--dz-fundo); overflow: hidden; }
+.dz-conta__ativo { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--dz-mono); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #1fbf7a; }
+.dz-conta__quando { font-size: 0.9375rem; color: #dedad0; }
+.dz-conta__quando b { color: #fff; font-weight: 700; }
+button.dz-conta__somar { margin-left: auto; display: inline-flex; align-items: center; min-height: 2.1rem; padding: 0 0.9rem; border: 0; background: var(--dz-rosa); color: #fff; box-shadow: 3px 3px 0 var(--dz-rosa-escuro); font-family: var(--dz-mono); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: transform 80ms ease-out, box-shadow 80ms ease-out; }
+button.dz-conta__somar:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--dz-rosa-escuro); }
+@media (hover: hover) and (pointer: fine) { button.dz-conta__somar:hover { background: var(--dz-rosa-escuro); } }
+.dz-conta__barra { position: absolute; left: 0; bottom: 0; height: 3px; background: #1fbf7a; }
+@media (max-width: 600px) { button.dz-conta__somar { margin-left: 0; } }
+
+/* a ação da nota de upgrade abre o pagamento: botão com cara de link */
+button.dz-link--botao { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-align: left; }
+
+/* ── sem dados no período (07/10): a parte grátis em exemplo, apagada e
+   marcada, para a dona ver a forma do que vem ─────────────────────────── */
+.dz .dz-exemplo-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1.5px dashed var(--dz-texto, #16191b);
+}
+.dz .dz-exemplo-aviso p { margin: 0; font-size: 14px; line-height: 1.5; }
+.dz .dz-exemplo-aviso__selo {
+  flex: none;
+  padding: 3px 8px;
+  background: var(--dz-texto, #16191b);
+  color: #fff;
+  font: 600 11px/1.4 var(--dz-mono, ui-monospace, monospace);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dz .dz-exemplo { position: relative; }
+.dz .dz-exemplo .dz-numero,
+.dz .dz-exemplo .dz-cartao { position: relative; }
+.dz .dz-exemplo .dz-numero > *,
+.dz .dz-exemplo .dz-cartao > * { opacity: 0.55; }
+/* nos números o selo tapava o ícone de abrir: o aviso logo acima já diz */
+.dz .dz-exemplo .dz-cartao::after {
+  content: "Exemplo";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  font: 600 10px/1.3 var(--dz-mono, ui-monospace, monospace);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* O cabeçalho da faixa Performance no celular (08/10/2026, achado na
+   Arena: "tem bug aí"): o título e o botão "Ver o plano · valor" não
+   cabiam numa linha em 360-390px e o botão saía da tela, empurrando a
+   página para o lado. No aperto, o botão desce para baixo do título e
+   ocupa a largura toda. */
+@media (max-width: 559px) {
+  .dz-perf__cabeca {
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+  }
+  .dz-perf__cabeca .dz-perf__ativar {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}

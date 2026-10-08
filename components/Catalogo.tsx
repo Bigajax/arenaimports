@@ -10,6 +10,7 @@ import {
   tamanhosDisponiveis,
 } from "@/lib/filtro";
 import { paraNumero, precoBRL } from "@/lib/formato";
+import { medir } from "@/estudio/lib/medir";
 import type { Categoria, Ordenacao, Produto } from "@/lib/tipos";
 
 /* a loja pediu sem limite: tudo aparece de uma vez, o botão só existe
@@ -73,6 +74,15 @@ export function Catalogo({
   );
 
   useEffect(() => setVisiveis(POR_PAGINA), [busca, marcas, tamanhos, ordem, precoMin, precoMax]);
+
+  /* a busca conta na aba Desempenho, com quantas peças achou: a que volta
+     vazia é o que o cliente procurou e a loja não tem (08/10/2026) */
+  useEffect(() => {
+    const termo = busca.trim();
+    if (termo.length < 3) return;
+    const espera = setTimeout(() => medir({ tipo: "busca", busca: termo, resultados: lista.length }), 1500);
+    return () => clearTimeout(espera);
+  }, [busca, lista.length]);
 
   const temFiltro =
     Boolean(busca) ||

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { acaoSair } from "@/lib/acoes";
 import { sessao } from "@/lib/auth";
 import { Letreiro, Simbolo } from "@/components/Marca";
+import { MarcaDono } from "@/estudio/componentes/MarcaDono";
 
 export const metadata: Metadata = {
   title: "Painel",
@@ -26,15 +27,23 @@ export default async function LayoutPainel({ children }: { children: React.React
         <header className="pn-barra escuro">
           <Link href="/painel" aria-label="Painel da Arena" className="flex items-center gap-2.5 text-branco">
             <Simbolo altura={34} />
-            <Letreiro altura={30} />
-            <span className="romana ml-1 border-l border-white/25 pl-3 text-[0.9375rem] uppercase leading-none text-raio">Painel</span>
+            {/* no celular fica só o símbolo: com a aba Números, o letreiro e o
+                "Painel" empurravam a barra para fora da tela (08/10/2026) */}
+            <span className="hidden sm:inline-flex sm:items-center sm:gap-2.5">
+              <Letreiro altura={30} />
+              <span className="romana ml-1 border-l border-white/25 pl-3 text-[0.9375rem] uppercase leading-none text-raio">Painel</span>
+            </span>
           </Link>
-          <nav className="ml-auto flex items-center gap-4">
+          <nav className="ml-auto flex items-center gap-3.5 sm:gap-4">
             <Link href="/painel" className="pn-nav">
               Peças
             </Link>
             <Link href="/painel/config" className="pn-nav">
               Loja
+            </Link>
+            {/* a contagem do estúdio (08/10/2026): quem entrou, o que olhou, quem chamou */}
+            <Link href="/painel/desempenho" className="pn-nav">
+              Números
             </Link>
             <Link href="/" target="_blank" className="pn-nav hidden sm:inline">
               Ver site
@@ -49,6 +58,8 @@ export default async function LayoutPainel({ children }: { children: React.React
       ) : null}
 
       <main className="flex-1">{children}</main>
+      {/* quem abre o painel é o dono: as visitas dele não contam */}
+      {autenticado ? <MarcaDono /> : null}
     </div>
   );
 }

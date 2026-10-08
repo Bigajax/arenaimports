@@ -34,6 +34,9 @@ export type Produto = {
   /* Verdadeiro quando a peça está em mãos e sai no mesmo dia; falso é
      importado sob encomenda, com prazo. É a aba que a loja pediu. */
   pronta_entrega: boolean;
+  /* a camada do estúdio (estudio/) lê este campo; a Arena não marca
+     número esgotado, então ele fica sempre vazio (08/10/2026) */
+  tamanhos_esgotados?: string[];
   ativo: boolean;
   ordem: number;
   imagens: Imagem[];

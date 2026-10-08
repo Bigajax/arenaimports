@@ -1,5 +1,6 @@
 import { Cabecalho } from "@/components/Cabecalho";
 import { Rodape } from "@/components/Rodape";
+import { Medidor } from "@/estudio/componentes/Medidor";
 import { carregarCatalogo, obterConfig } from "@/lib/dados";
 import { montarMenu } from "@/lib/menu";
 import { linkGeral } from "@/lib/whatsapp";
@@ -24,6 +25,8 @@ export default async function LayoutSite({ children }: { children: React.ReactNo
         {children}
       </main>
       <Rodape linkWhats={whats} instagram={config.instagram || site.instagram} categorias={ativas} />
+      {/* a contagem do estúdio: visitas, peças, buscas e chamadas (08/10/2026) */}
+      <Medidor />
     </div>
   );
 }
