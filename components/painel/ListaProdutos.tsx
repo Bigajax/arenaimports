@@ -43,6 +43,8 @@ export function ListaProdutos({
   const [estoque, setEstoque] = useState<"" | "mao" | "encomenda">("");
   const [emEdicao, setEmEdicao] = useState<Produto | null>(null);
   const [modalAberto, setModalAberto] = useState(abrirNova);
+  /* "Duplicar (outra cor)" (09/10/2026): o mesmo modal, como cadastro novo */
+  const [duplicando, setDuplicando] = useState(false);
   const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [ocupado, setOcupado] = useState<string | null>(null);
   const arrastado = useRef<string | null>(null);
@@ -125,11 +127,13 @@ export function ListaProdutos({
 
   function abrir(p: Produto) {
     setEmEdicao(p);
+    setDuplicando(false);
     setModalAberto(true);
   }
 
   function fecharModal() {
     setModalAberto(false);
+    setDuplicando(false);
     /* tira o ?nova=1 do endereço, senão atualizar a página reabre o cadastro */
     if (abrirNova) router.replace("/painel/pecas");
   }
@@ -159,7 +163,8 @@ export function ListaProdutos({
             type="button"
             onClick={() => {
               setEmEdicao(null);
-              setModalAberto(true);
+              setDuplicando(false);
+    setModalAberto(true);
             }}
           >
             <IconePainel nome="mais" className="h-5 w-5" />
@@ -329,7 +334,13 @@ export function ListaProdutos({
 
       {modalAberto ? (
         <ModalPeca
+          key={(emEdicao?.id ?? "nova") + (duplicando ? "-copia" : "")}
           produto={emEdicao}
+          duplicar={duplicando}
+          aoDuplicar={(p) => {
+            setEmEdicao(p);
+            setDuplicando(true);
+          }}
           categorias={categorias}
           proximoCodigo={proximoCodigo}
           marcasConhecidas={marcas}

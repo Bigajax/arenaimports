@@ -18,6 +18,8 @@ export function ModalPeca({
   aoSalvar,
   aoExcluir,
   avisar,
+  duplicar = false,
+  aoDuplicar,
 }: {
   produto: Produto | null;
   categorias: Categoria[];
@@ -27,17 +29,22 @@ export function ModalPeca({
   aoSalvar: () => void;
   aoExcluir: (id: string) => void;
   avisar: (mensagem: string, tipo?: "ok" | "erro") => void;
+  /* "Duplicar (outra cor)" (09/10/2026): abre um cadastro novo com os dados
+     da peça; cada cor é uma peça, e cadastrar a mesma em três cores era
+     refazer tudo três vezes */
+  duplicar?: boolean;
+  aoDuplicar?: (p: Produto) => void;
 }) {
-  const edicao = Boolean(produto);
+  const edicao = Boolean(produto) && !duplicar;
 
-  const [nome, setNome] = useState(produto?.nome ?? "");
+  const [nome, setNome] = useState(duplicar && produto ? `${produto.nome} (outra cor)` : produto?.nome ?? "");
   /* o modal curto (07/10): no cadastro, só foto, nome, categoria, preço e
      tamanhos; marca, cores e descrição ficam atrás de "mais detalhes". Na
      edição tudo aparece, porque pode haver dado preenchido ali. */
   const [maisDetalhes, setMaisDetalhes] = useState(Boolean(produto));
-  const [slug, setSlug] = useState(produto?.slug ?? "");
+  const [slug, setSlug] = useState(duplicar ? "" : produto?.slug ?? "");
   // gerado automaticamente: não aparece na tela nem no site, mas o banco exige
-  const codigo = produto?.codigo ?? proximoCodigo;
+  const codigo = duplicar ? proximoCodigo : produto?.codigo ?? proximoCodigo;
   const [categoria, setCategoria] = useState(produto?.categoria_slug ?? "");
   const [marca, setMarca] = useState(produto?.marca ?? "");
   const [preco, setPreco] = useState(
@@ -49,7 +56,7 @@ export function ModalPeca({
       : "",
   );
   const [tamanhos, setTamanhos] = useState<string[]>(produto?.tamanhos ?? []);
-  const [cores, setCores] = useState<string[]>(produto?.cores ?? []);
+  const [cores, setCores] = useState<string[]>(duplicar ? [] : produto?.cores ?? []);
   const [descricao, setDescricao] = useState(produto?.descricao ?? "");
   const [ativo, setAtivo] = useState(produto?.ativo ?? true);
   const [destaque, setDestaque] = useState(produto?.destaque ?? false);
@@ -242,7 +249,7 @@ export function ModalPeca({
 
     setSalvando(true);
     const r = await salvarProduto({
-      id: produto?.id,
+      id: edicao ? produto?.id : undefined,
       nome,
       slug: slug || slugar(nome),
       codigo: codigo || proximoCodigo,
@@ -289,7 +296,7 @@ export function ModalPeca({
         ref={painel}
         role="dialog"
         aria-modal="true"
-        aria-label={edicao ? `Editar ${produto?.nome}` : "Nova peça"}
+        aria-label={edicao ? `Editar ${produto?.nome}` : duplicar ? `Outra cor de ${produto?.nome}` : "Nova peça"}
         className="pn-modal pn-modal--peca mx-auto my-4 w-full max-w-2xl p-6 sm:p-9"
         data-ativa="true"
       >
@@ -695,8 +702,23 @@ export function ModalPeca({
 
         {/* apagar mora no fim do formulário, longe do Salvar (09/10/2026):
             no celular os dois ficavam a um dedo de distância */}
+        {duplicar ? (
+          <p className="pn-modal__copia" role="note">
+            Cópia de {produto?.nome}: troque as fotos e a cor, confira o nome e as quantidades, e salve. A original não muda.
+          </p>
+        ) : null}
         {edicao ? (
           <p className="pn-modal__apagar">
+            {aoDuplicar && produto ? (
+              <button
+                type="button"
+                className="btn btn--texto"
+                disabled={salvando}
+                onClick={() => (sujo ? avisar("Salve as mudanças antes de duplicar.", "erro") : aoDuplicar(produto))}
+              >
+                Duplicar (outra cor)
+              </button>
+            ) : null}
             <button type="button" onClick={() => setConfirmandoExclusao(true)} className="btn btn--texto" disabled={salvando}>
               Apagar peça
             </button>
@@ -727,7 +749,7 @@ export function ModalPeca({
 
       </div>
 
-      {confirmandoExclusao && produto ? (
+      {confirmandoExclusao && produto && edicao ? (
         <div className="pn-confirma fixed inset-0 z-[70] flex items-center justify-center bg-cimento-escuro/80 p-4">
           <div
             role="alertdialog"

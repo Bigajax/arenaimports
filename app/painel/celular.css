@@ -150,12 +150,27 @@
 
 /* o Apagar, no fim do formulário, longe do Salvar */
 .pn-modal__apagar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
   margin-top: 2rem;
 }
 .pn-modal__apagar .btn--texto {
   min-height: 2.75rem;
   color: var(--pn-erro, #b3261e);
   border-color: currentColor;
+}
+/* o Duplicar fica ao lado do Apagar, sem a cor de perigo (09/10/2026) */
+.pn-modal__apagar .btn--texto:first-child:not(:last-child) {
+  color: var(--pn-tinta);
+}
+.pn-modal__copia {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--pn-tinta);
+  background: var(--pn-gelo);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 /* o rodapé do cadastro preso embaixo, em toda largura */
