@@ -160,8 +160,8 @@
   color: var(--pn-erro, #b3261e);
   border-color: currentColor;
 }
-/* o Duplicar fica ao lado do Apagar, sem a cor de perigo (09/10/2026) */
-.pn-modal__apagar .btn--texto:first-child:not(:last-child) {
+/* o Compartilhar e o Duplicar ficam ao lado do Apagar, sem a cor de perigo (09/10/2026) */
+.pn-modal__apagar .btn--texto:not(:last-child) {
   color: var(--pn-tinta);
 }
 .pn-modal__copia {

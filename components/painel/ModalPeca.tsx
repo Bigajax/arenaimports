@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { criarCategoria, excluirProduto, salvarProduto } from "@/lib/acoes";
+import { CompartilharPeca } from "./CompartilharPeca";
+import { site } from "@/data/site.config";
+
+/* o endereço da peça para a mensagem do compartilhar; fora do ar, nada (sem localhost) */
+const enderecoDaPeca = (slug: string) => (/localhost|127.0.0.1/.test(site.url) ? null : `${site.url}/produto/${slug}`);
 import { enviarFoto } from "./enviar";
 import { codigoPeca, mascaraBRL, paraNumero, precoBRL, slugar } from "@/lib/formato";
 import type { Categoria, Imagem, Produto } from "@/lib/tipos";
@@ -709,6 +714,9 @@ export function ModalPeca({
         ) : null}
         {edicao ? (
           <p className="pn-modal__apagar">
+            {produto && produto.ativo ? (
+              <CompartilharPeca produto={produto} endereco={enderecoDaPeca(produto.slug)} avisar={avisar} />
+            ) : null}
             {aoDuplicar && produto ? (
               <button
                 type="button"
