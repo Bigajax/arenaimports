@@ -83,6 +83,13 @@
 .dz-rodape { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--fio-claro); font-size: 0.8125rem; line-height: 1.45; color: var(--dz-suave); }
 .dz-rodape[hidden] { display: none; }
 .dz-rodape:empty { display: none; }
+
+/* o funil por peça (09/10/2026): muita gente abriu, ninguém chamou */
+.dz-sem-chamar { margin-top: 0.75rem; padding: 0.75rem; border-left: 3px solid var(--dz-vermelho, #c0392b); background: var(--dz-vermelho-claro, #fbe9e7); }
+.dz-sem-chamar__titulo { margin: 0 0 0.375rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dz-vermelho, #c0392b); }
+.dz-sem-chamar ul { display: grid; gap: 0.375rem; margin: 0; padding: 0; list-style: none; }
+.dz-sem-chamar li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 0.75rem; font-size: 0.8125rem; line-height: 1.45; }
+.dz-sem-chamar a { font-weight: 700; color: inherit; text-decoration: underline; white-space: nowrap; }
 .dz-destaque { margin-top: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; background: var(--dz-verde-claro); font-size: 0.8125rem; font-weight: 600; line-height: 1.45; color: var(--dz-verde-escuro); }
 .dz-destaque:empty { display: none; }
 .dz-sub { margin-top: 1rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; color: var(--dz-suave); }

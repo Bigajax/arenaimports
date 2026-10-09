@@ -28,6 +28,23 @@ const nextConfig: NextConfig = {
     // erro de tipo continua derrubando o build, como tem que ser
     ignoreBuildErrors: false,
   },
+
+  /**
+   * O DEV NÃO RECOMPILA QUANDO O PAINEL GRAVA (09/10/2026). No modo local o
+   * painel grava em data/*.json e em public/produtos; o dev via a pasta
+   * mudar, recompilava no meio da ação, e a página seguinte saía com 500
+   * ("Unexpected end of JSON input"). Esses arquivos são lidos em tempo de
+   * execução, não importados: o dev não precisa olhar para eles.
+   */
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ["**/node_modules/**", "**/.git/**", "**/data/*.json", "**/data/*.tmp", "**/public/produtos/**"],
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

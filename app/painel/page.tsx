@@ -3,11 +3,12 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { IconePainel, MANUAL, type NomeIconePainel } from "@/components/painel/Navegacao";
 import { HojeNaLoja, HojeOsso } from "@/estudio/componentes/HojeNaLoja";
+import { SuaSemana } from "@/estudio/componentes/SuaSemana";
 import { ProximoPasso } from "@/estudio/componentes/ProximoPasso";
 /* o modal de pagar (PagarAqui) mora no CSS da Desempenho */
 import "@/estudio/rotas/desempenho/desempenho.css";
 import { sessao } from "@/lib/auth";
-import { carregarCatalogo } from "@/lib/dados";
+import { carregarCatalogoDoPainel } from "@/lib/dados";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,7 @@ export default async function PaginaInicio() {
   const { autenticado } = await sessao();
   if (!autenticado) redirect("/painel/login");
 
-  const { produtos } = await carregarCatalogo();
+  const { produtos } = await carregarCatalogoDoPainel();
   const noSite = produtos.filter((p) => p.ativo);
   const emMaos = noSite.filter((p) => p.pronta_entrega);
   const semPreco = noSite.filter((p) => p.preco === null && p.preco_promocional === null);
@@ -65,6 +66,11 @@ export default async function PaginaInicio() {
       {/* os números de hoje chegam em streaming: a página não espera o central */}
       <Suspense fallback={<HojeOsso />}>
         <HojeNaLoja />
+      </Suspense>
+
+      {/* a semana em frases (09/10/2026, do molde), também em streaming */}
+      <Suspense fallback={null}>
+        <SuaSemana />
       </Suspense>
 
       <nav aria-label="Tarefas" className="pn-tarefas">

@@ -21,10 +21,11 @@ export async function POST(requisicao: Request) {
     );
   }
 
-  const dados = await requisicao.formData();
-  const arquivo = dados.get("arquivo");
+  /* corpo que não é formulário: o formData() lança, e virava 500 */
+  const dados = await requisicao.formData().catch(() => null);
+  const arquivo = dados?.get("arquivo");
 
-  if (!(arquivo instanceof File)) {
+  if (!dados || !(arquivo instanceof File)) {
     return NextResponse.json({ erro: "Nenhum arquivo chegou." }, { status: 400 });
   }
   if (!TIPOS.includes(arquivo.type)) {

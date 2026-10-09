@@ -167,6 +167,13 @@ export function PainelDesempenho({
     .filter((p) => p.chamaram > 0)
     .sort((a, b) => b.chamaram - a.chamaram)
     .slice(0, 5);
+  /* o funil por peça (09/10/2026): a peça que muita gente abre e ninguém
+     chama ficava fora da tabela (ela só lista quem chamou), e é a que mais
+     pede foto ou preço novo */
+  const vistasSemChamar = D.pecas
+    .filter((p) => p.chamaram === 0 && p.viram >= 10)
+    .sort((a, b) => b.viram - a.viram)
+    .slice(0, 3);
   const somaOrigem = D.origem.reduce((a, o) => a + o.pessoas, 0);
   const somaCidades = D.cidades.reduce((a, c) => a + c.pessoas, 0) || 1;
   /* a taxa média das peças (de cada 100 que abriram, quantos chamaram): abaixo da metade dela, vermelho */
@@ -481,6 +488,21 @@ export function PainelDesempenho({
               <span className="dz-taxa baixa">Em vermelho</span>: muita gente
               abre e pouca chama. Vale rever a foto e o preço.
             </p>
+          ) : null}
+          {vistasSemChamar.length ? (
+            <div className="dz-sem-chamar">
+              <p className="dz-sem-chamar__titulo">Muita gente abriu, ninguém chamou</p>
+              <ul>
+                {vistasSemChamar.map((p) => (
+                  <li key={p.slug}>
+                    <span>
+                      <b>{p.nome}</b>: {br(p.viram)} {p.viram === 1 ? "pessoa abriu" : "pessoas abriram"}
+                    </span>
+                    <a href={`/painel/pecas?busca=${encodeURIComponent(p.nome)}`}>Rever foto e preço</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null}
         </section>
 

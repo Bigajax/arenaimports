@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { ListaProdutos } from "@/components/painel/ListaProdutos";
 import { sessao } from "@/lib/auth";
-import { carregarCatalogo } from "@/lib/dados";
+import { carregarCatalogoDoPainel } from "@/lib/dados";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ export default async function PaginaPecas({ searchParams }: { searchParams: Prom
   const { autenticado } = await sessao();
   if (!autenticado) redirect("/painel/login");
 
-  const [{ categorias, produtos }, sp] = await Promise.all([carregarCatalogo(), searchParams]);
+  const [{ categorias, produtos }, sp] = await Promise.all([carregarCatalogoDoPainel(), searchParams]);
 
   return (
     <ListaProdutos

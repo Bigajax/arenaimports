@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Soma } from "@/estudio/lib/desempenho";
 
 /**
@@ -65,7 +66,23 @@ export type Hoje = {
   plano?: string | null;
   upgrade?: "vender" | "loja" | null;
 };
-export const lerHoje = () => central<Hoje>("perf_hoje", {});
+/* uma vez por página: a Início chamava duas (HojeNaLoja e ProximoPasso), e
+   o fetch é POST, que o Next não junta sozinho (09/10/2026) */
+export const lerHoje = cache(() => central<Hoje>("perf_hoje", {}));
+
+/** A semana da loja (09/10/2026): o perf_resumo_semana do central, para o cartão "Sua semana" da Início. */
+export type Semana = {
+  pessoas: number;
+  chamaram: number;
+  pessoas_antes: number;
+  chamaram_antes: number;
+  peca: string | null;
+  peca_chamaram: number | null;
+  buscas: string[];
+  esgotados: { produto: string; tamanho: string | null; pessoas: number }[];
+  contagem_desde: string | null;
+};
+export const lerSemana = cache(() => central<Semana>("perf_resumo_semana", {}));
 
 /**
  * Os relatórios do mês desta loja (06/10/2026): o estúdio cria um por mês

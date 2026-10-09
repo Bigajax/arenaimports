@@ -8,6 +8,30 @@ const CATALOGO = path.join(PASTA, "catalogo.json");
 const CONFIG = path.join(PASTA, "config.json");
 export const PASTA_UPLOAD = path.join(process.cwd(), "public", "produtos");
 
+/* Grava inteiro ou nada (08/10/2026, no teste de ponta a ponta): o
+   writeFile direto zera o arquivo antes de escrever, e a leitura que cai
+   nesse meio pega "" e quebra a página (500), ou, nas que caem no catch,
+   devolve vazio, e o próximo salvar grava por cima apagando tudo. Escreve
+   ao lado e troca. */
+export async function gravarJson(arquivo: string, valor: unknown): Promise<void> {
+  await fs.mkdir(path.dirname(arquivo), { recursive: true });
+  const texto = `${JSON.stringify(valor, null, 2)}\n`;
+  const temporario = `${arquivo}.${process.pid}.${Date.now()}.tmp`;
+  await fs.writeFile(temporario, texto, "utf8");
+  /* no Windows, a troca falha se alguém está lendo naquele instante: tenta
+     de novo, e no fim grava direto, porque perder o salvar é pior */
+  for (let tentativa = 0; tentativa < 40; tentativa++) {
+    try {
+      await fs.rename(temporario, arquivo);
+      return;
+    } catch {
+      await new Promise((r) => setTimeout(r, 25));
+    }
+  }
+  await fs.rm(temporario, { force: true });
+  await fs.writeFile(arquivo, texto, "utf8");
+}
+
 export type Catalogo = {
   categorias: Categoria[];
   produtos: Produto[];
@@ -25,7 +49,7 @@ export async function lerCatalogo(): Promise<Catalogo> {
 }
 
 export async function gravarCatalogo(catalogo: Catalogo): Promise<void> {
-  await fs.writeFile(CATALOGO, `${JSON.stringify(catalogo, null, 2)}\n`, "utf8");
+  await gravarJson(CATALOGO, catalogo);
 }
 
 export async function lerConfig(): Promise<Config> {
@@ -38,8 +62,7 @@ export async function lerConfig(): Promise<Config> {
 }
 
 export async function gravarConfig(config: Config): Promise<void> {
-  await fs.mkdir(PASTA, { recursive: true });
-  await fs.writeFile(CONFIG, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  await gravarJson(CONFIG, config);
 }
 
 /** Grava o arquivo enviado em /public/produtos e devolve a URL pública. */

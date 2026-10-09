@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { atualizarVitrine } from "./vitrine-cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { configPadrao } from "@/data/site.config";
@@ -14,7 +14,7 @@ import {
   lerCatalogo,
   lerConfig,
 } from "./repositorio-local";
-import { clienteServidor } from "./supabase";
+import { BUCKET, clienteServidor } from "./supabase";
 import type { Categoria, Config, Imagem, Produto, Resultado } from "./tipos";
 
 async function sb() {
@@ -25,9 +25,6 @@ async function sb() {
   });
 }
 
-function atualizarVitrine() {
-  revalidatePath("/", "layout");
-}
 
 function mensagemDe(erro: unknown, padrao: string): string {
   if (!(erro instanceof Error)) return padrao;
@@ -172,6 +169,7 @@ export async function salvarProduto(
     if (error) return { ok: false, erro: traduzir(error.message) };
 
     const id = (data as { id: string }).id;
+    const { data: fotosAntes } = await cliente.from("produto_imagens").select("url").eq("produto_id", id);
     await cliente.from("produto_imagens").delete().eq("produto_id", id);
     if (entrada.imagens.length) {
       await cliente.from("produto_imagens").insert(
@@ -183,6 +181,11 @@ export async function salvarProduto(
         })),
       );
     }
+
+    /* a foto tirada da peça sai do Storage, se ninguém mais usa (09/10/2026, do molde) */
+    const ficam = new Set(entrada.imagens.map((i) => i.url));
+    const sairam = ((fotosAntes ?? []) as { url: string }[]).map((f) => f.url).filter((u) => !ficam.has(u));
+    if (sairam.length) await apagarFotosSemUso(cliente, sairam).catch(() => undefined);
 
     atualizarVitrine();
     return { ok: true, dado: { id } };
@@ -204,8 +207,10 @@ export async function excluirProduto(id: string): Promise<Resultado<null>> {
       await gravarCatalogo(catalogo);
     } else {
       const cliente = await sb();
+      const { data: fotos } = await cliente.from("produto_imagens").select("url").eq("produto_id", id);
       const { error } = await cliente.from("produtos").delete().eq("id", id);
       if (error) return { ok: false, erro: traduzir(error.message) };
+      await apagarFotosSemUso(cliente, ((fotos ?? []) as { url: string }[]).map((f) => f.url)).catch(() => undefined);
     }
 
     atualizarVitrine();
@@ -260,8 +265,12 @@ export async function reordenarProdutos(
       await gravarCatalogo(catalogo);
     } else {
       const cliente = await sb();
-      for (let i = 0; i < ids.length; i++) {
-        await cliente.from("produtos").update({ ordem: i }).eq("id", ids[i]);
+      /* uma chamada só (0011, 09/10/2026, do molde); sem a função, uma a uma */
+      const { error } = await cliente.rpc("reordenar", { p_tabela: "produtos", p_ids: ids, p_base: 0 });
+      if (error) {
+        for (let i = 0; i < ids.length; i++) {
+          await cliente.from("produtos").update({ ordem: i }).eq("id", ids[i]);
+        }
       }
     }
 
@@ -358,6 +367,21 @@ export async function salvarConfig(
 }
 
 /* ── apoio ──────────────────────────────────────────────────── */
+
+/* As fotos que saíram de uma peça (tiradas no cadastro, ou a peça apagada)
+   saem do Storage junto (09/10/2026, do molde: ficavam lá para sempre). Só
+   a que nenhuma outra peça usa; qualquer erro na conferência e a foto fica. */
+async function apagarFotosSemUso(cliente: Awaited<ReturnType<typeof sb>>, urls: string[]) {
+  const marca = `/storage/v1/object/public/${BUCKET}/`;
+  const livres: string[] = [];
+  for (const url of [...new Set(urls)]) {
+    if (!url.includes(marca)) continue;
+    const { count, error } = await cliente.from("produto_imagens").select("id", { count: "exact", head: true }).eq("url", url);
+    if (error || count === null) return;
+    if (!count) livres.push(url.split(marca)[1]);
+  }
+  if (livres.length) await cliente.storage.from(BUCKET).remove(livres);
+}
 
 function proximoCodigo(produtos: Produto[]): string {
   const maior = produtos.reduce((max, p) => {

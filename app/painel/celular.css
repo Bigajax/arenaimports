@@ -784,3 +784,31 @@
     flex-direction: column;
   }
 }
+
+/* "Sua semana" na Início (09/10/2026): até quatro frases */
+.pn-semana {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--pn-fio);
+  border-left: 3px solid var(--pn-tinta);
+  background: var(--pn-papel);
+}
+.pn-semana__titulo {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pn-nevoa);
+}
+.pn-semana ul {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pn-semana li {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}

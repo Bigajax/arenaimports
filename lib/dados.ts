@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
 import { configPadrao } from "@/data/site.config";
 import { CHAVE_SUPABASE, TEM_SUPABASE, URL_SUPABASE, clienteServidor } from "./supabase";
@@ -75,14 +76,24 @@ function daLinha(linha: LinhaProduto): Produto {
 }
 
 /**
+ * A VITRINE EM CACHE (09/10/2026, do molde 677fb0f). O site lê com um
+ * cliente anônimo, sem cookie, e fica guardado com uma etiqueta por
+ * assunto; quem grava no painel apaga a etiqueta (lib/vitrine-cache.ts) e o
+ * site se refaz na hora. Antes o cookies() tornava todas as páginas
+ * dinâmicas e cada visita ia ao banco. O painel segue lendo com a sessão
+ * (carregarCatalogoDoPainel), porque enxerga as peças escondidas.
+ */
+export const ETIQUETAS = ["catalogo", "config"] as const;
+const anonimo = () => clienteServidor({ getAll: () => [] });
+const guardado = <T,>(ler: () => Promise<T>, etiqueta: (typeof ETIQUETAS)[number]): (() => Promise<T>) =>
+  MODO === "local" ? ler : unstable_cache(ler, ["vitrine", etiqueta], { tags: [etiqueta], revalidate: 600 });
+
+/**
  * Catálogo inteiro em memória. São dezenas de peças, não milhares —
  * filtrar em JS mantém o comportamento idêntico no servidor e no cliente.
  * Acima de ~500 peças, mover o filtro para SQL (ver README).
  */
-export const carregarCatalogo = cache(async (): Promise<Catalogo> => {
-  if (MODO === "local") return lerCatalogo();
-
-  const sb = await supabaseServidor();
+async function lerDoBanco(sb: ReturnType<typeof anonimo>): Promise<Catalogo> {
   const [{ data: categorias }, { data: produtos }] = await Promise.all([
     sb.from("categorias").select("*").eq("ativo", true).order("ordem"),
     sb
@@ -108,12 +119,22 @@ export const carregarCatalogo = cache(async (): Promise<Catalogo> => {
       .slice(0, 12)
       .map((p) => ({ ...p.imagens[0], slug: p.slug })),
   };
+}
+
+/** O catálogo do PAINEL: com a sessão, enxerga as peças escondidas. */
+export const carregarCatalogoDoPainel = cache(async (): Promise<Catalogo> => {
+  if (MODO === "local") return lerCatalogo();
+  return lerDoBanco(await supabaseServidor());
 });
 
-export const obterConfig = cache(async (): Promise<Config> => {
+const catalogoPublico = guardado(async () => (MODO === "local" ? lerCatalogo() : lerDoBanco(anonimo())), "catalogo");
+
+/** O catálogo da VITRINE: anônimo e em cache. */
+export const carregarCatalogo = cache((): Promise<Catalogo> => catalogoPublico());
+
+const configPublica = guardado(async (): Promise<Config> => {
   if (MODO === "local") return lerConfig();
-  const sb = await supabaseServidor();
-  const { data } = await sb.from("config").select("chave, valor");
+  const { data } = await anonimo().from("config").select("chave, valor");
   const doBanco = Object.fromEntries(
     (data ?? []).map((l: { chave: string; valor: string | null }) => [
       l.chave,
@@ -121,7 +142,9 @@ export const obterConfig = cache(async (): Promise<Config> => {
     ]),
   );
   return { ...configPadrao, ...doBanco };
-});
+}, "config");
+
+export const obterConfig = cache((): Promise<Config> => configPublica());
 
 /**
  * A peça que a contagem do estúdio (estudio/) confere antes de gravar um
