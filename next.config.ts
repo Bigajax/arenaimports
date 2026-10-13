@@ -1,6 +1,15 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /**
+   * O PACOTE COMPARTILHADO (13/10/2026, a Arena entra depois da SneakerSpot e
+   * da Japa): o painel, o estoque e o estúdio vêm de @vitrine/plataforma, em
+   * TypeScript. O Next compila o pacote como código da loja, e o pacote acha
+   * a loja pelo nome fixo @vitrine/loja (o alias abaixo e o tsconfig).
+   */
+  transpilePackages: ["@vitrine/plataforma"],
+
   /* as fotos que o Luiz sobe pelo painel moram no Storage do Supabase:
      sem o domínio aqui, o <Image> recusa a URL e o cartão fica em branco
      (foi o que aconteceu com a capa do Superfly em 21/09) */
@@ -37,6 +46,8 @@ const nextConfig: NextConfig = {
    * execução, não importados: o dev não precisa olhar para eles.
    */
   webpack: (config, { dev }) => {
+    /* a loja para o pacote (13/10/2026): @vitrine/loja é o loja.config.ts da raiz */
+    config.resolve.alias = { ...config.resolve.alias, "@vitrine/loja": path.resolve(process.cwd(), "loja.config.ts") };
     if (dev) {
       config.watchOptions = {
         ...config.watchOptions,

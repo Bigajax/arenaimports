@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* o painel vem do pacote (13/10/2026): o Tailwind 4 não olha o node_modules sozinho */
+@source "../node_modules/@vitrine/plataforma";
 
 /* ─────────────────────────────────────────────────────────────
    ARENA IMPORTS FLORIPA — tokens.

@@ -10,7 +10,7 @@ import {
   tamanhosDisponiveis,
 } from "@/lib/filtro";
 import { paraNumero, precoBRL } from "@/lib/formato";
-import { medir } from "@/estudio/lib/medir";
+import { medir } from "@vitrine/plataforma/estudio/lib/medir";
 import type { Categoria, Ordenacao, Produto } from "@/lib/tipos";
 
 /* a loja pediu sem limite: tudo aparece de uma vez, o botão só existe

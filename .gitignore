@@ -49,3 +49,8 @@ dev.log
 
 .vercel
 .env*
+
+# o que o painel grava no modo local (13/10/2026): nunca vai para o repositório
+/data/gestao.json
+/data/crescimento.json
+/data/solicitacoes.json

@@ -3,9 +3,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { sessao } from "@/lib/auth";
-import { MODO } from "@/lib/dados";
-import { gravarImagem } from "@/lib/repositorio-local";
-import { BUCKET, clienteServidor } from "@/lib/supabase";
+import { MODO } from "@vitrine/plataforma/lib/dados";
+import { gravarImagem } from "@vitrine/plataforma/lib/repositorio-local";
+import { BUCKET, clienteServidor } from "@vitrine/plataforma/lib/supabase";
 import { baixarFoto, lerAlbum, lerLink, limparTitulo, marcaDe } from "@/lib/yupoo";
 
 /**

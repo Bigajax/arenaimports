@@ -1,4 +1,3 @@
-/* A aba Desempenho mora em estudio/ (a camada do estúdio, igual em toda
-   loja). Aqui fica só o que o Next exige no arquivo da rota. */
+/* a tela mora no pacote compartilhado (13/10/2026); aqui só o endereço */
 export const dynamic = "force-dynamic";
-export { default } from "@/estudio/rotas/desempenho/pagina";
+export { default } from "@vitrine/plataforma/estudio/rotas/desempenho/pagina";

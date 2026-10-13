@@ -1,33 +1,48 @@
-import "./entrada.css";
+import Image from "next/image";
 import { redirect } from "next/navigation";
-import { Logo } from "@/components/Marca";
-import { FormularioLogin } from "@/components/painel/FormularioLogin";
-import { sessao } from "@/lib/auth";
-import { MODO } from "@/lib/dados";
+import { FormularioLogin } from "@vitrine/plataforma/painel/FormularioLogin";
+import { sessao } from "@vitrine/plataforma/lib/auth";
+import { MODO } from "@vitrine/plataforma/lib/dados";
+import { site } from "@/data/site.config";
+import "./entrada.css";
 
 export const dynamic = "force-dynamic";
 
 /**
- * A porta do painel, com a cara da Arena: a página no preto da marca, o
- * cartão com a tampa preta (a logo inteira, com o Floripa, e o fio
- * verde) e o formulário embaixo, como a peça abre no painel.
+ * A ENTRADA DO PAINEL COM A CARA DA ARENA (13/10/2026, a loja entra no
+ * pacote). O painel vem do @vitrine/plataforma, e a entrada continua dela.
+ * A CAPA É A LOGO DA LOJA, a inteira com o Floripa, grande, no preto da
+ * marca (regra do Rafael para toda loja, nascida na Japa), e o verde-raio
+ * (#cef745) no botão e no fio. No computador, a logo à esquerda e o
+ * formulário à direita; no celular, a logo numa faixa em cima e o formulário
+ * logo abaixo, à mão.
  */
 export default async function PaginaLogin() {
   const { autenticado } = await sessao();
   if (autenticado) redirect("/painel");
 
   return (
-    <div className="escuro flex min-h-screen items-center justify-center px-4 py-16">
-      <div className="w-full max-w-sm overflow-hidden rounded-[var(--raio)] bg-off-white text-tinta shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
-        <div className="pn-modal-cab flex-col !items-center !gap-3 !px-8 !pb-7 !pt-8">
-          <Logo altura={96} prioridade />
-          <p className="etiqueta text-raio">Painel da loja</p>
-        </div>
+    <div className="ar-entrada">
+      <div className="ar-entrada__capa">
+        <Image src="/marca/logo.png" alt={site.nome} width={621} height={417} priority className="ar-entrada__logo" />
+        <p className="ar-entrada__frase">Importados premium direto da fonte, de Florianópolis para todo o Brasil.</p>
+      </div>
 
-        <div className="p-8">
+      <div className="ar-entrada__lado">
+        <div className="ar-entrada__caixa">
+          <p className="ar-entrada__rotulo">Painel da loja</p>
+          <h1 className="ar-entrada__titulo">Entrar</h1>
+
           <FormularioLogin pedeEmail={MODO === "supabase"} />
-          <p className="mono-rotulo mt-6 text-center text-marrom-fundo">Só quem cuida da Arena entra aqui.</p>
+
+          <p className="ar-entrada__ajuda">
+            Esqueceu a senha?{" "}
+            <a href="https://wa.me/5544991246187?text=Oi%20Rafael%2C%20esqueci%20a%20senha%20do%20painel%20da%20Arena." target="_blank" rel="noreferrer">
+              Chame o Rafael no WhatsApp
+            </a>
+          </p>
         </div>
+        <p className="ar-entrada__assina">Painel feito por Rafael Razeira Estúdio</p>
       </div>
     </div>
   );

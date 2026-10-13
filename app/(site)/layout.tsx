@@ -1,6 +1,6 @@
 import { Cabecalho } from "@/components/Cabecalho";
 import { Rodape } from "@/components/Rodape";
-import { Medidor } from "@/estudio/componentes/Medidor";
+import { Medidor } from "@vitrine/plataforma/estudio/componentes/Medidor";
 import { carregarCatalogo, obterConfig } from "@/lib/dados";
 import { montarMenu } from "@/lib/menu";
 import { linkGeral } from "@/lib/whatsapp";
