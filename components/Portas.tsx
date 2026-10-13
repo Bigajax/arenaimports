@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icone, type NomeIcone } from "./Icones";
+import type { NomeIcone } from "./Icones";
 import type { Produto } from "@/lib/tipos";
 
 export type Porta = {
@@ -41,9 +41,6 @@ export function Portas({ portas }: { portas: Porta[] }) {
                     <Image src={capa.url} alt="" fill sizes="(max-width: 1024px) 50vw, 24vw" className="object-cover" />
                   </span>
                 ) : null}
-                <span className="formato-traco">
-                  <Icone nome={p.icone} className="h-full w-full" peso={0.9} />
-                </span>
                 <span className="formato-rotulo">
                   <span className="block">
                     <span className="romana block text-[1.0625rem] uppercase lg:text-[1.25rem]">{p.nome}</span>

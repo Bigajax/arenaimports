@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Letreiro, Logo, Simbolo } from "./Marca";
 import { Icone } from "./Icones";
+import { Contadores } from "./Escolhas";
 import type { Aba } from "@/lib/menu";
 import type { Categoria } from "@/lib/tipos";
 
@@ -89,6 +90,8 @@ export function Cabecalho({ linkWhats, aviso, menu }: { categorias?: Categoria[]
           </form>
 
           <div className="flex items-center gap-2 lg:gap-4">
+            {/* favoritos e sacola (13/10/2026, do molde) */}
+            <Contadores />
             {/* o .btn define display e vence o hidden: esconder no pai */}
             <span className="hidden lg:inline-flex">
               <a href={linkWhats} target="_blank" rel="noreferrer" className="btn btn--raio btn--pequeno">
@@ -121,7 +124,6 @@ export function Cabecalho({ linkWhats, aviso, menu }: { categorias?: Categoria[]
             const ultima = i === menu.length - 1;
             const rotulo = (
               <>
-                <Icone nome={aba.icone} className="h-8 w-8 shrink-0 lg:h-9 lg:w-9" peso={1.3} />
                 <span className="flex flex-col items-center leading-tight lg:items-start">
                   <span>{aba.nome}</span>
                   {aba.nota ? <span className="porta-nota">{aba.nota}</span> : null}

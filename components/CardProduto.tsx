@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Coracao } from "./Escolhas";
+import type { Produto as ProdutoPlataforma } from "@vitrine/plataforma/lib/tipos";
 import Link from "next/link";
 import { Icone } from "./Icones";
 import { precoBRL } from "@/lib/formato";
@@ -39,9 +41,10 @@ export function CardProduto({
   const pedir = linkPeca(produto, { preco: vigenteNumero ?? null, prontaEntrega: produto.pronta_entrega });
 
   return (
-    <article className="cartao group flex h-full flex-col">
+    <article className="cartao group vt-card-escolhas relative flex h-full flex-col">
+      <Coracao produto={produto as unknown as ProdutoPlataforma} />
       <Link href={href} className={`foto block aspect-square rounded-b-none ${deitada ? "!bg-white" : ""}`} aria-label={produto.nome}>
-        {produto.pronta_entrega ? <span className="pronta absolute right-3 top-3 z-[1]">Pronta entrega</span> : null}
+        {produto.pronta_entrega ? <span className="pronta absolute bottom-3 left-3 z-[1]">Pronta entrega</span> : null}
         {vigente ? (
           <span className="placa-etiqueta absolute left-3 top-3 z-[1] !flex items-baseline gap-2">
             <span className="preco text-[0.9375rem]">{vigente}</span>

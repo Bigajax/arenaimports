@@ -14,8 +14,9 @@ import type { LojaConfig } from "@vitrine/plataforma/tipos-loja";
  * - codigo: as peças dela são AR-0142 (o catálogo nasceu assim).
  * - cookie: o mesmo de antes (arena_painel), para o modo local não mudar.
  * - opcoes: a pronta entrega (a chave "Em mãos" do painel antigo, a coluna
- *   pronta_entrega) e o Yupoo no cadastro; o site dela não lê banners, textos
- *   nem a captura de contatos, e não tem sacola nem a página Mais vendidos.
+ *   pronta_entrega) e o Yupoo no cadastro; o site dela não lê os textos do painel
+ *   nem a captura de contatos, e não tem a página Mais vendidos (a sacola
+ *   entrou em 13/10/2026, com favoritos).
  */
 export const loja: LojaConfig = {
   site: {
@@ -52,7 +53,7 @@ export const loja: LojaConfig = {
     bannerSimples: false,
     origem: false,
     bannerLado: false,
-    sacola: false,
+    sacola: true,
     paginaMaisVendidos: false,
   },
   nomeConfig: "A loja",

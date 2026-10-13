@@ -1,105 +1,135 @@
 import Link from "next/link";
-import { Logo, MarcaEstudio } from "./Marca";
+import { MarcaEstudio } from "./Marca";
 import { Icone } from "./Icones";
 import { PREVIA, site } from "@/data/site.config";
 import type { Categoria } from "@/lib/tipos";
 
 /**
- * O rodapé preto em colunas: a loja, as categorias, o atendimento e o
- * Instagram. No celular cada coluna vira uma sanfona (details, sem
- * JS). A faixa de baixo leva o ©, o aviso de prévia e a assinatura do
- * estúdio.
+ * O RODAPÉ DO MOLDE (13/10/2026, o Rafael: "acrescenta o footer do molde"),
+ * com os dados da Arena: colunas de Contato, Catálogo, A loja e o selo de
+ * site seguro, e a faixa de baixo com o Instagram, a linha legal e a
+ * assinatura do estúdio. Sem "Formas de pagamento" e sem CNPJ: a Arena não
+ * publicou nenhum dos dois, e o rodapé não inventa. O CSS é o .rdp do
+ * molde, em app/molde-home.css.
  */
-function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode }) {
+
+function telefone(numero: string): string {
+  const d = numero.replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, "");
+  if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return numero;
+}
+
+function Coluna({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <>
-      <details className="rodape-sanfona border-t border-white/10 sm:hidden">
-        <summary className="romana flex cursor-pointer list-none items-center justify-between py-4 text-[1rem] text-branco [&::-webkit-details-marker]:hidden">
-          {titulo}
-          <Icone nome="seta" className="rodape-seta h-4 w-4 text-marfim-fraco" />
-        </summary>
-        <div className="pb-5">{children}</div>
-      </details>
-      <div className="hidden sm:block">
-        <h2 className="romana text-[1rem] text-branco">{titulo}</h2>
-        <div className="mt-4">{children}</div>
-      </div>
-    </>
+    <div className="rdp-coluna">
+      <h2 className="rdp-titulo">{titulo}</h2>
+      {children}
+    </div>
   );
 }
 
-export function Rodape({ linkWhats, instagram, categorias = [] }: { linkWhats: string; instagram: string; categorias?: Categoria[]; horario?: string; creditos?: number }) {
+function SeloGoogle() {
+  const host = new URL(site.url).host;
   return (
-    <footer className="escuro mt-16 lg:mt-20">
-      <div className="miolo grid gap-0 border-t border-white/10 py-10 sm:grid-cols-2 sm:gap-10 sm:py-12 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-8 lg:py-16">
-        <div className="pb-8 sm:pb-0">
-          <Link href="/" aria-label="Arena Imports Floripa, página inicial" className="inline-flex text-branco">
-            <Logo altura={64} />
-          </Link>
-          <p className="mt-4 max-w-[32ch] text-[0.9375rem] text-marfim-fraco">{site.posicionamento}. De Florianópolis para todo o Brasil, pronta entrega e sob encomenda.</p>
-          <a href={linkWhats} target="_blank" rel="noreferrer" className="btn btn--raio btn--pequeno mt-5">
-            <Icone nome="whats" className="h-[1.125rem] w-[1.125rem]" />
-            Pedir no WhatsApp
-          </a>
-        </div>
+    <a href={`https://transparencyreport.google.com/safe-browsing/search?url=${encodeURIComponent(host)}`} target="_blank" rel="noreferrer" className="rdp-selo" aria-label="Site seguro: conferir no relatório de navegação segura do Google">
+      <span className="rdp-selo__google" aria-hidden="true">
+        <span style={{ color: "#4285F4" }}>G</span>
+        <span style={{ color: "#EA4335" }}>o</span>
+        <span style={{ color: "#FBBC05" }}>o</span>
+        <span style={{ color: "#4285F4" }}>g</span>
+        <span style={{ color: "#34A853" }}>l</span>
+        <span style={{ color: "#EA4335" }}>e</span>
+      </span>
+      <span className="rdp-selo__linha">Site seguro</span>
+      <svg viewBox="0 0 40 46" className="rdp-selo__escudo" aria-hidden="true">
+        <path d="M20 2 4 8v12c0 11 7 19.5 16 24 9-4.5 16-13 16-24V8L20 2z" fill="#1E8E3E" />
+        <path d="M20 2v42c9-4.5 16-13 16-24V8L20 2z" fill="#188038" />
+        <path d="m12 23 6 6 11-12" fill="none" stroke="#fff" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </a>
+  );
+}
 
-        <Bloco titulo="Catálogo">
-          <ul className="flex flex-col gap-2 text-[0.9375rem]">
-            <li>
-              <Link href="/catalogo" className="font-semibold text-branco hover:text-raio">
-                Todos
-              </Link>
-            </li>
-            {categorias.map((c) => (
-              <li key={c.slug}>
-                <Link href={`/catalogo/${c.slug}`} className="text-marfim-fraco hover:text-branco">
-                  {c.nome}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Bloco>
+export function Rodape({ linkWhats, whatsapp = site.whatsapp, instagram, categorias = [] }: { linkWhats: string; whatsapp?: string; instagram: string; categorias?: Categoria[] }) {
+  const insta = instagram.replace(/^@/, "").trim();
+  const ano = new Date().getFullYear();
 
-        <Bloco titulo="Atendimento">
-          <ul className="flex flex-col gap-2 text-[0.9375rem]">
+  return (
+    <footer className="rdp mt-16 lg:mt-20">
+      <div className="miolo rdp-colunas">
+        <Coluna titulo="Contato">
+          <ul className="rdp-lista">
             <li>
-              <a href={linkWhats} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-semibold text-branco hover:text-raio">
-                <Icone nome="whats" className="h-4 w-4 text-raio" />
-                Pedido pelo WhatsApp
+              <a href={linkWhats} target="_blank" rel="noreferrer" className="rdp-contato">
+                <Icone nome="whats" className="h-[1.125rem] w-[1.125rem]" />
+                {whatsapp ? telefone(whatsapp) : "WhatsApp"}
               </a>
             </li>
-            <li className="text-marfim-fraco">Enviamos para todo o Brasil; o envio se combina no pedido.</li>
-            <li className="text-marfim-fraco">Tamanho e disponibilidade confirmados na hora, pelo WhatsApp.</li>
-          </ul>
-        </Bloco>
-
-        <Bloco titulo="A Arena">
-          <ul className="flex flex-col gap-2 text-[0.9375rem]">
-            <li>
-              <Link href="/pronta-entrega" className="inline-flex items-center gap-2 text-branco hover:text-raio">
-                <Icone nome="relampago" className="h-4 w-4" />
-                Pronta entrega
-              </Link>
-            </li>
-            {instagram ? (
+            {insta ? (
               <li>
-                <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-branco hover:text-raio">
-                  <Icone nome="instagram" className="h-4 w-4" />@{instagram}
+                <a href={`https://instagram.com/${insta}`} target="_blank" rel="noreferrer" className="rdp-contato">
+                  <Icone nome="instagram" className="h-[1.125rem] w-[1.125rem]" />@{insta}
                 </a>
               </li>
             ) : null}
+            <li className="rdp-nota">Florianópolis, com envio para todo o Brasil.</li>
           </ul>
-        </Bloco>
+        </Coluna>
+
+        <Coluna titulo="Catálogo">
+          <ul className="rdp-lista">
+            <li>
+              <Link href="/catalogo">Todas as peças</Link>
+            </li>
+            {categorias.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/catalogo/${c.slug}`}>{c.nome}</Link>
+              </li>
+            ))}
+          </ul>
+        </Coluna>
+
+        <Coluna titulo="A loja">
+          <ul className="rdp-lista">
+            <li>
+              <a href={linkWhats} target="_blank" rel="noreferrer">
+                Atendimento
+              </a>
+            </li>
+            <li>
+              <Link href="/pronta-entrega">Pronta entrega</Link>
+            </li>
+            <li className="rdp-nota">Pedido pelo WhatsApp, sem cadastro. Tamanho e prazo confirmados na conversa.</li>
+          </ul>
+        </Coluna>
+
+        <Coluna titulo="Selos de segurança">
+          <SeloGoogle />
+        </Coluna>
       </div>
 
-      <div className="border-t border-white/10 bg-preto-2">
-        <div className="miolo flex flex-col items-center gap-4 py-5 text-center lg:flex-row lg:justify-between lg:text-left">
-          <p className="max-w-[70ch] text-[0.8125rem] text-marfim-fraco">
-            © {new Date().getFullYear()} Arena Imports Floripa. {PREVIA ? "Prévia da vitrine, ainda não é a loja: as fotos são do Instagram da loja." : ""}
+      <div className="rdp-base">
+        <div className="miolo rdp-base__miolo">
+          {insta ? (
+            <div className="rdp-redes">
+              <a href={`https://instagram.com/${insta}`} target="_blank" rel="noreferrer" aria-label={`Instagram da ${site.nome}`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="12" fill="currentColor" />
+                  <rect x="6.5" y="6.5" width="11" height="11" rx="3.2" fill="none" stroke="var(--branco)" strokeWidth="1.6" />
+                  <circle cx="12" cy="12" r="2.6" fill="none" stroke="var(--branco)" strokeWidth="1.6" />
+                  <circle cx="15.3" cy="8.7" r="0.85" fill="var(--branco)" />
+                </svg>
+              </a>
+            </div>
+          ) : null}
+          <p className="rdp-legal">
+            {site.nome} © {ano} Direitos reservados
+            {PREVIA ? <span className="block">Prévia da vitrine, ainda não é a loja no ar.</span> : null}
           </p>
-          <a href="https://rafaelrazeira.com.br/vitrine-digital" target="_blank" rel="noreferrer" aria-label="Vitrine feita por Rafael Razeira Estúdio" className="flex shrink-0 items-center gap-3 text-marfim-fraco transition-colors hover:text-branco">
-            <span className="text-[0.75rem]">vitrine por</span>
-            <MarcaEstudio altura={36} />
+          <a href="https://rafaelrazeira.com.br/vitrine-digital" target="_blank" rel="noreferrer" aria-label="Vitrine feita por Rafael Razeira Estúdio" className="rdp-estudio">
+            <span>vitrine por</span>
+            <MarcaEstudio altura={30} />
           </a>
         </div>
       </div>

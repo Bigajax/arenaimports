@@ -968,3 +968,223 @@
   max-width: 40ch;
   text-wrap: balance;
 }
+
+/* ══ SEM OS DESENHOS (13/10/2026, o Rafael: "estes ícones perderam o
+   profissionalismo") ════════════════════════════════════════════════
+   A barra das categorias fica só com o nome (e o número no computador),
+   na letra da Arena; e cada porta da home é a FOTO de uma peça de verdade
+   daquela linha, inteira, com o nome por cima num degradê escuro. */
+.porta-link {
+  flex-direction: row;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.875rem 1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.porta-link:hover {
+  color: var(--verde-raio);
+}
+@media (min-width: 1024px) {
+  .porta-link {
+    padding: 1.125rem 1.375rem;
+    font-size: 0.875rem;
+  }
+}
+
+.formato {
+  background: var(--preto-2);
+  color: var(--branco);
+}
+.formato-foto {
+  opacity: 1;
+  transform: none;
+  transition: transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.formato:hover .formato-foto,
+.formato:focus-visible .formato-foto {
+  transform: scale(1.05);
+}
+.formato::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.35) 32%, rgba(0, 0, 0, 0) 55%);
+  pointer-events: none;
+}
+.formato-rotulo {
+  z-index: 2;
+  padding: 1rem 1.125rem 1.125rem;
+}
+.formato:hover .formato-rotulo,
+.formato:focus-visible .formato-rotulo {
+  background: transparent;
+}
+.formato-rotulo .romana {
+  transition: color var(--transicao);
+}
+.formato:hover .formato-rotulo .romana,
+.formato:focus-visible .formato-rotulo .romana {
+  color: var(--verde-raio);
+}
+.formato:focus-visible {
+  outline: 2px solid var(--verde-raio);
+  outline-offset: 3px;
+}
+
+/* ══ O RODAPÉ DO MOLDE (13/10/2026), copiado do _molde; as trocas da Arena logo abaixo ══ */
+.rdp {
+  background: var(--preto-2);
+  color: var(--marfim);
+  border-top: 1px solid var(--linha);
+}
+.rdp-colunas {
+  display: grid;
+  gap: 2.25rem 2rem;
+  padding-block: 2.75rem;
+}
+@media (min-width: 640px) {
+  .rdp-colunas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .rdp-colunas { grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 3.5rem; }
+}
+.rdp-coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.rdp-titulo {
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--marfim);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rdp-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+}
+.rdp-lista a {
+  color: var(--marfim);
+  transition: color var(--transicao);
+}
+.rdp-lista a:hover { color: var(--marfim-fraco); }
+.rdp-contato {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow-wrap: anywhere;
+}
+.rdp-selo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 1.25rem;
+  padding: 0.6rem 0.9rem 0.7rem;
+  background: #fff;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  transition: border-color var(--transicao);
+}
+.rdp-selo:hover { border-color: var(--marfim-fraco); }
+.rdp-selo__google {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.rdp-selo__linha {
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5f6368;
+}
+.rdp-selo__escudo { width: 2.25rem; height: 2.5rem; margin-top: 0.15rem; }
+.rdp-pagamentos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  max-width: 19rem;
+}
+.rdp-pagamento { display: block; width: 3.5rem; height: 2.25rem; }
+.rdp-base {
+  background: var(--branco);
+  border-top: 1px solid var(--linha);
+}
+.rdp-base__miolo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .rdp-base__miolo { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+.rdp-redes { display: flex; gap: 0.6rem; }
+.rdp-redes a { display: block; width: 1.75rem; height: 1.75rem; color: var(--marfim); transition: opacity var(--transicao); }
+.rdp-redes a:hover { opacity: 0.75; }
+.rdp-redes svg { width: 100%; height: 100%; }
+.rdp-legal {
+  max-width: 72ch;
+  font-size: 0.8125rem;
+  color: var(--marfim-fraco);
+}
+.rdp-estudio {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--marfim-fraco);
+  transition: color var(--transicao);
+}
+.rdp-estudio:hover { color: var(--marfim); }
+
+/* o rodapé na cara da Arena: a areia clara com a letra preta, o título na
+   Chakra Petch com o fio verde-limão, e a faixa de baixo branca */
+.rdp {
+  background: var(--areia-clara);
+  color: var(--tinta);
+  border-top: 0;
+}
+.rdp-titulo {
+  border-bottom-color: var(--verde-raio);
+  border-bottom-width: 3px;
+  font-family: var(--font-display);
+  font-style: italic;
+}
+.rdp-lista a {
+  color: var(--tinta);
+}
+.rdp-lista a:hover {
+  color: var(--raio-texto);
+}
+.rdp-nota {
+  max-width: 30ch;
+  color: var(--tinta-fraca);
+  font-size: 0.875rem;
+}
+.rdp-redes a {
+  color: var(--tinta);
+}
+.rdp-legal,
+.rdp-estudio {
+  color: var(--tinta-fraca);
+}
+.rdp-estudio:hover {
+  color: var(--tinta);
+}

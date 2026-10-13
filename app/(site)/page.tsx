@@ -4,7 +4,6 @@ import { Campanha } from "@/components/Campanha";
 import { FaixaMarcas } from "@/components/FaixaMarcas";
 import { Garantias } from "@/components/Garantias";
 import { Hero } from "@/components/Hero";
-import { Loja } from "@/components/Loja";
 import { Portas } from "@/components/Portas";
 import { Prateleira } from "@/components/Prateleira";
 import { carregarBanners } from "@vitrine/plataforma/lib/dados";
@@ -39,7 +38,7 @@ const MARCAS = [
  *   menor (chuteiras primeiro), com a pronta entrega na frente;
  * - o banner da linha (as bolsas de grife) depois da primeira fileira e o
  *   da entrega no fim (os do meio; o do cupom espera o percentual do Luiz);
- * - a loja.
+ * (A seção "A loja", com a arte do mapa, saiu em 13/10 a pedido do Rafael.)
  * O "Chegou na Arena", as duas vitrines duplas e a faixa do como pedir
  * saíram, como no molde (o como pedir mora no WhatsApp de cada peça).
  */
@@ -59,7 +58,6 @@ export default async function Home() {
     .filter((p): p is NonNullable<typeof p> => Boolean(p))
     .slice(0, 12);
   const estrelaDe = (slug: string) => destaques.find((p) => slugsDe(slug).includes(p.categoria_slug ?? "")) ?? da(slug)[0] ?? null;
-  const peca = (slug: string) => ativos.find((p) => p.slug === slug) ?? null;
 
   /* só as portas com pelo menos duas peças viram prateleira; e cada
      prateleira mostra primeiro o que NÃO está na prateleira do hero */
@@ -80,6 +78,8 @@ export default async function Home() {
       linha={`Louis Vuitton, Chanel e Gucci: ${bolsas.length} modelos para escolher e pedir pelo WhatsApp.`}
       botao="Ver as bolsas"
       href="/catalogo/bolsas"
+      arte="/loja/banner-bolsas.webp"
+      celular="/loja/banner-bolsas-celular.webp"
       peca={capa(estrelaDe("bolsas"))}
     />
   ) : null;
@@ -114,10 +114,10 @@ export default async function Home() {
         botao="Combinar meu envio"
         href={whats}
         externo
+        arte="/loja/banner-entrega.webp"
+        celular="/loja/banner-entrega-celular.webp"
         peca={capa(pronta[0] ?? null)}
       />
-
-      <Loja linkWhats={whats} foto={peca("nike-mercurial-vapor-society-branco-e-azul") ?? peca("new-balance-9060-na-loja")} />
 
       <script
         type="application/ld+json"

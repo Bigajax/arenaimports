@@ -4,6 +4,8 @@ import { useState } from "react";
 import { precoBRL } from "@/lib/formato";
 import { linkPeca } from "@/lib/whatsapp";
 import type { Produto } from "@/lib/tipos";
+import type { Produto as ProdutoPlataforma } from "@vitrine/plataforma/lib/tipos";
+import { Coracao, useEscolhas } from "./Escolhas";
 
 /**
  * O pedido, montado antes de sair: quantidade, o tamanho ou a numeração
@@ -18,6 +20,18 @@ export function CompraProduto({ produto, whatsapp, base }: { produto: Produto; w
   const [cor, setCor] = useState<string | null>(null);
   const [quantidade, setQuantidade] = useState(1);
   const [observacao, setObservacao] = useState("");
+  const escolhas = useEscolhas();
+  const [faltou, setFaltou] = useState("");
+  const p = produto as unknown as ProdutoPlataforma;
+  /* a sacola (13/10/2026, do molde): pede o tamanho e a cor antes, como o
+     pedido; a sacola manda tudo junto pelo WhatsApp, com o código da
+     solicitação que a loja cola em Pedidos */
+  const adicionarNaSacola = () => {
+    if (produto.tamanhos.length && !tamanho) return setFaltou("Escolha o tamanho antes de pôr na sacola.");
+    if (produto.cores.length > 1 && !cor) return setFaltou("Escolha a cor antes de pôr na sacola.");
+    setFaltou("");
+    for (let i = 0; i < quantidade; i++) if (!escolhas.adicionar(p, tamanho ?? "", cor ?? "")) break;
+  };
 
   const preco = produto.preco_promocional ?? produto.preco;
   const total = preco !== null ? preco * quantidade : null;
@@ -36,6 +50,12 @@ export function CompraProduto({ produto, whatsapp, base }: { produto: Produto; w
 
   return (
     <div className="space-y-6">
+      {escolhas.habilitados.favoritos ? (
+        <div className="vt-guardar-peca">
+          <Coracao produto={p} />
+          <span>Guardar nos favoritos</span>
+        </div>
+      ) : null}
       {produto.tamanhos.length ? (
         <fieldset>
           <legend className="etiqueta mb-2">Tamanho</legend>
@@ -115,6 +135,16 @@ export function CompraProduto({ produto, whatsapp, base }: { produto: Produto; w
         <a href={link} target="_blank" rel="noreferrer" className="btn btn--cta mt-4 w-full">
           Pedir pelo WhatsApp
         </a>
+        {escolhas.habilitados.sacola ? (
+          <button type="button" className="btn btn--linha mt-3 w-full" disabled={!escolhas.pronto} onClick={adicionarNaSacola}>
+            Adicionar à sacola
+          </button>
+        ) : null}
+        {faltou ? (
+          <p role="alert" className="mt-2 text-[0.875rem] font-semibold text-tinta">
+            {faltou}
+          </p>
+        ) : null}
         <p className="miudo mt-3">A mensagem já vai com o produto, a quantidade e o que você escolheu. A Arena confirma se tem e combina o envio.</p>
       </div>
     </div>
