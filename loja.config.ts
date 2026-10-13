@@ -45,7 +45,6 @@ export const loja: LojaConfig = {
     prontaEntrega: true,
     yupoo: true,
     estoqueNoSite: false,
-    maisVendida: false,
     banners: false,
     textosDoSite: false,
     captura: false,
