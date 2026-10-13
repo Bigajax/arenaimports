@@ -1188,3 +1188,13 @@
 .rdp-estudio:hover {
   color: var(--tinta);
 }
+
+/* o topo um pouco mais baixo no computador (13/10/2026, o Rafael: "os 3
+   banners têm que diminuir um pouco de altura"): de 21:9 (2,33) para 5:2
+   (2,5), uns 7% a menos; a arte perde só uma tira fina em cima e embaixo,
+   sem cortar os refletores e o chão como o corte do molde cortava */
+@media (min-width: 900px) {
+  .camp__foto {
+    aspect-ratio: 5 / 2;
+  }
+}
