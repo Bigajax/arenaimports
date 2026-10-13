@@ -931,14 +931,14 @@
 
 /* o topo no celular (13/10/2026): o cabeçalho da Arena tem a busca e as
    portas, e o texto dos banners é mais longo que o do molde; com a linha,
-   o título subia em cima do tênis. No celular vão só o título (menor) e o
-   botão, e a arte em pé fica inteira, sem o corte de altura do molde */
+   o título subia em cima do tênis. Com as frases curtas (13/10, à noite),
+   título menor, linha de uma frase e botão; e a arte em pé fica inteira, sem o corte de altura do molde */
 @media (max-width: 899.98px) {
   .camp[data-em-pe="true"] .camp__foto {
     max-height: none;
   }
   .camp[data-em-pe="true"] .camp__texto .camp__linha {
-    display: none;
+    font-size: 0.9375rem;
   }
   .camp[data-em-pe="true"] .camp__titulo {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
@@ -946,4 +946,25 @@
   .camp[data-em-pe="true"] .camp__texto {
     padding-bottom: 2.5rem;
   }
+}
+
+/* o topo no computador (13/10/2026, o Rafael: "pode aumentar o banner...
+   está cortando os banners"): a arte 21:9 INTEIRA, sem o corte de altura
+   do molde, que tirava os refletores e o chão das artes da Arena */
+@media (min-width: 900px) {
+  .camp__foto {
+    max-height: none;
+  }
+  .camp__titulo {
+    font-size: clamp(2.75rem, 4.6vw, 5.25rem);
+    max-width: 12ch;
+  }
+  .camp__linha {
+    font-size: 1.125rem;
+  }
+}
+/* a linha curta numa linha só, sem a palavra sozinha embaixo */
+.camp__linha {
+  max-width: 40ch;
+  text-wrap: balance;
 }
