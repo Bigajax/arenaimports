@@ -44,6 +44,8 @@ export const loja: LojaConfig = {
     gestao: true,
     prontaEntrega: true,
     yupoo: true,
+    estoqueNoSite: false,
+    maisVendida: false,
     banners: false,
     textosDoSite: false,
     captura: false,
