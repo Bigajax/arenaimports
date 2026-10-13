@@ -1,25 +1,51 @@
-import { FaixaWhats } from "@/components/FaixaWhats";
+import { Fragment } from "react";
+import { BannerMeio } from "@/components/BannerMeio";
+import { Campanha } from "@/components/Campanha";
+import { FaixaMarcas } from "@/components/FaixaMarcas";
 import { Garantias } from "@/components/Garantias";
 import { Hero } from "@/components/Hero";
 import { Loja } from "@/components/Loja";
 import { Portas } from "@/components/Portas";
 import { Prateleira } from "@/components/Prateleira";
-import { Vitrines } from "@/components/Vitrines";
+import { carregarBanners } from "@vitrine/plataforma/lib/dados";
 import { carregarCatalogo, obterConfig } from "@/lib/dados";
 import { categoriasDoGrupo } from "@/lib/grupos";
 import { CATEGORIAS } from "@/lib/menu";
 import { linkGeral } from "@/lib/whatsapp";
 import { configPadrao, site } from "@/data/site.config";
 
+/* as marcas da faixa "Escolha pela marca": só as que têm a logo OFICIAL em
+   public/marcas (a Chanel ainda não tem, e marca sem logo não entra), na
+   ordem de quantas peças a loja tem de cada uma */
+const MARCAS = [
+  { nome: "Nike", logo: "/marcas/nike.svg" },
+  { nome: "Adidas", logo: "/marcas/adidas.svg" },
+  { nome: "Louis Vuitton", logo: "/marcas/louisvuitton.svg" },
+  { nome: "Jordan", logo: "/marcas/jordan.svg" },
+  { nome: "Vans", logo: "/marcas/vans.svg" },
+  { nome: "New Balance", logo: "/marcas/newbalance.svg" },
+  { nome: "Puma", logo: "/marcas/puma.svg" },
+  { nome: "Gucci", logo: "/marcas/gucci.svg" },
+  { nome: "Mizuno", logo: "/marcas/mizuno.svg" },
+];
+
 /**
- * A home: o hero preto com a prateleira iluminada, a faixa de quadra
- * com o que a loja cumpre, as quatro portas (chuteiras, corrida,
- * sneakers, bolsas), tudo que chegou, as duas vitrines (para correr e
- * para o campo), as prateleiras por porta, a loja e a faixa do
- * WhatsApp. Tudo montado do catálogo.
+ * A HOME, no desenho de e-commerce do _molde (13/10/2026; o Rafael: "melhorar
+ * a vitrine da arena imports com o molde"), na cara da Arena:
+ * - a campanha de 3 banners no topo (aba Banners do painel); sem banner no
+ *   ar, o hero preto com a prateleira iluminada, que era o topo até aqui;
+ * - a faixa do que a loja cumpre e "Escolha pela marca", com as logos;
+ * - as portas e UMA FILEIRA POR PORTA, no trilho, da maior linha para a
+ *   menor (chuteiras primeiro), com a pronta entrega na frente;
+ * - o banner da linha (as bolsas de grife) depois da primeira fileira e o
+ *   da entrega no fim (os do meio; o do cupom espera o percentual do Luiz);
+ * - a loja.
+ * O "Chegou na Arena", as duas vitrines duplas e a faixa do como pedir
+ * saíram, como no molde (o como pedir mora no WhatsApp de cada peça).
  */
 export default async function Home() {
-  const [{ categorias, produtos, hero }, config] = await Promise.all([carregarCatalogo(), obterConfig()]);
+  const [{ categorias, produtos, hero }, config, banners] = await Promise.all([carregarCatalogo(), obterConfig(), carregarBanners()]);
+  const campanha = banners.filter((b) => b.ativo);
 
   const whats = linkGeral(config.whatsapp);
   const ativos = produtos.filter((p) => p.ativo).sort((a, b) => a.ordem - b.ordem);
@@ -39,43 +65,59 @@ export default async function Home() {
      prateleira mostra primeiro o que NÃO está na prateleira do hero */
   const noHero = destaques.slice(0, 6);
   const inedito = (lista: typeof ativos) => [...lista.filter((p) => !noHero.includes(p)), ...lista.filter((p) => noHero.includes(p))];
-  const prateleiras = CATEGORIAS.map((f) => ({ ...f, produtos: inedito(da(f.slug)) })).filter((f) => f.produtos.length > 1);
+  const prateleiras = CATEGORIAS.map((f) => ({ ...f, produtos: inedito(da(f.slug)) })).filter((f) => f.produtos.length > 1)
+    .sort((a, b) => b.produtos.length - a.produtos.length);
   const totalCategorias = CATEGORIAS.filter((f) => da(f.slug).length > 0).length;
+
+  const pronta = ativos.filter((p) => p.pronta_entrega);
+  const capa = (p: (typeof ativos)[number] | null) => (p?.imagens[0] ? { url: p.imagens[0].url, alt: p.nome } : undefined);
+  const bolsas = da("bolsas");
+  const bannerLinha = bolsas.length ? (
+    <BannerMeio
+      key="banner-linha"
+      id="banner-linha"
+      titulo="Bolsas de grife, direto da fonte."
+      linha={`Louis Vuitton, Chanel e Gucci: ${bolsas.length} modelos para escolher e pedir pelo WhatsApp.`}
+      botao="Ver as bolsas"
+      href="/catalogo/bolsas"
+      peca={capa(estrelaDe("bolsas"))}
+    />
+  ) : null;
 
   return (
     <>
-      <Hero frase={config.frase_hero || configPadrao.frase_hero} estrelas={destaques} linkWhats={whats} totais={{ produtos: ativos.length, categorias: totalCategorias }} />
+      {campanha.length ? (
+        <Campanha slides={campanha} nome={site.nome} />
+      ) : (
+        <Hero frase={config.frase_hero || configPadrao.frase_hero} estrelas={destaques} linkWhats={whats} totais={{ produtos: ativos.length, categorias: totalCategorias }} />
+      )}
 
       <Garantias linkWhats={whats} />
 
+      <FaixaMarcas titulo="Escolha pela marca" marcas={MARCAS} />
+
       <Portas portas={CATEGORIAS.filter((f) => da(f.slug).length > 0).map((f) => ({ nome: f.nome, href: `/catalogo/${f.slug}`, icone: f.icone, peca: estrelaDe(f.slug), total: da(f.slug).length, linha: f.pergunta }))} />
 
-      <Prateleira id="pronta-entrega" titulo="Pronta entrega" subtitulo="Em mãos agora: sai no mesmo dia, sem esperar importação." href="/pronta-entrega" verTudo="Ver a pronta entrega" produtos={ativos.filter((p) => p.pronta_entrega)} categorias={porSlug} prioridade limite={4} nomeDaPorta="modelos" />
+      <Prateleira id="pronta-entrega" titulo="Pronta entrega" subtitulo="Em mãos agora: sai no mesmo dia, sem esperar importação." href="/pronta-entrega" verTudo="Ver a pronta entrega" produtos={pronta} categorias={porSlug} prioridade />
 
-      <Prateleira id="destaques" titulo="Chegou na Arena" subtitulo="O catálogo inteiro, do campo à rua: pronta entrega e sob encomenda." href="/catalogo" verTudo="Ver o catálogo" produtos={inedito(ativos)} categorias={porSlug} prioridade={!ativos.some((p) => p.pronta_entrega)} limite={4} nomeDaPorta="modelos" />
-
-      <Vitrines
-        vitrines={[
-          { titulo: "Para entrar em campo", texto: "Mercurial, Predator e F50, para campo e society, na temporada nova.", href: "/catalogo/chuteiras", peca: peca("nike-air-zoom-mercurial-vapor-17-elite-xxvi-fg-dourado") ?? estrelaDe("chuteiras"), acao: "Ver as chuteiras" },
-          { titulo: "Para torcer", texto: "As camisas 2026/27 dos times da Europa, do Brasil e da Argentina, do P ao 4G.", href: "/catalogo/camisas", peca: peca("camisa-roma-2026-27-titular") ?? estrelaDe("camisas"), acao: "Ver as camisas" },
-        ].filter((v): v is typeof v & { peca: NonNullable<typeof v.peca> } => Boolean(v.peca))}
-      />
-
-      {/* a área que a loja pediu na primeira tela: tênis casual e corrida, lado a lado */}
-      <Vitrines
-        vitrines={[
-          { titulo: "Tênis casual", texto: "Jordan, Dunk, Air Force, Vans e New Balance para a rua.", href: "/catalogo/sneakers", peca: peca("nike-air-jordan-1-low-iq5490-007") ?? estrelaDe("sneakers"), acao: "Ver os casuais" },
-          { titulo: "Tênis de corrida", texto: "Adizero, Evo SL e FuelCell para treino e prova.", href: "/catalogo/tenis-de-corrida", peca: estrelaDe("tenis-de-corrida"), acao: "Ver a corrida" },
-        ].filter((v): v is typeof v & { peca: NonNullable<typeof v.peca> } => Boolean(v.peca))}
-      />
-
-      {prateleiras.map((f) => (
-        <Prateleira key={f.slug} id={`prateleira-${f.slug}`} titulo={f.nome} subtitulo={f.linha[0].toUpperCase() + f.linha.slice(1) + "."} href={`/catalogo/${f.slug}`} verTudo={`Ver ${f.produtos.length === 1 ? "o modelo" : `os ${f.produtos.length}`}`} produtos={f.produtos} categorias={porSlug} nomeDaPorta={f.nome.toLowerCase() === "corrida" ? "tênis de corrida" : f.nome.toLowerCase()} feminino={f.slug === "chuteiras" || f.slug === "bolsas"} />
+      {prateleiras.map((f, i) => (
+        <Fragment key={f.slug}>
+          <Prateleira id={`prateleira-${f.slug}`} titulo={f.nome} subtitulo={f.linha[0].toUpperCase() + f.linha.slice(1) + "."} href={`/catalogo/${f.slug}`} verTudo={`Ver ${f.produtos.length === 1 ? "o modelo" : `os ${f.produtos.length}`}`} produtos={f.produtos} categorias={porSlug} prioridade={!pronta.length && i === 0} />
+          {i === 0 && f.slug !== "bolsas" ? bannerLinha : null}
+        </Fragment>
       ))}
 
-      <Loja linkWhats={whats} foto={peca("nike-mercurial-vapor-society-branco-e-azul") ?? peca("new-balance-9060-na-loja")} />
+      <BannerMeio
+        id="banner-entrega"
+        titulo="Para todo o Brasil."
+        linha="O que está em mãos sai de Floripa no mesmo dia, e o resto chega da fonte com prazo combinado. O envio você combina no pedido."
+        botao="Combinar meu envio"
+        href={whats}
+        externo
+        peca={capa(pronta[0] ?? null)}
+      />
 
-      <FaixaWhats linkWhats={whats} />
+      <Loja linkWhats={whats} foto={peca("nike-mercurial-vapor-society-branco-e-azul") ?? peca("new-balance-9060-na-loja")} />
 
       <script
         type="application/ld+json"

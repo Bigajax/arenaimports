@@ -54,3 +54,6 @@ dev.log
 /data/gestao.json
 /data/crescimento.json
 /data/solicitacoes.json
+
+# as fotos e os prompts dos banners (13/10/2026): com barra, senão pega app/painel/banners
+/banners/

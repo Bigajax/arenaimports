@@ -1,0 +1,949 @@
+/* A HOME DO MOLDE NA ARENA (13/10/2026). O CSS da campanha do topo, da faixa
+   das marcas, dos banners do meio e do trilho das fileiras veio do _molde
+   (app/globals.css, padrão Alto Giro + passo 5c), copiado como está; as
+   variáveis que o molde usa e a Arena não tinha estão logo abaixo, e as
+   trocas para a cara da Arena (Chakra Petch, verde-limão, cantos curtos)
+   ficam no FIM do arquivo. Mexer no desenho: lá no fim, não no meio. */
+:root {
+  --pista: #cef745;
+  --font-corpo: var(--fonte-corpo), "Barlow", system-ui, sans-serif;
+  --altura-topo: calc(2rem + 4.25rem + 1px);
+}
+@media (min-width: 1024px) {
+  :root {
+    --altura-topo: calc(2rem + 5.5rem + 3.75rem + 2px);
+  }
+}
+
+/* ── a campanha do topo ────────────────────────────────────────────
+   computador: a arte 21:9 de ponta a ponta, setas finas nas bordas.
+   celular e tablet: sem seta; bolinhas no pé e o arrastar. A arte
+   deitada INTEIRA (sem faixa escura embaixo) com só o botão por cima;
+   com a arte em pé em todos os banners (data-em-pe), ela ocupa a tela. */
+.camp {
+  --camp-letra: #ffffff;
+  --camp-contra: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  background: var(--preto);
+  /* o arrastar para o lado é do carrossel, não do navegador (no Chrome
+     do celular ele VOLTAVA A PÁGINA: Be Bless, 08/10/2026) */
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
+}
+.camp__palco {
+  display: grid;
+}
+.camp__slide {
+  position: relative;
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms ease-out, visibility 0s linear 600ms;
+}
+.camp__slide[data-ativo="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 600ms ease-out, visibility 0s;
+}
+.camp__slide[data-letra="escura"] {
+  --camp-letra: #1a1a1a;
+  --camp-contra: #ffffff;
+}
+.camp__foto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  background: var(--preto-2);
+}
+/* cada arte na própria caixa: esconder a CAIXA esconde também o esqueleto
+   de carregamento da foto que não carrega naquela largura */
+.camp__arte,
+.camp__arte-celular {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.camp__arte-celular {
+  display: none;
+}
+.camp__slide[data-ativo="true"] .camp__foto img {
+  animation: vt-assenta 7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vt-assenta {
+  from {
+    transform: scale(1.03);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.camp__texto {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--camp-letra);
+}
+.camp__titulo {
+  /* a letra do corpo, pesada: título de banner é sempre sólido */
+  font-family: var(--font-corpo);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 9vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  max-width: 13ch;
+  text-wrap: balance;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+}
+.camp__linha {
+  max-width: 30ch;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+.camp__slide[data-letra="escura"] .camp__titulo,
+.camp__slide[data-letra="escura"] .camp__linha {
+  text-shadow: none;
+}
+/* o botão de contorno em caixa alta, como o da Alto Giro */
+.camp__botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border: 1px solid var(--camp-letra);
+  color: var(--camp-letra);
+  font-family: var(--font-corpo);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.camp__botao:hover {
+  background: var(--camp-letra);
+  color: var(--camp-contra);
+}
+.camp__botao:focus-visible {
+  outline: 2px solid var(--camp-letra);
+  outline-offset: 3px;
+}
+/* as setas: só no computador */
+.camp__seta {
+  display: none;
+}
+/* o relógio: a barra que enche fica invisível, mas é ela que troca o
+   banner (onAnimationEnd); mouse em cima pausa */
+.camp__enche {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: camp-enche 6s linear forwards;
+}
+.camp__pontos[data-parado="true"] .camp__enche {
+  animation-play-state: paused;
+}
+@keyframes camp-enche {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* celular e tablet */
+@media (max-width: 899.98px) {
+  /* sem arte em pé: a arte deitada inteira, e SÓ O BOTÃO por cima, em
+     xm/ym (o lugar calmo de cada arte, campo do banner) */
+  .camp__texto {
+    top: var(--ym, 76%);
+    left: var(--xm, 50%);
+    transform: translate(-50%, -50%);
+    width: max-content;
+    max-width: 90%;
+  }
+  .camp__texto .camp__titulo,
+  .camp__texto .camp__linha {
+    display: none;
+  }
+  /* pequeno de ver (a arte deitada tem ~170 px de altura no celular),
+     mas a área de toque continua com 44 px */
+  .camp__botao {
+    position: relative;
+    min-height: 1.875rem;
+    padding-inline: 0.875rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+  }
+  .camp__botao::after {
+    content: "";
+    position: absolute;
+    inset: -0.4375rem -0.25rem;
+  }
+  /* com a arte em pé (4:5) em todos os banners: ela ocupa a tela, e
+     título, linha e botão vão no pé, sobre um degradê */
+  .camp[data-em-pe="true"] .camp__arte {
+    display: none;
+  }
+  .camp[data-em-pe="true"] .camp__arte-celular {
+    display: block;
+  }
+  .camp[data-em-pe="true"] .camp__foto {
+    aspect-ratio: 4 / 5;
+    /* 09/10/2026: sobra a faixa de benefícios e o título das marcas */
+    max-height: calc(100svh - var(--altura-topo) - 9rem);
+  }
+  .camp[data-em-pe="true"] .camp__foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0) 40%);
+  }
+  .camp[data-em-pe="true"] .camp__texto {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: auto;
+    max-width: none;
+    padding: 0 var(--sangria) 2.75rem;
+    gap: 0.75rem;
+  }
+  .camp[data-em-pe="true"] .camp__texto .camp__titulo,
+  .camp[data-em-pe="true"] .camp__texto .camp__linha {
+    display: block;
+  }
+  .camp[data-em-pe="true"] .camp__botao {
+    min-height: 3rem;
+    padding-inline: 1.75rem;
+    font-size: 0.8125rem;
+  }
+  /* as bolinhas, no pé, no centro */
+  .camp__pontos {
+    position: absolute;
+    left: 50%;
+    bottom: 0.25rem;
+    z-index: 3;
+    display: flex;
+    transform: translateX(-50%);
+  }
+  .camp[data-em-pe="true"] .camp__pontos {
+    bottom: 0.75rem;
+  }
+  .camp__ponto {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .camp__ponto::before {
+    content: "";
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    transition: background-color var(--transicao), transform 200ms ease-out;
+  }
+  .camp__ponto[aria-current="true"]::before {
+    background: #ffffff;
+    transform: scale(1.3);
+  }
+}
+
+/* computador */
+@media (min-width: 900px) {
+  /* o topo deixa ver os benefícios e o começo das marcas na primeira tela
+     (09/10/2026, o Rafael: "mais espremido na altura"): 10rem a menos */
+  .camp__foto {
+    max-height: calc(100svh - var(--altura-topo) - 10rem);
+    min-height: 20rem;
+  }
+  .camp__slide:not([data-posicao]) .camp__foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.22) 38%, rgba(0, 0, 0, 0) 62%);
+  }
+  .camp__slide:not([data-posicao])[data-lado="esquerda"] .camp__foto::after {
+    background:
+      linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 50%),
+      linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.22) 38%, rgba(0, 0, 0, 0) 62%);
+  }
+  .camp__slide:not([data-posicao])[data-lado="direita"] .camp__foto::after {
+    background:
+      linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 50%),
+      linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.22) 38%, rgba(0, 0, 0, 0) 62%);
+  }
+  /* sem posição: título, linha e botão no pé do lado escolhido */
+  .camp__slide:not([data-posicao]) .camp__texto {
+    bottom: 0;
+    width: 50%;
+    gap: 1rem;
+    padding: 0 clamp(2.5rem, 5vw, 6rem) clamp(3rem, 7vh, 4.5rem);
+  }
+  .camp__slide:not([data-posicao])[data-lado="esquerda"] .camp__texto {
+    left: 0;
+    padding-left: clamp(5rem, 7vw, 8rem);
+  }
+  .camp__slide:not([data-posicao])[data-lado="direita"] .camp__texto {
+    left: 50%;
+    padding-right: clamp(5rem, 7vw, 8rem);
+  }
+  /* com posição: a linha e o botão lado a lado no lugar calmo da arte */
+  .camp__slide[data-posicao] .camp__texto {
+    top: var(--y, 70%);
+    left: var(--x, 50%);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    width: max-content;
+    max-width: 46%;
+    transform: translate(-50%, -50%);
+  }
+  .camp__slide[data-posicao] .camp__titulo {
+    flex-basis: 100%;
+  }
+  .camp__slide[data-posicao] .camp__linha {
+    max-width: 20ch;
+    line-height: 1.3;
+  }
+  .camp__titulo {
+    font-size: clamp(3rem, 4.4vw, 5rem);
+  }
+  .camp__linha {
+    font-size: 1.0625rem;
+  }
+  .camp__botao {
+    min-height: 2.875rem;
+    padding-inline: 1.75rem;
+    font-size: 0.875rem;
+  }
+  /* as setas: finas, brancas, sem fundo, nas duas bordas */
+  .camp__seta {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 7rem;
+    margin-top: -3.5rem;
+    color: #ffffff;
+    opacity: 0.85;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
+    transition: opacity var(--transicao), transform 200ms ease-out;
+  }
+  .camp__seta svg {
+    width: 1.5rem;
+    height: 3rem;
+  }
+  .camp__seta:hover {
+    opacity: 1;
+  }
+  .camp__seta:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -4px;
+  }
+  .camp__seta--antes {
+    left: 1rem;
+  }
+  .camp__seta--depois {
+    right: 1rem;
+  }
+  .camp__seta--antes:hover {
+    transform: translateX(-3px);
+  }
+  .camp__seta--depois:hover {
+    transform: translateX(3px);
+  }
+  /* as bolinhas saem da vista, mas ficam no leitor de tela e com o relógio */
+  .camp__pontos {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .camp__ponto {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .camp__slide,
+  .camp__slide[data-ativo="true"] {
+    transition: none;
+  }
+  .camp__slide[data-ativo="true"] .camp__foto img {
+    animation: none;
+  }
+  .camp__enche {
+    animation: none;
+  }
+  .vt-aviso__frase {
+    transform: none;
+    transition: opacity 200ms linear;
+  }
+  .vt-aviso__frase[data-foi="true"] {
+    transform: none;
+  }
+}
+
+/* ── a faixa das marcas: "Escolha pela marca" (09/10/2026) ────────
+   logo abaixo dos benefícios, na segunda superfície, com uma seta de
+   cada lado. As logos são máscara na cor do texto, numa caixa de altura
+   fixa. O trilho rola de lado com overflow-y hidden (senão come a roda
+   do mouse) e sem barra. */
+.vt-marcas {
+  padding: 1.75rem 0 1.5rem;
+  background: var(--preto-2);
+  border-block: 1px solid var(--linha);
+  color: var(--marfim);
+}
+.vt-marcas--osso {
+  height: 8.5rem;
+}
+.vt-marcas__titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+.vt-marcas__titulo::after {
+  content: "";
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin: 0.4rem auto 0;
+  background: var(--pista);
+}
+.vt-marcas__linha {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.vt-marcas__trilho {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.vt-marcas__trilho::-webkit-scrollbar {
+  display: none;
+}
+.vt-marcas__trilho li {
+  flex: 0 0 33.333%;
+  scroll-snap-align: start;
+}
+@media (min-width: 640px) {
+  .vt-marcas__trilho li { flex-basis: 25%; }
+}
+@media (min-width: 1024px) {
+  .vt-marcas__trilho li { flex-basis: 20%; }
+}
+.vt-marcas__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  padding-inline: 0.75rem;
+  opacity: 0.85;
+  transition: opacity var(--transicao);
+}
+.vt-marcas__item:hover {
+  opacity: 1;
+}
+.vt-marcas__logo {
+  display: block;
+  width: 100%;
+  max-width: 8.5rem;
+  height: 2.25rem;
+  background: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.vt-marcas__seta {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  color: var(--marfim);
+  transition: border-color var(--transicao);
+}
+.vt-marcas__seta:hover {
+  border-color: var(--marfim);
+}
+
+/* ── os banners do meio (09/10/2026): largos e baixos, no miolo ──────
+   a arte de ponta a ponta do miolo, 3:1 no computador e 4:3 no celular;
+   o texto por cima, à esquerda, sobre um degradê escuro. */
+.vt-bm-miolo {
+  margin-block: 2.5rem;
+}
+@media (min-width: 1024px) {
+  .vt-bm-miolo { margin-block: 3.5rem; }
+}
+.vt-bm {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--preto-3);
+  color: var(--branco);
+}
+@media (min-width: 768px) {
+  .vt-bm { align-items: center; aspect-ratio: 3 / 1; }
+}
+.vt-bm__arte {
+  position: absolute;
+  inset: 0;
+}
+/* com a arte do celular (10/10/2026): no celular a QUADRADA, inteira, e a
+   larga some; a partir de 768px, o contrário */
+.vt-bm--celular {
+  aspect-ratio: 1 / 1;
+}
+.vt-bm__arte--celular {
+  display: block;
+}
+.vt-bm--celular .vt-bm__arte--larga {
+  display: none;
+}
+@media (min-width: 768px) {
+  .vt-bm--celular {
+    aspect-ratio: 3 / 1;
+  }
+  .vt-bm__arte--celular {
+    display: none;
+  }
+  .vt-bm--celular .vt-bm__arte--larga {
+    display: block;
+  }
+}
+.vt-bm__arte img {
+  transition: transform 600ms ease-out;
+}
+.vt-bm:hover .vt-bm__arte img {
+  transform: scale(1.02);
+}
+.vt-bm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.1) 70%);
+}
+@media (min-width: 768px) {
+  .vt-bm::after { background: linear-gradient(to right, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.08) 62%); }
+}
+.vt-bm__texto {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  max-width: 34rem;
+  padding: 1.5rem 1.25rem;
+}
+@media (min-width: 768px) {
+  .vt-bm__texto { padding: 2rem clamp(2rem, 5vw, 4.5rem); }
+}
+.vt-bm__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.vt-bm__linha {
+  font-size: 0.9375rem;
+  opacity: 0.9;
+}
+.vt-bm__cupom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.8rem;
+  border: 1.5px dashed rgba(255, 255, 255, 0.85);
+  font-size: 0.8125rem;
+}
+.vt-bm__cupom span {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+.vt-bm__cupom strong {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+.vt-bm__botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1.5px solid currentColor;
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+/* ── o trilho da prateleira ──────────────────────────────────────
+   computador: quatro por vez, seta redonda branca de cada lado.
+   tablet: três. celular: duas, com o dedo E a seta menor (09/10/2026).
+   O trilho anda sozinho uma peça a cada 4 s (Trilho.tsx).
+   overflow-y hidden: senão o trilho come a roda do mouse. */
+.vt-trilho {
+  position: relative;
+  margin-top: 1.5rem;
+}
+.vt-trilho__fila {
+  display: flex;
+  gap: 0.75rem;
+  margin-inline: calc(var(--sangria) * -1);
+  padding-inline: var(--sangria);
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--sangria);
+  scrollbar-width: none;
+}
+.vt-trilho__fila::-webkit-scrollbar {
+  display: none;
+}
+.vt-trilho__peca {
+  flex: none;
+  width: calc((100vw - 2 * var(--sangria) - 0.75rem) / 2);
+  scroll-snap-align: start;
+}
+/* a seta no celular e no tablet: menor, por dentro da borda, sobre a foto */
+.vt-trilho__seta {
+  position: absolute;
+  top: 34%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+.vt-trilho__seta[hidden] {
+  display: none;
+}
+.vt-trilho__seta--antes {
+  left: 0.25rem;
+}
+.vt-trilho__seta--depois {
+  right: 0.25rem;
+}
+@media (min-width: 640px) {
+  .vt-trilho__fila {
+    gap: 1rem;
+  }
+  .vt-trilho__peca {
+    width: calc((100vw - 2 * var(--sangria) - 2 * 1rem) / 3);
+  }
+}
+@media (max-width: 639.98px) {
+  .vt-trilho__peca .titulo-cartao {
+    font-size: 0.875rem;
+  }
+}
+@media (min-width: 900px) {
+  .vt-trilho__fila {
+    gap: 1.25rem;
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+  .vt-trilho__peca {
+    width: calc((100% - 3 * 1.25rem) / 4);
+  }
+  .vt-trilho__seta {
+    position: absolute;
+    top: 38%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: -1.375rem;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    transition: transform 160ms ease-out, box-shadow var(--transicao);
+  }
+  .vt-trilho__seta[hidden] {
+    display: none;
+  }
+  .vt-trilho__seta:hover {
+    transform: scale(1.06);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.28);
+  }
+  .vt-trilho__seta:focus-visible {
+    outline: 2px solid var(--pista);
+    outline-offset: 3px;
+  }
+  .vt-trilho__seta--antes {
+    left: -1.375rem;
+  }
+  .vt-trilho__seta--depois {
+    right: -1.375rem;
+  }
+}
+
+/* o "Ver mais" embaixo da prateleira (09/10/2026) */
+.vt-prateleira__mais {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+.vt-prateleira__botao {
+  min-width: 12rem;
+}
+
+
+/* ══ A CARA DA ARENA (13/10/2026) ═══════════════════════════════════
+   O que muda do molde: a manchete na Chakra Petch inclinada e em caixa
+   alta (a do hero da Arena), o botão em verde-limão, a faixa das marcas
+   no preto com as logos brancas, os banners do meio pretos com o fio
+   verde-limão, e o trilho com o botão Pausar à vista. */
+
+/* a campanha */
+.camp__titulo {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+}
+.camp__botao {
+  border-radius: var(--raio-mini);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.camp__botao:hover {
+  background: var(--verde-raio);
+  border-color: var(--verde-raio);
+  color: var(--preto);
+}
+
+/* a faixa das marcas: o preto da Arena, logos brancas, a seta de fio */
+.vt-marcas {
+  background: var(--preto);
+  border-block: 0;
+  color: var(--branco);
+}
+.vt-marcas__titulo {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.vt-marcas__titulo::after {
+  background: var(--verde-raio);
+}
+.vt-marcas__item {
+  opacity: 0.78;
+}
+.vt-marcas__item:hover,
+.vt-marcas__item:focus-visible {
+  opacity: 1;
+  color: var(--verde-raio);
+}
+.vt-marcas__item:focus-visible {
+  outline: 2px solid var(--verde-raio);
+  outline-offset: -2px;
+}
+.vt-marcas__seta {
+  background: transparent;
+  border-color: var(--preto-3);
+  color: var(--branco);
+}
+.vt-marcas__seta:hover {
+  border-color: var(--verde-raio);
+  color: var(--verde-raio);
+}
+
+/* os banners do meio */
+.vt-bm {
+  border-radius: var(--raio);
+  background: var(--preto);
+}
+.vt-bm__titulo {
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.vt-bm__linha {
+  max-width: 38ch;
+}
+.vt-bm__botao {
+  margin-top: 0.75rem;
+  padding: 0.8rem 1.15rem;
+  border: 0;
+  border-radius: var(--raio-mini);
+  background: var(--verde-raio);
+  color: var(--preto);
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background-color var(--transicao);
+}
+.vt-bm:hover .vt-bm__botao {
+  background: var(--branco);
+}
+.vt-bm:focus-visible {
+  outline: 2px solid var(--verde-raio);
+  outline-offset: 3px;
+}
+
+/* sem a arte ainda: o preto com o arco verde-limão da logo e a foto de uma
+   peça de verdade à direita, recortada num quadro (a arte do gerador entra
+   no lugar sem mexer no texto) */
+.ar-bm--provisorio::after {
+  display: none;
+}
+.ar-bm__peca {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.ar-bm__arco {
+  position: absolute;
+  right: -12%;
+  top: 50%;
+  width: min(70vw, 34rem);
+  aspect-ratio: 1;
+  border: 2px solid var(--verde-raio);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0.55;
+  box-shadow: 0 0 60px rgba(206, 247, 69, 0.15);
+}
+.ar-bm__foto {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  width: min(36vw, 17rem);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--raio);
+  transform: translateY(-50%) rotate(-3deg);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+}
+.ar-bm__foto img {
+  transition: transform 600ms ease-out;
+}
+.vt-bm:hover .ar-bm__foto img {
+  transform: scale(1.04);
+}
+@media (max-width: 767.98px) {
+  /* no celular a foto sobe para a metade de cima, e o texto fica embaixo */
+  .ar-bm--provisorio {
+    aspect-ratio: auto;
+    min-height: 26rem;
+  }
+  .ar-bm__arco {
+    right: 50%;
+    top: 30%;
+    width: 22rem;
+    transform: translate(50%, -50%);
+  }
+  .ar-bm__foto {
+    right: 50%;
+    top: 1.5rem;
+    width: 9.5rem;
+    transform: translateX(50%) rotate(-3deg);
+  }
+  .ar-bm--provisorio .vt-bm__texto {
+    padding-top: 15.5rem;
+  }
+}
+@media (min-width: 768px) {
+  .ar-bm--provisorio .vt-bm__texto {
+    max-width: 55%;
+  }
+}
+
+/* o trilho: o rodapé com a posição e o Pausar (o molde não trazia o CSS) */
+.vt-trilho__rodape {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+.vt-trilho__progresso {
+  flex: 1;
+  height: 2px;
+  background: var(--linha);
+}
+.vt-trilho__progresso span {
+  display: block;
+  height: 100%;
+  background: var(--tinta);
+  transition: width 300ms ease-out;
+}
+.vt-link-discreto {
+  font-size: 0.8125rem;
+  color: var(--tinta-fraca);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vt-link-discreto:hover {
+  color: var(--tinta);
+}
+.vt-trilho__seta:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 2px;
+}
+
+/* o topo no celular (13/10/2026): o cabeçalho da Arena tem a busca e as
+   portas, e o texto dos banners é mais longo que o do molde; com a linha,
+   o título subia em cima do tênis. No celular vão só o título (menor) e o
+   botão, e a arte em pé fica inteira, sem o corte de altura do molde */
+@media (max-width: 899.98px) {
+  .camp[data-em-pe="true"] .camp__foto {
+    max-height: none;
+  }
+  .camp[data-em-pe="true"] .camp__texto .camp__linha {
+    display: none;
+  }
+  .camp[data-em-pe="true"] .camp__titulo {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+  .camp[data-em-pe="true"] .camp__texto {
+    padding-bottom: 2.5rem;
+  }
+}

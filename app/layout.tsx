@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow, Chakra_Petch } from "next/font/google";
 import { site } from "@/data/site.config";
 import "./globals.css";
+import "./molde-home.css";
 
 /* A Chakra Petch, quadrada e inclinada, faz a manchete e os títulos: é
    a letra da placa da loja, a mesma família de traço do "ARENA" do
