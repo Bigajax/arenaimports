@@ -100,7 +100,7 @@ export function Trilho({ children, rotulo }: { children: ReactNode; rotulo: stri
           <path d="M9.5 5.5L16 12l-6.5 6.5" />
         </svg>
       </button>
-      {temMais ? <div className="vt-trilho__rodape"><div className="vt-trilho__progresso" role="progressbar" aria-label="Posição na prateleira" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progresso*100)}><span style={{width:`${25 + progresso*75}%`}} /></div><button type="button" className="vt-link-discreto" onClick={() => setPausado(v => !v)}>{pausado ? "Retomar" : "Pausar"}<span className="sr-only"> movimento automático de {rotulo}</span></button></div> : null}
+      {temMais ? <div className="vt-trilho__rodape"><div className="vt-trilho__progresso" role="progressbar" aria-label="Posição na prateleira" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progresso*100)}><span style={{width:`${25 + progresso*75}%`}} /></div><button type="button" className="vt-link-discreto sr-only focus:not-sr-only" onClick={() => setPausado(v => !v)}>{pausado ? "Retomar" : "Pausar"}<span className="sr-only"> movimento automático de {rotulo}</span></button></div> : null}
     </div>
   );
 }
