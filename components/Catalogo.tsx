@@ -10,6 +10,7 @@ import {
   tamanhosDisponiveis,
 } from "@/lib/filtro";
 import { paraNumero, precoBRL } from "@/lib/formato";
+import { semUnico } from "@/lib/grade-loja";
 import { medir } from "@vitrine/plataforma/estudio/lib/medir";
 import type { Categoria, Ordenacao, Produto } from "@/lib/tipos";
 
@@ -57,7 +58,8 @@ export function Catalogo({
   );
 
   const opcoesMarca = useMemo(() => marcasDisponiveis(doEscopo), [doEscopo]);
-  const opcoesTamanho = useMemo(() => tamanhosDisponiveis(doEscopo), [doEscopo]);
+  /* o "Único" que o estoque põe no calçado sem numeração não é opção de número */
+  const opcoesTamanho = useMemo(() => tamanhosDisponiveis(doEscopo.map(semUnico)), [doEscopo]);
   const faixa = useMemo(() => faixaDePreco(doEscopo), [doEscopo]);
 
   const lista = useMemo(

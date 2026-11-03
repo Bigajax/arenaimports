@@ -8,6 +8,7 @@ import { carregarCatalogo, obterConfig } from "@/lib/dados";
 import { montarMenu } from "@/lib/menu";
 import { linkGeral } from "@/lib/whatsapp";
 import { site } from "@/data/site.config";
+import { semUnico } from "@/lib/grade-loja";
 import "../escolhas.css";
 
 export default async function LayoutSite({ children }: { children: React.ReactNode }) {
@@ -20,7 +21,7 @@ export default async function LayoutSite({ children }: { children: React.ReactNo
      de quem visita; a sacola vai inteira pelo WhatsApp, com o código que a
      loja cola em Pedidos, no painel */
   return (
-    <EscolhasProvider produtos={produtos.filter((p) => p.ativo) as unknown as ProdutoPlataforma[]} loja={site.url} habilitados={{ favoritos: true, sacola: true }}>
+    <EscolhasProvider produtos={produtos.filter((p) => p.ativo).map(semUnico) as unknown as ProdutoPlataforma[]} loja={site.url} habilitados={{ favoritos: true, sacola: true }}>
       <div className="vt-site flex min-h-screen flex-col">
         <a
           href="#conteudo"

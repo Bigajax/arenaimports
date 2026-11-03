@@ -6,6 +6,7 @@ import { linkPeca } from "@/lib/whatsapp";
 import type { Produto } from "@/lib/tipos";
 import type { Produto as ProdutoPlataforma } from "@vitrine/plataforma/lib/tipos";
 import { Coracao, useEscolhas } from "./Escolhas";
+import { semUnico } from "@/lib/grade-loja";
 
 /**
  * O pedido, montado antes de sair: quantidade, o tamanho ou a numeração
@@ -14,7 +15,10 @@ import { Coracao, useEscolhas } from "./Escolhas";
  * estruturada para o WhatsApp, uma linha por coisa, para quem atende não
  * precisar perguntar o básico. Não existe carrinho: a conversa é o pedido.
  */
-export function CompraProduto({ produto, whatsapp, base }: { produto: Produto; whatsapp: string; base: string; atendimento?: boolean }) {
+export function CompraProduto({ produto: recebido, whatsapp, base }: { produto: Produto; whatsapp: string; base: string; atendimento?: boolean }) {
+  /* o "Único" que o estoque põe no calçado sem numeração não é tamanho: o par
+     segue sem teclas, com a numeração na observação (lib/grade-loja.ts) */
+  const produto = semUnico(recebido);
   const [tamanho, setTamanho] = useState<string | null>(null);
   const [tamanhoLivre, setTamanhoLivre] = useState("");
   const [cor, setCor] = useState<string | null>(null);

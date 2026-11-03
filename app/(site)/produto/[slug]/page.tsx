@@ -9,6 +9,7 @@ import { carregarCatalogo, obterConfig, obterProduto } from "@/lib/dados";
 import { temDesconto } from "@/lib/filtro";
 import { precoBRL } from "@/lib/formato";
 import { site } from "@/data/site.config";
+import { semUnico } from "@/lib/grade-loja";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -124,7 +125,7 @@ export default async function PaginaProduto({ params }: Props) {
             {produto.descricao ? (
               <p className="mt-6 max-w-[52ch] text-[0.9375rem] leading-relaxed text-tinta">{produto.descricao}</p>
             ) : null}
-            {!atendimento && (produto.marca || produto.cores.length === 1 || produto.tamanhos.length) ? (
+            {!atendimento && (produto.marca || produto.cores.length === 1 || semUnico(produto).tamanhos.length) ? (
               <dl className="mt-5 grid grid-cols-[auto_minmax(0,1fr)] gap-x-6 gap-y-1.5 text-[0.9375rem]">
                 {produto.marca ? (
                   <>
@@ -138,10 +139,10 @@ export default async function PaginaProduto({ params }: Props) {
                     <dd className="text-tinta">{produto.cores[0]}</dd>
                   </>
                 ) : null}
-                {produto.tamanhos.length ? (
+                {semUnico(produto).tamanhos.length ? (
                   <>
                     <dt className="text-tinta-fraca">Tamanhos</dt>
-                    <dd className="text-tinta">{produto.tamanhos.join(", ")}</dd>
+                    <dd className="text-tinta">{semUnico(produto).tamanhos.join(", ")}</dd>
                   </>
                 ) : null}
               </dl>
