@@ -91,12 +91,13 @@
   letter-spacing: -0.01em;
   color: var(--pn-tinta);
 }
-/* o botão do painel no verde-raio da loja, com a letra escura */
+/* o botão do painel no verde-raio da loja, com a letra escura. Só a cor:
+   a forma (pílula, 48px, sem sombra) é da plataforma desde a v2.0. A sombra
+   dura de 4px que morava aqui era do desenho antigo e, na pílula da v2.0.3,
+   saía como um degrau preto torto (03/11/2026) */
 .ar-entrada .pn-carimbo button {
-  min-height: 3rem;
   background: var(--ar-raio);
   color: var(--ar-tinta);
-  box-shadow: 4px 4px 0 var(--ar-tinta);
 }
 @media (hover: hover) and (pointer: fine) {
   .ar-entrada .pn-carimbo button:hover:not(:disabled) {
