@@ -38,6 +38,8 @@ export const loja: LojaConfig = {
   codigo: "AR",
   conteudo: { partes: PARTES, mapa: MAPA, variaveis: VARIAVEIS },
   opcoes: {
+    /* a aba Turbinar (03/11/2026) */
+    turbinar: true,
     estoque: true,
     /* Estoque e Pedidos (13/10/2026): precisa do SQL do painel novo no banco
        dela (rodar-arena-painel-novo.sql). Na primeira vez que a tela Estoque
